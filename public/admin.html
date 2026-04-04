@@ -34,11 +34,11 @@
         }
 
         .glass-nav {
-            background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100;
+            background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; transition: background 0.5s;
         }
 
-        /* Light Mode Styles (Ash Background, Dark Header/Footer) */
-        body.light-mode { background-color: #d1d5db; color: #0f172a; } /* Ash background */
+        /* Light Mode Styles */
+        body.light-mode { background-color: #d1d5db; color: #0f172a; } 
         body.light-mode .bg-cyber {
             background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(209, 213, 219, 0.9), #d1d5db), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1'/%3E%3C/svg%3E");
         }
@@ -46,12 +46,25 @@
             background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: #1e293b;
         }
         body.light-mode .text-slate-400 { color: #475569; }
-        body.light-mode .glass-nav, body.light-mode footer { background: rgba(2, 6, 23, 0.98); color: #f8fafc; } /* Header/Footer remain dark */
+        body.light-mode .glass-nav, body.light-mode footer { background: rgba(2, 6, 23, 0.98); color: #f8fafc; } 
+        body.light-mode h2, body.light-mode h3 { color: #020617; }
+        
+        /* Light Mode Input Fix for Admin */
+        body.light-mode input, body.light-mode textarea {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            color: #0f172a !important;
+            border-color: rgba(0, 0, 0, 0.2) !important;
+        }
+        body.light-mode input:focus, body.light-mode textarea:focus { border-color: #ef4444 !important; }
+        body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #64748b !important; }
+        body.light-mode label { color: #475569 !important; }
 
-        /* Modal Overlay */
         .modal-overlay {
             background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
         }
+        body.light-mode .modal-overlay .glass-panel { background: rgba(15, 23, 42, 0.95); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1); } 
+        body.light-mode .modal-overlay h3 { color: #f8fafc; }
+        body.light-mode .modal-overlay input { background-color: rgba(0, 0, 0, 0.5) !important; color: #fff !important; }
     </style>
 </head>
 <body>
@@ -64,8 +77,8 @@
                 <span class="text-xs font-bold uppercase tracking-[0.2em] mono text-red-500">Admin_Terminal</span>
             </div>
             <div class="flex items-center gap-4">
-                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10">
-                    <i data-lucide="sun" class="w-4 h-4 text-amber-400" id="themeIcon"></i>
+                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10 flex items-center justify-center w-9 h-9">
+                    <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
                 </button>
                 <button id="logoutBtn" class="hidden text-[10px] font-bold mono bg-red-500/10 text-red-500 px-3 py-1.5 rounded border border-red-500/20 hover:bg-red-500/20 transition">LOGOUT</button>
             </div>
@@ -78,25 +91,25 @@
             <div class="glass-panel p-8 w-full max-w-md border-t-2 border-red-500/50 relative overflow-hidden">
                 <div class="text-center mb-8">
                     <i data-lucide="fingerprint" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
-                    <h2 class="text-2xl font-black">System Authentication</h2>
+                    <h2 class="text-2xl font-black text-white">System Authentication</h2>
                     <p class="text-[10px] mono text-slate-500 mt-2">RESTRICTED ACCESS ONLY</p>
                 </div>
                 <form id="loginForm" class="space-y-4">
                     <div>
                         <label class="text-[10px] font-bold text-slate-500 uppercase mono mb-1 block">Root_User</label>
-                        <input type="text" id="username" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 transition mono" placeholder="Enter Username">
+                        <input type="text" id="username" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 transition mono text-white" placeholder="Enter Username">
                     </div>
                     <div>
                         <label class="text-[10px] font-bold text-slate-500 uppercase mono mb-1 block">Passkey</label>
-                        <input type="password" id="password" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 transition mono" placeholder="••••••••">
+                        <input type="password" id="password" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 transition mono text-white" placeholder="••••••••">
                     </div>
                     <div class="flex justify-between items-center px-1">
-                        <a href="#" class="text-[10px] text-sky-500 hover:text-sky-400 mono">Bypass/Forgot Password?</a>
+                        <a href="#" onclick="openRecoveryModal()" class="text-[10px] text-sky-500 hover:text-sky-400 mono transition">Forgot Username/Password?</a>
                     </div>
                     <button type="submit" class="w-full py-3 mt-4 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold text-[10px] uppercase tracking-widest transition shadow-lg shadow-red-500/20">
                         Initialize Uplink
                     </button>
-                    <p id="loginError" class="text-red-500 text-[10px] text-center mt-2 hidden mono">Access Denied. Invalid Credentials.</p>
+                    <p id="loginError" class="text-red-500 text-[10px] text-center mt-2 hidden mono font-bold">Access Denied. Invalid Credentials.</p>
                 </form>
             </div>
         </section>
@@ -132,85 +145,128 @@
                     
                     <form id="addGalleryForm" class="bg-black/20 p-4 rounded-xl mb-6 space-y-3 border border-white/5">
                         <p class="text-[10px] text-slate-400 mono uppercase mb-2">Deploy New Visual Archive</p>
-                        <input type="file" id="g-img" accept="image/*" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none cursor-pointer">
+                        <input type="file" id="g-img" accept="image/*" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-slate-300 outline-none cursor-pointer">
                         <div class="grid grid-cols-2 gap-3">
                             <input type="text" id="g-title" placeholder="Title (e.g., IMG_001.SYS)" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <input type="text" id="g-sub" placeholder="Subtitle" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                         </div>
                         <textarea id="g-details" placeholder="Full Details for Lightbox..." class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
-                        <button type="submit" class="bg-sky-600 hover:bg-sky-500 text-white text-[10px] font-bold px-4 py-2 rounded transition uppercase">Add Archive</button>
+                        <button type="submit" class="bg-sky-600 hover:bg-sky-500 text-white text-[10px] font-bold px-4 py-2 rounded transition uppercase w-full">Upload Archive</button>
                     </form>
 
-                    <div class="space-y-3 max-h-80 overflow-y-auto pr-2" id="galleryList">
+                    <div class="space-y-3 max-h-80 overflow-y-auto pr-2 custom-scrollbar" id="galleryList">
                         <p class="text-xs text-slate-500 mono">Fetching data...</p>
                     </div>
                 </div>
 
                 <div class="glass-panel p-6 flex flex-col">
                     <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="mail" class="w-5 h-5 text-emerald-500"></i> Encrypted Comms</h3>
-                    <div class="flex-1 space-y-3 max-h-[500px] overflow-y-auto pr-2" id="messageList">
+                    <div class="flex-1 space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar" id="messageList">
                         <p class="text-xs text-slate-500 mono">Fetching comms...</p>
                     </div>
                 </div>
             </div>
-
-            <div class="glass-panel p-6 border-l-4 border-red-500">
-                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="key" class="w-5 h-5 text-red-500"></i> Security Settings</h3>
-                <form id="securityForm" class="grid md:grid-cols-4 gap-4 items-end">
-                    <div>
-                        <label class="text-[10px] text-slate-500 uppercase mono mb-1 block">New Username</label>
-                        <input type="text" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-slate-500 uppercase mono mb-1 block">New Password</label>
-                        <input type="password" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs outline-none">
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-red-500 font-bold uppercase mono mb-1 block">Secure Auth Code</label>
-                        <input type="password" placeholder="Require Master PIN" class="w-full bg-red-900/20 border border-red-500/30 focus:border-red-500 rounded px-3 py-2 text-xs outline-none text-red-400">
-                    </div>
-                    <button type="button" onclick="alert('Database schema update required for credentials.')" class="bg-red-600/20 text-red-500 border border-red-500/50 hover:bg-red-600 hover:text-white transition text-[10px] font-bold px-4 py-2.5 rounded uppercase">Update Root</button>
-                </form>
-            </div>
         </section>
     </main>
 
-    <footer class="pb-6 pt-6 text-center border-t border-white/5 relative z-50">
-        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Mahmudul Hasan. System Admin Terminal</p>
-    </footer>
+    <div id="recoveryModal" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass-panel max-w-sm w-full p-8 relative transform scale-95 transition-transform duration-300">
+            <button onclick="closeRecoveryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/40 p-2 rounded-full border border-white/5 hover:border-white/20 transition z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
+            <div class="text-center mb-6">
+                <i data-lucide="shield-question" class="w-12 h-12 text-sky-500 mx-auto mb-4"></i>
+                <h3 class="text-xl font-black text-white">System Recovery</h3>
+                <p class="text-[10px] text-slate-400 mono mt-2">ACCOUNT CREDENTIALS RETRIEVAL</p>
+            </div>
+            <form id="recoveryForm" class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase mono mb-1 block">Recovery Email / Admin PIN</label>
+                    <input type="text" required class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-sky-500 transition mono text-white" placeholder="Enter secure details...">
+                </div>
+                <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-bold text-[10px] uppercase tracking-widest transition shadow-lg shadow-sky-500/20">
+                    Initiate Recovery Protocol
+                </button>
+            </form>
+            <p id="recoveryMessage" class="hidden text-emerald-500 text-[10px] text-center mt-4 mono font-bold bg-emerald-500/10 p-2 rounded border border-emerald-500/20">Recovery instructions have been sent securely. Please check your registered email.</p>
+        </div>
+    </div>
 
     <div id="lightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="glass-panel max-w-2xl w-full p-6 relative transform scale-95 transition-transform duration-300" id="lightbox-content">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
-            <div id="modal-body" class="mt-2 text-white">
-                </div>
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/40 p-2 rounded-full border border-white/5 hover:border-white/20 transition z-10"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div id="modal-body" class="mt-2 text-white"></div>
         </div>
     </div>
+
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(239, 68, 68, 0.5); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(239, 68, 68, 0.8); }
+    </style>
 
     <script>
         lucide.createIcons();
 
-        // Theme Toggle Logic
+        // ================= THEME TOGGLE LOGIC =================
         const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
             const isLight = document.body.classList.contains('light-mode');
-            themeIcon.setAttribute('data-lucide', isLight ? 'moon' : 'sun');
-            themeIcon.classList.toggle('text-amber-400', !isLight);
-            themeIcon.classList.toggle('text-slate-600', isLight);
+            
+            // Toggle Icon smoothly
+            if (isLight) {
+                themeToggle.innerHTML = '<i data-lucide="moon" class="w-4 h-4 text-slate-600"></i>';
+            } else {
+                themeToggle.innerHTML = '<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>';
+            }
             lucide.createIcons();
         });
 
+        // ================= RECOVERY MODAL LOGIC =================
+        const recoveryModal = document.getElementById('recoveryModal');
+        
+        function openRecoveryModal() {
+            recoveryModal.classList.remove('hidden');
+            setTimeout(() => { recoveryModal.classList.remove('opacity-0'); }, 10);
+        }
+
+        function closeRecoveryModal() {
+            recoveryModal.classList.add('opacity-0');
+            setTimeout(() => { 
+                recoveryModal.classList.add('hidden'); 
+                document.getElementById('recoveryMessage').classList.add('hidden');
+                document.getElementById('recoveryForm').reset();
+            }, 300);
+        }
+
+        document.getElementById('recoveryForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin inline"></i> Processing...';
+            lucide.createIcons();
+
+            // Simulate recovery process
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                document.getElementById('recoveryMessage').classList.remove('hidden');
+            }, 1500);
+        });
+
         // Application State
-        const API_BASE = 'http://localhost:5000/api';
+        const API_BASE = '/api';
         let statsInterval;
 
-        // Login Logic
+        // ================= LOGIN LOGIC =================
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+
+            btn.innerText = "Authenticating...";
+            document.getElementById('loginError').classList.add('hidden');
 
             try {
                 const res = await fetch(`${API_BASE}/login`, {
@@ -229,22 +285,19 @@
                     document.getElementById('loginError').classList.remove('hidden');
                 }
             } catch (err) {
-                alert("Server connection failed!");
+                document.getElementById('loginError').innerText = "Server connection failed!";
+                document.getElementById('loginError').classList.remove('hidden');
             }
+            btn.innerText = originalText;
         });
 
         // Logout
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            location.reload();
-        });
+        document.getElementById('logoutBtn').addEventListener('click', () => { location.reload(); });
 
-        // Init Dashboard Data
+        // Init Dashboard
         function initDashboard() {
-            // Realtime Stats
             fetchStats();
             statsInterval = setInterval(fetchStats, 3000);
-            
-            // Fetch DB Data
             loadGallery();
             loadMessages();
         }
@@ -259,26 +312,30 @@
             } catch (e) { console.error("Stats error"); }
         }
 
-        // Gallery Functions
+        // ================= GALLERY LOGIC =================
         async function loadGallery() {
             const res = await fetch(`${API_BASE}/gallery`);
             const items = await res.json();
             const list = document.getElementById('galleryList');
             list.innerHTML = '';
             
-            if(items.length === 0) list.innerHTML = '<p class="text-xs text-slate-500">No archives found.</p>';
+            if(!items || items.length === 0) {
+                list.innerHTML = '<p class="text-xs text-slate-500">No archives found.</p>';
+                return;
+            }
             
             items.forEach(item => {
+                const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                 list.innerHTML += `
-                    <div class="flex items-center justify-between bg-black/20 p-3 rounded-lg border border-white/5 hover:border-sky-500/30 transition">
-                        <div class="flex items-center gap-4 cursor-pointer" onclick="openGalleryModal('${item.image_url}', '${item.title}', '${item.details || 'No details.'}')">
+                    <div class="flex items-center justify-between bg-black/20 p-3 rounded-lg border border-white/5 hover:border-sky-500/30 transition group">
+                        <div class="flex items-center gap-4 cursor-pointer flex-1" onclick="openGalleryModal('${item.image_url}', '${item.title}', '${safeDetails}')">
                             <img src="${item.image_url}" class="w-12 h-12 object-cover rounded" onerror="this.src='https://via.placeholder.com/50'">
                             <div>
-                                <p class="text-xs font-bold text-white">${item.title}</p>
+                                <p class="text-xs font-bold text-white group-hover:text-sky-400 transition">${item.title}</p>
                                 <p class="text-[10px] text-slate-400 mono">${item.subtitle}</p>
                             </div>
                         </div>
-                        <button onclick="deleteGallery(${item.id})" class="text-red-500 hover:text-red-400 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <button onclick="deleteGallery(${item.id})" class="text-red-500 hover:text-white hover:bg-red-500 p-2 rounded transition ml-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 `;
             });
@@ -292,7 +349,6 @@
             
             if(fileInput.files.length === 0) return alert("Please select an image from your PC!");
 
-            // FormData তৈরি করা (ফাইল পাঠানোর জন্য এটি লাগে)
             const formData = new FormData();
             formData.append('image', fileInput.files[0]);
             formData.append('title', document.getElementById('g-title').value);
@@ -300,13 +356,13 @@
             formData.append('details', document.getElementById('g-details').value);
 
             const originalText = submitBtn.innerText;
-            submitBtn.innerText = "UPLOADING..."; // আপলোডের সময় বোতামের লেখা চেঞ্জ হবে
+            submitBtn.innerText = "UPLOADING..."; 
             submitBtn.disabled = true;
 
             try {
                 const res = await fetch(`${API_BASE}/gallery`, {
                     method: 'POST',
-                    body: formData // JSON এর বদলে FormData যাচ্ছে
+                    body: formData 
                 });
                 const data = await res.json();
                 
@@ -325,36 +381,38 @@
         });
 
         async function deleteGallery(id) {
-            if(confirm('Delete this archive?')) {
+            if(confirm('Delete this archive permanently?')) {
                 await fetch(`${API_BASE}/gallery/${id}`, { method: 'DELETE' });
                 loadGallery();
             }
         }
 
-        // Message Functions (Mock Data for display if table empty)
+        // ================= MESSAGES LOGIC =================
         async function loadMessages() {
             const res = await fetch(`${API_BASE}/messages`);
             const msgs = await res.json();
             const list = document.getElementById('messageList');
             list.innerHTML = '';
             
-            if(msgs.length === 0) {
+            if(!msgs || msgs.length === 0) {
                 list.innerHTML = '<p class="text-xs text-slate-500">Inbox is secure and empty.</p>';
                 return;
             }
 
             msgs.forEach(msg => {
                 const date = new Date(msg.created_at).toLocaleString();
+                const safePayload = (msg.data_payload || '').replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, '<br>');
+                
                 list.innerHTML += `
                     <div class="bg-black/20 p-3 rounded-lg border border-white/5 hover:border-emerald-500/30 transition">
                         <div class="flex justify-between items-start mb-2">
-                            <div class="cursor-pointer" onclick="openMessageModal('${msg.identity_name}', '${msg.contact_vector}', '${msg.data_payload.replace(/\n/g, '<br>')}', '${date}')">
-                                <p class="text-xs font-bold text-white uppercase mono">${msg.identity_name}</p>
+                            <div class="cursor-pointer" onclick="openMessageModal('${msg.identity_name}', '${msg.contact_vector}', '${safePayload}', '${date}')">
+                                <p class="text-xs font-bold text-white uppercase mono hover:text-emerald-400 transition">${msg.identity_name}</p>
                                 <p class="text-[10px] text-slate-400">${msg.contact_vector}</p>
                             </div>
-                            <button onclick="deleteMessage(${msg.id})" class="text-slate-500 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            <button onclick="deleteMessage(${msg.id})" class="text-slate-500 hover:text-white hover:bg-red-500 p-1.5 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
-                        <p class="text-xs text-slate-300 truncate cursor-pointer" onclick="openMessageModal(...)">${msg.data_payload}</p>
+                        <p class="text-xs text-slate-300 truncate cursor-pointer" onclick="openMessageModal('${msg.identity_name}', '${msg.contact_vector}', '${safePayload}', '${date}')">${msg.data_payload}</p>
                     </div>
                 `;
             });
@@ -362,20 +420,20 @@
         }
 
         async function deleteMessage(id) {
-            if(confirm('Purge this message?')) {
+            if(confirm('Purge this message permanently?')) {
                 await fetch(`${API_BASE}/messages/${id}`, { method: 'DELETE' });
                 loadMessages();
             }
         }
 
-        // Modal Logic
+        // ================= MODALS LOGIC =================
         const modal = document.getElementById('lightbox');
         const modalContent = document.getElementById('lightbox-content');
         const modalBody = document.getElementById('modal-body');
 
         function openGalleryModal(img, title, details) {
             modalBody.innerHTML = `
-                <img src="${img}" class="w-full max-h-[60vh] object-cover rounded-xl mb-4 border border-white/10">
+                <img src="${img}" class="w-full max-h-[50vh] object-contain rounded-xl mb-4 border border-white/10 bg-black/40">
                 <h3 class="text-2xl font-black text-sky-500 mb-2">${title}</h3>
                 <p class="text-sm text-slate-300 leading-relaxed">${details}</p>
             `;
@@ -386,11 +444,11 @@
             modalBody.innerHTML = `
                 <div class="border-b border-white/10 pb-4 mb-4">
                     <p class="text-xs text-emerald-500 mono mb-1">DECRYPTED PAYLOAD</p>
-                    <h3 class="text-xl font-bold uppercase">${name}</h3>
+                    <h3 class="text-xl font-bold uppercase text-white">${name}</h3>
                     <p class="text-sm text-slate-400">${contact}</p>
                     <p class="text-[10px] text-slate-500 mt-1">Recv: ${date}</p>
                 </div>
-                <div class="bg-black/40 p-4 rounded-lg border border-white/5">
+                <div class="bg-black/40 p-4 rounded-lg border border-white/5 max-h-[40vh] overflow-y-auto custom-scrollbar">
                     <p class="text-sm text-slate-200 font-mono leading-relaxed">${payload}</p>
                 </div>
             `;
