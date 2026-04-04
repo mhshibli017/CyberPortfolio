@@ -12,7 +12,7 @@
         .mono { font-family: 'JetBrains Mono', monospace; }
         .bg-cyber { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05), transparent 80%), linear-gradient(to bottom, rgba(2, 6, 23, 0.95), rgba(2, 6, 23, 1)); }
         .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; transition: all 0.3s; }
-        .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; }
+        .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; transition: background 0.5s; }
         .modal-overlay { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
@@ -20,17 +20,32 @@
         
         /* ================= LIGHT MODE FIXES ================= */
         body.light-mode { background-color: #d1d5db; color: #0f172a; }
-        body.light-mode .glass-panel { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.1); color: #1e293b; }
-        body.light-mode input, body.light-mode textarea { background-color: rgba(255,255,255,0.9)!important; color: #0f172a!important; border-color: rgba(0,0,0,0.2)!important; }
-        body.light-mode .glass-nav { color: #fff; }
+        body.light-mode .bg-cyber {
+            background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(209, 213, 219, 0.95), #d1d5db);
+        }
+        body.light-mode .glass-panel { background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(0, 0, 0, 0.1); color: #1e293b; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         
-        /* Modals & Messages Light Mode */
-        body.light-mode .modal-overlay .glass-panel { background: rgba(255, 255, 255, 0.98); color: #0f172a; border: 1px solid rgba(0, 0, 0, 0.1); } 
+        /* Input & Form Fixes for Light Mode */
+        body.light-mode input, body.light-mode textarea { 
+            background-color: rgba(255,255,255,0.9) !important; 
+            color: #0f172a !important; 
+            border: 1px solid rgba(0,0,0,0.2) !important; 
+        }
+        body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; box-shadow: 0 0 0 1px #0ea5e9; }
+        body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #64748b !important; }
+        body.light-mode .glass-nav { color: #fff; } /* Keep header text white */
+        
+        /* List Items & Modals in Light Mode */
+        body.light-mode .bg-black\/30, body.light-mode .bg-black\/20 { background-color: rgba(0, 0, 0, 0.05) !important; border-color: rgba(0,0,0,0.1) !important; }
+        body.light-mode .text-white { color: #0f172a !important; }
+        body.light-mode .text-slate-400 { color: #475569 !important; }
+        body.light-mode .text-slate-300 { color: #334155 !important; }
+        body.light-mode .modal-overlay .glass-panel { background: rgba(255, 255, 255, 0.98); color: #0f172a; } 
         body.light-mode #msgLightbox .text-white, body.light-mode #messageList .text-white { color: #0f172a !important; }
-        body.light-mode #msgLightbox .text-slate-300, body.light-mode #messageList .text-slate-300 { color: #334155 !important; }
-        body.light-mode #msgLightbox .text-slate-400, body.light-mode #messageList .text-slate-400 { color: #475569 !important; }
-        body.light-mode .bg-black\/30 { background-color: rgba(0, 0, 0, 0.05) !important; border-color: rgba(0,0,0,0.1) !important; }
-        body.light-mode .bg-black\/40 { background-color: rgba(0, 0, 0, 0.1) !important; }
+        
+        /* Specific override for Password Box in Light Mode */
+        body.light-mode #cp-new { background-color: rgba(254, 226, 226, 0.5) !important; border-color: rgba(239, 68, 68, 0.5) !important; }
+        body.light-mode #cp-new:focus { border-color: #ef4444 !important; }
     </style>
 </head>
 <body>
@@ -43,7 +58,7 @@
                 <span class="text-xs font-bold uppercase tracking-[0.2em] mono text-red-500">Admin_Terminal</span>
             </div>
             <div class="flex items-center gap-4">
-                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
+                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10 flex items-center justify-center w-9 h-9"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
                 <button id="logoutBtn" class="hidden text-[10px] font-bold mono bg-red-500/10 text-red-500 px-3 py-1.5 rounded border border-red-500/20 hover:bg-red-500/20 transition">LOGOUT</button>
             </div>
         </div>
@@ -58,9 +73,9 @@
                     <h2 class="text-2xl font-black text-white">System Auth</h2>
                 </div>
                 <form id="loginForm" class="space-y-4">
-                    <input type="text" id="username" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white" placeholder="Root_User">
-                    <input type="password" id="password" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white" placeholder="Passkey">
-                    <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold text-[10px] uppercase">Initialize Uplink</button>
+                    <input type="text" id="username" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white transition" placeholder="Root_User">
+                    <input type="password" id="password" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white transition" placeholder="Passkey">
+                    <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold text-[10px] uppercase transition shadow-lg shadow-red-500/20">Initialize Uplink</button>
                     <p id="loginError" class="text-red-500 text-[10px] text-center hidden font-bold">Invalid Credentials</p>
                 </form>
             </div>
@@ -78,26 +93,26 @@
             <div class="grid lg:grid-cols-2 gap-8">
                 <div class="space-y-8">
                     <div class="glass-panel p-6 border-t-2 border-blue-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="user" class="w-5 h-5 text-blue-500"></i> About / Profile Details</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="user" class="w-5 h-5 text-blue-500"></i> About / Profile Details</h3>
                         <form id="profileForm" class="space-y-3">
                             <input type="hidden" id="p-id">
-                            <input type="text" id="p-name" placeholder="Full Name" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                            <input type="text" id="p-title" placeholder="Job Title" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                            <textarea id="p-bio" placeholder="Biography details..." rows="3" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none"></textarea>
+                            <input type="text" id="p-name" placeholder="Full Name" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                            <input type="text" id="p-title" placeholder="Job Title" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                            <textarea id="p-bio" placeholder="Biography details..." rows="3" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition"></textarea>
                             <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Update Profile</button>
                         </form>
                     </div>
 
                     <div class="glass-panel p-6 border-t-2 border-emerald-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="graduation-cap" class="w-5 h-5 text-emerald-500"></i> Education</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="graduation-cap" class="w-5 h-5 text-emerald-500"></i> Education</h3>
                         <form id="addEduForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
                             <input type="hidden" id="e-id">
-                            <input type="text" id="e-degree" placeholder="Degree (e.g., BSc Computer Science)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                            <input type="text" id="e-degree" placeholder="Degree (e.g., BSc Computer Science)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
                             <div class="grid grid-cols-2 gap-3">
-                                <input type="text" id="e-inst" placeholder="Institution" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                                <input type="text" id="e-year" placeholder="Year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                                <input type="text" id="e-inst" placeholder="Institution" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                                <input type="text" id="e-year" placeholder="Year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
                             </div>
-                            <textarea id="e-details" placeholder="Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
+                            <textarea id="e-details" placeholder="Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition" rows="2"></textarea>
                             <div class="flex gap-2">
                                 <button type="submit" id="btn-edu" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Add Education</button>
                                 <button type="button" onclick="resetForm('addEduForm', 'btn-edu', 'Add Education')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-edu">Cancel</button>
@@ -107,15 +122,15 @@
                     </div>
 
                     <div class="glass-panel p-6 border-t-2 border-pink-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="award" class="w-5 h-5 text-pink-500"></i> Achievements & Certs</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="award" class="w-5 h-5 text-pink-500"></i> Achievements & Certs</h3>
                         <form id="addAchForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
                             <input type="hidden" id="a-id">
-                            <input type="text" id="a-title" placeholder="Title (e.g., National CTF Champion)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                            <input type="text" id="a-title" placeholder="Title (e.g., National CTF Champion)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
                             <div class="grid grid-cols-2 gap-3">
-                                <input type="text" id="a-org" placeholder="Organization" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                                <input type="text" id="a-year" placeholder="Year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                                <input type="text" id="a-org" placeholder="Organization" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                                <input type="text" id="a-year" placeholder="Year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
                             </div>
-                            <textarea id="a-details" placeholder="Details..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
+                            <textarea id="a-details" placeholder="Details..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition" rows="2"></textarea>
                             <div class="flex gap-2">
                                 <button type="submit" id="btn-ach" class="flex-1 bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Add Achievement</button>
                                 <button type="button" onclick="resetForm('addAchForm', 'btn-ach', 'Add Achievement')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-ach">Cancel</button>
@@ -127,12 +142,12 @@
 
                 <div class="space-y-8">
                     <div class="glass-panel p-6 border-t-2 border-purple-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="briefcase" class="w-5 h-5 text-purple-500"></i> Projects</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="briefcase" class="w-5 h-5 text-purple-500"></i> Projects</h3>
                         <form id="addProjForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
                             <input type="hidden" id="pr-id">
-                            <input type="text" id="pr-title" placeholder="Project Title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                            <input type="text" id="pr-tags" placeholder="Tags (comma separated)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                            <textarea id="pr-desc" placeholder="Project Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
+                            <input type="text" id="pr-title" placeholder="Project Title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                            <input type="text" id="pr-tags" placeholder="Tags (comma separated)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                            <textarea id="pr-desc" placeholder="Project Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition" rows="2"></textarea>
                             <div class="flex gap-2">
                                 <button type="submit" id="btn-proj" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Deploy Project</button>
                                 <button type="button" onclick="resetForm('addProjForm', 'btn-proj', 'Deploy Project')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-proj">Cancel</button>
@@ -142,11 +157,11 @@
                     </div>
 
                     <div class="glass-panel p-6 border-t-2 border-amber-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="image" class="w-5 h-5 text-amber-500"></i> Visual Archives</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="image" class="w-5 h-5 text-amber-500"></i> Visual Archives</h3>
                         <form id="addGalleryForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
-                            <input type="file" id="g-img" accept="image/*" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-slate-300 outline-none">
-                            <input type="text" id="g-title" placeholder="Title" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                            <textarea id="g-details" placeholder="Details" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
+                            <input type="file" id="g-img" accept="image/*" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-slate-300 outline-none transition">
+                            <input type="text" id="g-title" placeholder="Title" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                            <textarea id="g-details" placeholder="Details" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition" rows="2"></textarea>
                             <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Upload Archive</button>
                         </form>
                         <div id="galleryList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
@@ -155,19 +170,28 @@
             </div>
 
             <div class="glass-panel p-6 border-t-2 border-emerald-500">
-                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="mail" class="w-5 h-5 text-emerald-500"></i> Secure Inbox (Messages)</h3>
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="mail" class="w-5 h-5 text-emerald-500"></i> Secure Inbox (Messages)</h3>
                 <div id="messageList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto custom-scrollbar p-2">
                     <p class="text-xs text-slate-500 mono">Fetching messages...</p>
                 </div>
             </div>
 
-            <div class="glass-panel p-6 border-t-2 border-red-500 max-w-md mx-auto">
-                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="key" class="w-5 h-5 text-red-500"></i> Change Password</h3>
-                <form id="passChangeForm" class="space-y-3">
-                    <input type="text" id="cp-user" placeholder="Username" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                    <input type="password" id="cp-old" placeholder="Old Password" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                    <input type="password" id="cp-new" placeholder="New Password" required class="w-full border border-red-500/50 bg-red-900/20 focus:border-red-500 rounded px-3 py-2 text-xs text-white outline-none">
-                    <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Update Password</button>
+            <div class="glass-panel p-6 border-t-2 border-red-500 w-full">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="key" class="w-5 h-5 text-red-500"></i> System Security (Change Password)</h3>
+                <form id="passChangeForm" class="grid md:grid-cols-4 gap-4 items-end">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mono">Username</label>
+                        <input type="text" id="cp-user" placeholder="Current Username" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-3 text-xs text-white outline-none transition">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mono">Old Passkey</label>
+                        <input type="password" id="cp-old" placeholder="Current Password" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-3 text-xs text-white outline-none transition">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-red-500 uppercase tracking-widest block mono">New Passkey</label>
+                        <input type="password" id="cp-new" placeholder="New Password" required class="w-full border border-red-500/50 bg-red-900/20 focus:border-red-500 rounded px-3 py-3 text-xs text-white outline-none transition">
+                    </div>
+                    <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 py-3 rounded text-[10px] font-bold w-full uppercase transition shadow-lg shadow-red-500/20">Update Password</button>
                 </form>
             </div>
 
@@ -176,7 +200,7 @@
 
     <div id="msgLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="glass-panel max-w-3xl w-full p-8 relative transform scale-95 transition-transform duration-300">
-            <button onclick="closeMsgLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <button onclick="closeMsgLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             <div class="border-b border-white/10 pb-4 mb-6">
                 <div class="flex justify-between items-start">
                     <div>
@@ -200,7 +224,6 @@
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
-        // Data Arrays for Edit functioning
         let eduDataArray = [];
         let projDataArray = [];
         let achDataArray = [];
@@ -241,7 +264,6 @@
             loadProfile(); loadEducation(); loadProjects(); loadAchievements(); loadGallery(); loadMessages();
         }
 
-        // Generic Reset Form
         function resetForm(formId, btnId, originalText) {
             document.getElementById(formId).reset();
             const idField = document.getElementById(formId).querySelector('input[type="hidden"]');
@@ -275,11 +297,11 @@
             const list = document.getElementById('eduList'); list.innerHTML = '';
             eduDataArray.forEach(item => {
                 list.innerHTML += `
-                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5">
+                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5 hover:border-emerald-500/30 transition">
                     <div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.degree}</p><p class="text-[10px] text-slate-400">${item.institution}</p></div>
-                    <div class="flex gap-1">
-                        <button onclick="editEdu(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
-                        <button onclick="deleteRow('education', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <div class="flex gap-1 shrink-0">
+                        <button onclick="editEdu(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1.5 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="deleteRow('education', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1.5 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 </div>`;
             });
@@ -312,11 +334,11 @@
             const list = document.getElementById('projList'); list.innerHTML = '';
             projDataArray.forEach(item => {
                 list.innerHTML += `
-                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5">
+                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5 hover:border-purple-500/30 transition">
                     <div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.tags}</p></div>
-                    <div class="flex gap-1">
-                        <button onclick="editProj(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
-                        <button onclick="deleteRow('projects', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <div class="flex gap-1 shrink-0">
+                        <button onclick="editProj(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1.5 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="deleteRow('projects', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1.5 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 </div>`;
             });
@@ -348,11 +370,11 @@
             const list = document.getElementById('achList'); list.innerHTML = '';
             achDataArray.forEach(item => {
                 list.innerHTML += `
-                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5">
+                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5 hover:border-pink-500/30 transition">
                     <div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.organization}</p></div>
-                    <div class="flex gap-1">
-                        <button onclick="editAch(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
-                        <button onclick="deleteRow('achievements', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <div class="flex gap-1 shrink-0">
+                        <button onclick="editAch(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1.5 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="deleteRow('achievements', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1.5 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>
                 </div>`;
             });
@@ -384,7 +406,11 @@
             const items = await (await fetch(`${API_BASE}/gallery`)).json();
             const list = document.getElementById('galleryList'); list.innerHTML = '';
             items.forEach(item => {
-                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-2 rounded border border-white/5"><div class="flex items-center gap-2 truncate"><img src="${item.image_url}" class="w-8 h-8 object-cover rounded"><p class="text-xs text-white truncate">${item.title}</p></div><button onclick="deleteRow('gallery', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+                list.innerHTML += `
+                <div class="flex justify-between items-center bg-black/30 p-2 rounded border border-white/5 hover:border-amber-500/30 transition">
+                    <div class="flex items-center gap-2 truncate"><img src="${item.image_url}" class="w-8 h-8 object-cover rounded"><p class="text-xs text-white truncate">${item.title}</p></div>
+                    <button onclick="deleteRow('gallery', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1.5 rounded transition shrink-0"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>`;
             });
             lucide.createIcons();
         }
@@ -428,7 +454,6 @@
                 const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
                 const formattedDate = `${localDate.toLocaleDateString(undefined, dateOptions)} - ${localDate.toLocaleTimeString(undefined, timeOptions)}`;
                 
-                // CRITICAL FIX: Escape quotes and newlines for inline JS
                 const safePayload = (msg.data_payload || '')
                     .replace(/\\/g, '\\\\')
                     .replace(/'/g, "\\'")
@@ -466,7 +491,7 @@
         function openMsgModal(name, email, msg, date) {
             document.getElementById('lb-name').innerText = name;
             document.getElementById('lb-email').innerText = email;
-            document.getElementById('lb-msg').innerHTML = msg; // Using innerHTML because of <br> tags
+            document.getElementById('lb-msg').innerHTML = msg; 
             document.getElementById('lb-date').innerText = date;
             msgModal.classList.remove('hidden');
             setTimeout(() => msgModal.classList.remove('opacity-0'), 10);
