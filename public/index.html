@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahmudul Hasan | Cybersecurity Specialist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --security-blue: #0ea5e9;
+            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .bg-cyber {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 1)), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/svg%3E");
+        }
+
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
+        .glass-nav { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; }
+        .pulse-green { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); animation: pulse 2s infinite; }
+        @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .cyber-card-frame {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s;
+        }
+
+        /* Modal / Lightbox Styles */
+        .modal-overlay { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
+
+        /* Light Mode Styles */
+        body.light-mode { background-color: #e5e7eb; color: #0f172a; }
+        body.light-mode .bg-cyber { background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15), transparent 80%), linear-gradient(to bottom, rgba(229, 231, 235, 0.95), #e5e7eb), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1'/%3E%3C/svg%3E"); }
+        body.light-mode .glass-panel, body.light-mode .cyber-card-frame { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.05); color: #1e293b; }
+        body.light-mode .text-slate-400 { color: #475569; }
+        body.light-mode .text-white { color: #0f172a; }
+        body.light-mode h1, body.light-mode h2, body.light-mode h3 { color: #020617; }
+        body.light-mode .glass-nav { background: rgba(2, 6, 23, 0.95); color: #f8fafc; }
+        body.light-mode footer { background-color: #020617; color: #f8fafc; border-top: 1px solid rgba(255,255,255,0.1); }
+        body.light-mode .modal-overlay .glass-panel { background: rgba(15, 23, 42, 0.95); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1); } 
+        body.light-mode .modal-overlay h2, body.light-mode .modal-overlay h3 { color: #0ea5e9; }
+    </style>
+</head>
+<body>
+    <div class="bg-cyber"></div>
+
+    <nav class="fixed top-0 w-full glass-nav">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-emerald-500 pulse-green"></div>
+                <span class="text-[10px] font-bold uppercase tracking-[0.2em] mono text-emerald-500">System_Online</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-10 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                <a href="#about" class="hover:text-sky-400 transition">Profile</a>
+                <a href="#achievements" class="hover:text-sky-400 transition">Archives</a>
+                <a href="#contact" class="hover:text-sky-400 transition">Comms</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10">
+                    <i data-lucide="sun" class="w-4 h-4 text-amber-400" id="themeIcon"></i>
+                </button>
+                <a href="/admin.html" target="_blank" class="text-xs font-bold mono text-sky-500 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 hover:bg-sky-500/20 transition">MH_ROOT</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 pt-24 pb-20">
+        
+        <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-24 gap-10 reveal">
+            <div class="flex-1 space-y-6">
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-400">
+                    <i data-lucide="lock" class="w-4 h-4"></i>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">Auth Granted // UID: 0x99A3</span>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95]">
+                    Architecting <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500">Secure AI</span><br>
+                    Futures.
+                </h1>
+                <p class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed">
+                    Advancing the intersection of <span class="text-sky-500 font-bold">Cybersecurity</span> and <span class="text-sky-500 font-bold">Deep Learning</span> to defend against the next generation of synthetic threats.
+                </p>
+            </div>
+            <div class="w-72 md:w-80 cyber-card-frame backdrop-blur-xl rounded-[2rem] p-4 relative">
+                <img src="./profile.jpg" alt="Mahmudul Hasan" class="w-full h-80 object-cover rounded-2xl mb-4" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
+                <h3 class="text-xl font-bold text-white mb-1">Mahmudul Hasan</h3>
+                <p class="text-[9px] font-bold text-sky-500 uppercase tracking-[0.2em] mono mb-3">Security Researcher</p>
+                <div class="flex justify-between bg-black/20 p-2 rounded-xl border border-white/5">
+                    <span class="text-[8px] mono text-slate-400">Clearance: <span class="text-emerald-500">LVL_01</span></span>
+                    <span class="text-[8px] mono text-slate-400">Node: <span class="text-sky-500">Cyber_AI</span></span>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements" class="mb-32 reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-black mb-4">Visual <span class="text-sky-500">Archives</span></h2>
+                <p class="text-slate-500 text-sm mono">SECURE_GALLERY_ACCESS: GRANTED</p>
+            </div>
+            
+            <div id="galleryContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading archives from database...</p>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/10 transition mono shadow-lg shadow-sky-500/10">LOAD_MORE_ARCHIVES //...</button>
+            </div>
+        </section>
+
+        <section id="contact" class="reveal mb-10">
+            <div class="glass-panel p-8 md:p-16 border-t-2 border-sky-500/50 relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl font-black mb-4">Initialize <span class="text-sky-500">Uplink</span></h2>
+                        <p class="text-slate-500 text-sm leading-relaxed">Secure protocol established for recruitment and research collaboration.</p>
+                    </div>
+                    
+                    <form id="commForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="group">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Identity_Name</label>
+                                <div class="relative">
+                                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                                    <input type="text" id="i-name" required placeholder="GUEST_USER" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/50 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Contact_Vector</label>
+                                <div class="relative">
+                                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                                    <input type="email" id="i-email" required placeholder="USER@DOMAIN.COM" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/50 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Data_Payload</label>
+                            <div class="relative">
+                                <i data-lucide="message-square" class="absolute left-4 top-6 w-4 h-4 text-slate-500"></i>
+                                <textarea id="i-msg" required rows="4" placeholder="ENTER_MESSAGE_HERE..." class="w-full bg-black/40 border border-white/10 focus:border-sky-500/50 rounded-2xl pl-12 pr-4 py-6 text-xs outline-none transition mono text-white"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" id="submitBtn" class="w-full py-5 bg-sky-600 hover:bg-sky-500 text-white rounded-2xl font-bold text-[10px] uppercase tracking-[0.3em] shadow-2xl shadow-sky-500/30 flex items-center justify-center gap-3 transition">
+                            <i data-lucide="send" class="w-4 h-4"></i> Transmit Packet
+                        </button>
+                    </form>
+                    <p id="formSuccess" class="hidden text-emerald-500 text-xs font-bold mono text-center mt-4">✓ Payload Transmitted Securely.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="pb-10 pt-10 text-center relative z-50">
+        <div class="flex justify-center gap-6 mb-8">
+            <a href="https://linkedin.com/in/yourprofile" target="_blank" class="p-3 rounded-full bg-white/5 hover:bg-sky-500/20 hover:text-sky-400 transition text-slate-400 border border-white/5">
+                <i data-lucide="linkedin" class="w-5 h-5"></i>
+            </a>
+            <a href="https://github.com/yourprofile" target="_blank" class="p-3 rounded-full bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-400 transition text-slate-400 border border-white/5">
+                <i data-lucide="github" class="w-5 h-5"></i>
+            </a>
+            <a href="#" target="_blank" class="p-3 rounded-full bg-white/5 hover:bg-blue-600/20 hover:text-blue-500 transition text-slate-400 border border-white/5">
+                <i data-lucide="facebook" class="w-5 h-5"></i>
+            </a>
+            <a href="#" target="_blank" class="p-3 rounded-full bg-white/5 hover:bg-pink-500/20 hover:text-pink-400 transition text-slate-400 border border-white/5">
+                <i data-lucide="instagram" class="w-5 h-5"></i>
+            </a>
+        </div>
+        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Mahmudul Hasan. Design: Hyper-Security OS v2</p>
+    </footer>
+
+    <div id="galleryModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="galleryModal-content">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
+                <div>
+                    <h2 class="text-2xl font-black text-white">Complete <span class="text-sky-500">Archives</span></h2>
+                    <p class="text-[10px] mono text-slate-400 mt-1 uppercase">Database Query Result</p>
+                </div>
+                <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-white bg-black/40 p-2 rounded-full border border-white/5 hover:border-white/20 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            
+            <div id="all-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar">
+                </div>
+        </div>
+    </div>
+
+    <div id="singleLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass-panel max-w-3xl w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="singleLightbox-content">
+            <button onclick="closeSingleLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/40 p-2 rounded-full border border-white/5 hover:border-white/20 transition z-10"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div id="modal-body" class="mt-2 text-white text-center">
+                </div>
+        </div>
+    </div>
+
+    <style>
+        /* Custom scrollbar for the gallery modal */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(14, 165, 233, 0.8); }
+    </style>
+
+    <script>
+        lucide.createIcons();
+
+        // Scroll Reveal
+        window.addEventListener("scroll", () => {
+            document.querySelectorAll(".reveal").forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add("active");
+            });
+        });
+        window.dispatchEvent(new Event("scroll"));
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeIcon.setAttribute('data-lucide', isLight ? 'moon' : 'sun');
+            themeIcon.classList.toggle('text-amber-400', !isLight);
+            themeIcon.classList.toggle('text-slate-600', isLight);
+            lucide.createIcons();
+        });
+
+        // App State & API
+        const API_BASE = 'http://localhost:5000/api';
+        let allGalleryItems = [];
+
+        // Fetch & Render Gallery Data
+        async function loadMainGallery() {
+            try {
+                const res = await fetch(`${API_BASE}/gallery`);
+                allGalleryItems = await res.json();
+                renderMainGrid();
+            } catch (e) {
+                document.getElementById('galleryContainer').innerHTML = '<p class="text-xs text-red-500 col-span-full text-center mono">Database connection failed.</p>';
+            }
+        }
+
+        // Render initially 4 items on the main page
+        function renderMainGrid() {
+            const container = document.getElementById('galleryContainer');
+            container.innerHTML = '';
+            
+            if(allGalleryItems.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No archives found in database.</p>';
+                return;
+            }
+
+            const itemsToShow = allGalleryItems.slice(0, 4);
+
+            itemsToShow.forEach(item => {
+                const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                
+                container.innerHTML += `
+                    <div class="glass-panel p-2 rounded-2xl overflow-hidden cursor-pointer hover:border-sky-500/50 hover:-translate-y-2 transition duration-300 group" 
+                         onclick="openSingleLightbox('${item.image_url}', '${item.title}', '${safeDetails}')">
+                        <div class="relative h-48 w-full mb-3 rounded-xl overflow-hidden">
+                            <img src="${item.image_url}" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" onerror="this.src='https://via.placeholder.com/400x300'">
+                        </div>
+                        <p class="text-[10px] font-bold text-sky-500 mb-1 mono px-2">${item.title}</p>
+                        <p class="text-xs font-bold text-slate-400 px-2 pb-2 truncate">${item.subtitle}</p>
+                    </div>
+                `;
+            });
+
+            // Handle 'See More' button to open Gallery Modal
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (allGalleryItems.length > 4) {
+                loadMoreBtn.classList.remove('hidden');
+                loadMoreBtn.onclick = () => openGalleryModal();
+            } else {
+                loadMoreBtn.classList.add('hidden');
+            }
+        }
+
+        // ================= MODAL LOGIC =================
+
+        // 1. Full Gallery Modal
+        const galleryModal = document.getElementById('galleryModal');
+        const galleryModalContent = document.getElementById('galleryModal-content');
+
+        function openGalleryModal() {
+            const grid = document.getElementById('all-gallery-grid');
+            grid.innerHTML = '';
+            
+            allGalleryItems.forEach(item => {
+                const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                grid.innerHTML += `
+                    <div class="glass-panel p-2 rounded-xl overflow-hidden cursor-pointer hover:border-sky-500/50 transition duration-300 group bg-black/20" 
+                         onclick="openSingleLightbox('${item.image_url}', '${item.title}', '${safeDetails}')">
+                        <div class="relative h-32 md:h-40 w-full mb-2 rounded-lg overflow-hidden border border-white/5 group-hover:border-sky-500/30 transition">
+                            <img src="${item.image_url}" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" onerror="this.src='https://via.placeholder.com/400x300'">
+                        </div>
+                        <p class="text-[10px] font-bold text-sky-500 mb-1 mono px-1 truncate">${item.title}</p>
+                    </div>
+                `;
+            });
+
+            galleryModal.classList.remove('hidden');
+            setTimeout(() => {
+                galleryModal.classList.remove('opacity-0');
+                galleryModalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeGalleryModal() {
+            galleryModal.classList.add('opacity-0');
+            galleryModalContent.classList.add('scale-95');
+            setTimeout(() => { galleryModal.classList.add('hidden'); }, 300);
+        }
+
+        // 2. Single Image Lightbox
+        const singleLightbox = document.getElementById('singleLightbox');
+        const singleLightboxContent = document.getElementById('singleLightbox-content');
+        const modalBody = document.getElementById('modal-body');
+
+        function openSingleLightbox(img, title, details) {
+            modalBody.innerHTML = `
+                <img src="${img}" class="w-full max-h-[50vh] object-contain rounded-xl mb-6 mx-auto bg-black/40 border border-white/10">
+                <h3 class="text-2xl md:text-3xl font-black text-sky-500 mb-3">${title}</h3>
+                <p class="text-sm text-slate-300 leading-relaxed max-w-2xl mx-auto">${details}</p>
+            `;
+            singleLightbox.classList.remove('hidden');
+            setTimeout(() => {
+                singleLightbox.classList.remove('opacity-0');
+                singleLightboxContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeSingleLightbox() {
+            singleLightbox.classList.add('opacity-0');
+            singleLightboxContent.classList.add('scale-95');
+            setTimeout(() => { singleLightbox.classList.add('hidden'); }, 300);
+        }
+
+        // ================= FORM SUBMISSION =================
+        document.getElementById('commForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Transmitting...';
+            lucide.createIcons();
+
+            const payload = {
+                identity_name: document.getElementById('i-name').value,
+                contact_vector: document.getElementById('i-email').value,
+                data_payload: document.getElementById('i-msg').value
+            };
+
+            try {
+                await fetch(`${API_BASE}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                document.getElementById('commForm').reset();
+                document.getElementById('formSuccess').classList.remove('hidden');
+                setTimeout(() => document.getElementById('formSuccess').classList.add('hidden'), 5000);
+            } catch (err) {
+                alert("Transmission Failed!");
+            }
+            
+            btn.innerHTML = originalText;
+            lucide.createIcons();
+        });
+
+        // Initialize Call
+        loadMainGallery();
+    </script>
+</body>
+</html>

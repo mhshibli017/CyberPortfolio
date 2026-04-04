@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Admin | Hyper-Security OS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+            overflow-x: hidden;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .bg-cyber {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05), transparent 80%), linear-gradient(to bottom, rgba(2, 6, 23, 0.95), rgba(2, 6, 23, 1)), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1'/%3E%3C/svg%3E");
+        }
+
+        .glass-panel {
+            background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 16px; transition: all 0.3s;
+        }
+
+        .glass-nav {
+            background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100;
+        }
+
+        /* Light Mode Styles (Ash Background, Dark Header/Footer) */
+        body.light-mode { background-color: #d1d5db; color: #0f172a; } /* Ash background */
+        body.light-mode .bg-cyber {
+            background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(209, 213, 219, 0.9), #d1d5db), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1'/%3E%3C/svg%3E");
+        }
+        body.light-mode .glass-panel {
+            background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: #1e293b;
+        }
+        body.light-mode .text-slate-400 { color: #475569; }
+        body.light-mode .glass-nav, body.light-mode footer { background: rgba(2, 6, 23, 0.98); color: #f8fafc; } /* Header/Footer remain dark */
+
+        /* Modal Overlay */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-cyber"></div>
+
+    <nav class="fixed top-0 w-full glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i data-lucide="shield-alert" class="w-5 h-5 text-red-500 animate-pulse"></i>
+                <span class="text-xs font-bold uppercase tracking-[0.2em] mono text-red-500">Admin_Terminal</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10">
+                    <i data-lucide="sun" class="w-4 h-4 text-amber-400" id="themeIcon"></i>
+                </button>
+                <button id="logoutBtn" class="hidden text-[10px] font-bold mono bg-red-500/10 text-red-500 px-3 py-1.5 rounded border border-red-500/20 hover:bg-red-500/20 transition">LOGOUT</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 pt-24 pb-20">
+        
+        <section id="loginSection" class="min-h-[70vh] flex items-center justify-center">
+            <div class="glass-panel p-8 w-full max-w-md border-t-2 border-red-500/50 relative overflow-hidden">
+                <div class="text-center mb-8">
+                    <i data-lucide="fingerprint" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
+                    <h2 class="text-2xl font-black">System Authentication</h2>
+                    <p class="text-[10px] mono text-slate-500 mt-2">RESTRICTED ACCESS ONLY</p>
+                </div>
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase mono mb-1 block">Root_User</label>
+                        <input type="text" id="username" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 transition mono" placeholder="Enter Username">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase mono mb-1 block">Passkey</label>
+                        <input type="password" id="password" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 transition mono" placeholder="••••••••">
+                    </div>
+                    <div class="flex justify-between items-center px-1">
+                        <a href="#" class="text-[10px] text-sky-500 hover:text-sky-400 mono">Bypass/Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="w-full py-3 mt-4 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold text-[10px] uppercase tracking-widest transition shadow-lg shadow-red-500/20">
+                        Initialize Uplink
+                    </button>
+                    <p id="loginError" class="text-red-500 text-[10px] text-center mt-2 hidden mono">Access Denied. Invalid Credentials.</p>
+                </form>
+            </div>
+        </section>
+
+        <section id="dashboardSection" class="hidden space-y-8">
+            
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="glass-panel p-4 text-center border-l-2 border-sky-500">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mono mb-1">Server CPU</p>
+                    <p class="text-2xl font-black text-sky-500"><span id="stat-cpu">0.0</span>%</p>
+                </div>
+                <div class="glass-panel p-4 text-center border-l-2 border-emerald-500">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mono mb-1">RAM Usage</p>
+                    <p class="text-2xl font-black text-emerald-500"><span id="stat-ram">0.0</span>%</p>
+                </div>
+                <div class="glass-panel p-4 text-center border-l-2 border-purple-500">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mono mb-1">Server Ping</p>
+                    <p class="text-2xl font-black text-purple-500"><span id="stat-ping">0</span>ms</p>
+                </div>
+                <div class="glass-panel p-4 text-center border-l-2 border-orange-500">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mono mb-1">Total Visitors</p>
+                    <p class="text-2xl font-black text-orange-500">1,204</p>
+                </div>
+                <div class="glass-panel p-4 text-center border-l-2 border-pink-500">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mono mb-1">Today Visitors</p>
+                    <p class="text-2xl font-black text-pink-500">42</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="glass-panel p-6">
+                    <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="image" class="w-5 h-5 text-sky-500"></i> Gallery Database</h3>
+                    
+                    <form id="addGalleryForm" class="bg-black/20 p-4 rounded-xl mb-6 space-y-3 border border-white/5">
+                        <p class="text-[10px] text-slate-400 mono uppercase mb-2">Deploy New Visual Archive</p>
+                        <input type="file" id="g-img" accept="image/*" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none cursor-pointer">
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" id="g-title" placeholder="Title (e.g., IMG_001.SYS)" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                            <input type="text" id="g-sub" placeholder="Subtitle" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                        </div>
+                        <textarea id="g-details" placeholder="Full Details for Lightbox..." class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
+                        <button type="submit" class="bg-sky-600 hover:bg-sky-500 text-white text-[10px] font-bold px-4 py-2 rounded transition uppercase">Add Archive</button>
+                    </form>
+
+                    <div class="space-y-3 max-h-80 overflow-y-auto pr-2" id="galleryList">
+                        <p class="text-xs text-slate-500 mono">Fetching data...</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 flex flex-col">
+                    <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="mail" class="w-5 h-5 text-emerald-500"></i> Encrypted Comms</h3>
+                    <div class="flex-1 space-y-3 max-h-[500px] overflow-y-auto pr-2" id="messageList">
+                        <p class="text-xs text-slate-500 mono">Fetching comms...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 border-l-4 border-red-500">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="key" class="w-5 h-5 text-red-500"></i> Security Settings</h3>
+                <form id="securityForm" class="grid md:grid-cols-4 gap-4 items-end">
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase mono mb-1 block">New Username</label>
+                        <input type="text" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-500 uppercase mono mb-1 block">New Password</label>
+                        <input type="password" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-red-500 font-bold uppercase mono mb-1 block">Secure Auth Code</label>
+                        <input type="password" placeholder="Require Master PIN" class="w-full bg-red-900/20 border border-red-500/30 focus:border-red-500 rounded px-3 py-2 text-xs outline-none text-red-400">
+                    </div>
+                    <button type="button" onclick="alert('Database schema update required for credentials.')" class="bg-red-600/20 text-red-500 border border-red-500/50 hover:bg-red-600 hover:text-white transition text-[10px] font-bold px-4 py-2.5 rounded uppercase">Update Root</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="pb-6 pt-6 text-center border-t border-white/5 relative z-50">
+        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Mahmudul Hasan. System Admin Terminal</p>
+    </footer>
+
+    <div id="lightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass-panel max-w-2xl w-full p-6 relative transform scale-95 transition-transform duration-300" id="lightbox-content">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div id="modal-body" class="mt-2 text-white">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeIcon.setAttribute('data-lucide', isLight ? 'moon' : 'sun');
+            themeIcon.classList.toggle('text-amber-400', !isLight);
+            themeIcon.classList.toggle('text-slate-600', isLight);
+            lucide.createIcons();
+        });
+
+        // Application State
+        const API_BASE = 'http://localhost:5000/api';
+        let statsInterval;
+
+        // Login Logic
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            try {
+                const res = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+                const data = await res.json();
+
+                if(data.success) {
+                    document.getElementById('loginSection').classList.add('hidden');
+                    document.getElementById('dashboardSection').classList.remove('hidden');
+                    document.getElementById('logoutBtn').classList.remove('hidden');
+                    initDashboard();
+                } else {
+                    document.getElementById('loginError').classList.remove('hidden');
+                }
+            } catch (err) {
+                alert("Server connection failed!");
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            location.reload();
+        });
+
+        // Init Dashboard Data
+        function initDashboard() {
+            // Realtime Stats
+            fetchStats();
+            statsInterval = setInterval(fetchStats, 3000);
+            
+            // Fetch DB Data
+            loadGallery();
+            loadMessages();
+        }
+
+        async function fetchStats() {
+            try {
+                const res = await fetch(`${API_BASE}/stats`);
+                const data = await res.json();
+                document.getElementById('stat-cpu').innerText = data.cpu;
+                document.getElementById('stat-ram').innerText = data.ram;
+                document.getElementById('stat-ping').innerText = data.ping;
+            } catch (e) { console.error("Stats error"); }
+        }
+
+        // Gallery Functions
+        async function loadGallery() {
+            const res = await fetch(`${API_BASE}/gallery`);
+            const items = await res.json();
+            const list = document.getElementById('galleryList');
+            list.innerHTML = '';
+            
+            if(items.length === 0) list.innerHTML = '<p class="text-xs text-slate-500">No archives found.</p>';
+            
+            items.forEach(item => {
+                list.innerHTML += `
+                    <div class="flex items-center justify-between bg-black/20 p-3 rounded-lg border border-white/5 hover:border-sky-500/30 transition">
+                        <div class="flex items-center gap-4 cursor-pointer" onclick="openGalleryModal('${item.image_url}', '${item.title}', '${item.details || 'No details.'}')">
+                            <img src="${item.image_url}" class="w-12 h-12 object-cover rounded" onerror="this.src='https://via.placeholder.com/50'">
+                            <div>
+                                <p class="text-xs font-bold text-white">${item.title}</p>
+                                <p class="text-[10px] text-slate-400 mono">${item.subtitle}</p>
+                            </div>
+                        </div>
+                        <button onclick="deleteGallery(${item.id})" class="text-red-500 hover:text-red-400 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        document.getElementById('addGalleryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('g-img');
+            const submitBtn = e.target.querySelector('button');
+            
+            if(fileInput.files.length === 0) return alert("Please select an image from your PC!");
+
+            // FormData তৈরি করা (ফাইল পাঠানোর জন্য এটি লাগে)
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            formData.append('title', document.getElementById('g-title').value);
+            formData.append('subtitle', document.getElementById('g-sub').value);
+            formData.append('details', document.getElementById('g-details').value);
+
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "UPLOADING..."; // আপলোডের সময় বোতামের লেখা চেঞ্জ হবে
+            submitBtn.disabled = true;
+
+            try {
+                const res = await fetch(`${API_BASE}/gallery`, {
+                    method: 'POST',
+                    body: formData // JSON এর বদলে FormData যাচ্ছে
+                });
+                const data = await res.json();
+                
+                if(data.success) {
+                    e.target.reset();
+                    loadGallery();
+                } else {
+                    alert("Upload failed: " + data.message);
+                }
+            } catch(err) {
+                alert("Server error during upload!");
+            }
+            
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
+        });
+
+        async function deleteGallery(id) {
+            if(confirm('Delete this archive?')) {
+                await fetch(`${API_BASE}/gallery/${id}`, { method: 'DELETE' });
+                loadGallery();
+            }
+        }
+
+        // Message Functions (Mock Data for display if table empty)
+        async function loadMessages() {
+            const res = await fetch(`${API_BASE}/messages`);
+            const msgs = await res.json();
+            const list = document.getElementById('messageList');
+            list.innerHTML = '';
+            
+            if(msgs.length === 0) {
+                list.innerHTML = '<p class="text-xs text-slate-500">Inbox is secure and empty.</p>';
+                return;
+            }
+
+            msgs.forEach(msg => {
+                const date = new Date(msg.created_at).toLocaleString();
+                list.innerHTML += `
+                    <div class="bg-black/20 p-3 rounded-lg border border-white/5 hover:border-emerald-500/30 transition">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="cursor-pointer" onclick="openMessageModal('${msg.identity_name}', '${msg.contact_vector}', '${msg.data_payload.replace(/\n/g, '<br>')}', '${date}')">
+                                <p class="text-xs font-bold text-white uppercase mono">${msg.identity_name}</p>
+                                <p class="text-[10px] text-slate-400">${msg.contact_vector}</p>
+                            </div>
+                            <button onclick="deleteMessage(${msg.id})" class="text-slate-500 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                        <p class="text-xs text-slate-300 truncate cursor-pointer" onclick="openMessageModal(...)">${msg.data_payload}</p>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        async function deleteMessage(id) {
+            if(confirm('Purge this message?')) {
+                await fetch(`${API_BASE}/messages/${id}`, { method: 'DELETE' });
+                loadMessages();
+            }
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('lightbox');
+        const modalContent = document.getElementById('lightbox-content');
+        const modalBody = document.getElementById('modal-body');
+
+        function openGalleryModal(img, title, details) {
+            modalBody.innerHTML = `
+                <img src="${img}" class="w-full max-h-[60vh] object-cover rounded-xl mb-4 border border-white/10">
+                <h3 class="text-2xl font-black text-sky-500 mb-2">${title}</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">${details}</p>
+            `;
+            showModal();
+        }
+
+        function openMessageModal(name, contact, payload, date) {
+            modalBody.innerHTML = `
+                <div class="border-b border-white/10 pb-4 mb-4">
+                    <p class="text-xs text-emerald-500 mono mb-1">DECRYPTED PAYLOAD</p>
+                    <h3 class="text-xl font-bold uppercase">${name}</h3>
+                    <p class="text-sm text-slate-400">${contact}</p>
+                    <p class="text-[10px] text-slate-500 mt-1">Recv: ${date}</p>
+                </div>
+                <div class="bg-black/40 p-4 rounded-lg border border-white/5">
+                    <p class="text-sm text-slate-200 font-mono leading-relaxed">${payload}</p>
+                </div>
+            `;
+            showModal();
+        }
+
+        function showModal() {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+    </script>
+</body>
+</html>
