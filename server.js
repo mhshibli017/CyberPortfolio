@@ -39,7 +39,6 @@ app.post('/api/change-password', async (req, res) => {
     const { username, old_password, new_password } = req.body;
     const { data } = await supabase.from('admin_data').select('*').eq('username', username).eq('password', old_password).single();
     if (!data) return res.json({ success: false, message: 'Invalid Username or Old Password' });
-    
     const { error } = await supabase.from('admin_data').update({ password: new_password }).eq('id', data.id);
     res.json({ success: !error });
 });
@@ -138,16 +137,30 @@ app.get('/api/gallery', async (req, res) => {
 app.post('/api/gallery', upload.single('image'), async (req, res) => {
     try {
         const { title, subtitle, details } = req.body;
-        const file = req.file;
-        if (!file) return res.status(400).json({ success: false, message: 'No image provided' });
-
-        const fileName = `${Date.now()}_${file.originalname.replace(/\s+/g, '_')}`;
-        const { error: uploadError } = await supabase.storage.from('portfolio_images').upload(fileName, file.buffer, { contentType: file.mimetype });
-        if (uploadError) throw uploadError;
-
+        if (!req.file) return res.status(400).json({ success: false, message: 'No image provided' });
+        const fileName = `${Date.now()}_${req.file.originalname.replace(/\s+/g, '_')}`;
+        await supabase.storage.from('portfolio_images').upload(fileName, req.file.buffer, { contentType: req.file.mimetype });
         const { data: urlData } = supabase.storage.from('portfolio_images').getPublicUrl(fileName);
-        const { error: dbError } = await supabase.from('gallery').insert([{ image_url: urlData.publicUrl, title, subtitle, details }]);
-        if (dbError) throw dbError;
+        const { error } = await supabase.from('gallery').insert([{ image_url: urlData.publicUrl, title, subtitle, details }]);
+        if (error) throw error;
+        res.json({ success: true });
+    } catch (error) { res.status(500).json({ success: false, message: error.message }); }
+});
+app.put('/api/gallery/:id', upload.single('image'), async (req, res) => {
+    try {
+        const { title, subtitle, details } = req.body;
+        let updateData = { title, subtitle, details };
+
+        // If new image is uploaded, update storage URL
+        if (req.file) {
+            const fileName = `${Date.now()}_${req.file.originalname.replace(/\s+/g, '_')}`;
+            await supabase.storage.from('portfolio_images').upload(fileName, req.file.buffer, { contentType: req.file.mimetype });
+            const { data: urlData } = supabase.storage.from('portfolio_images').getPublicUrl(fileName);
+            updateData.image_url = urlData.publicUrl;
+        }
+
+        const { error } = await supabase.from('gallery').update(updateData).eq('id', req.params.id);
+        if (error) throw error;
         res.json({ success: true });
     } catch (error) { res.status(500).json({ success: false, message: error.message }); }
 });
