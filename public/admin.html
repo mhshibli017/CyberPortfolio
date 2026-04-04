@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; transition: all 0.5s; }
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; transition: all 0.5s; overflow-x: hidden; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         .bg-cyber { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05), transparent 80%), linear-gradient(to bottom, rgba(2, 6, 23, 0.95), rgba(2, 6, 23, 1)); }
         .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; transition: all 0.3s; }
@@ -21,8 +21,9 @@
         /* Light Mode */
         body.light-mode { background-color: #d1d5db; color: #0f172a; }
         body.light-mode .glass-panel { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.1); color: #1e293b; }
-        body.light-mode input, body.light-mode textarea { background-color: rgba(255,255,255,0.9)!important; color: #0f172a!important; }
+        body.light-mode input, body.light-mode textarea { background-color: rgba(255,255,255,0.9)!important; color: #0f172a!important; border-color: rgba(0,0,0,0.2)!important; }
         body.light-mode .glass-nav { color: #fff; }
+        body.light-mode .modal-overlay .glass-panel { background: rgba(15, 23, 42, 0.95); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1); } 
     </style>
 </head>
 <body>
@@ -35,10 +36,8 @@
                 <span class="text-xs font-bold uppercase tracking-[0.2em] mono text-red-500">Admin_Terminal</span>
             </div>
             <div class="flex items-center gap-4">
-                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10">
-                    <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>
-                </button>
-                <button id="logoutBtn" class="hidden text-[10px] font-bold mono bg-red-500/10 text-red-500 px-3 py-1.5 rounded border border-red-500/20">LOGOUT</button>
+                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
+                <button id="logoutBtn" class="hidden text-[10px] font-bold mono bg-red-500/10 text-red-500 px-3 py-1.5 rounded border border-red-500/20 hover:bg-red-500/20 transition">LOGOUT</button>
             </div>
         </div>
     </nav>
@@ -55,54 +54,70 @@
                     <input type="text" id="username" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white" placeholder="Root_User">
                     <input type="password" id="password" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white" placeholder="Passkey">
                     <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold text-[10px] uppercase">Initialize Uplink</button>
-                    <p id="loginError" class="text-red-500 text-[10px] text-center hidden">Invalid Credentials</p>
+                    <p id="loginError" class="text-red-500 text-[10px] text-center hidden font-bold">Invalid Credentials</p>
                 </form>
             </div>
         </section>
 
         <section id="dashboardSection" class="hidden space-y-8">
-            <div class="grid grid-cols-3 gap-4">
-                <div class="glass-panel p-4 text-center border-l-2 border-sky-500"><p class="text-[10px] text-slate-500 uppercase mono">CPU</p><p class="text-2xl font-black text-sky-500"><span id="stat-cpu">0.0</span>%</p></div>
-                <div class="glass-panel p-4 text-center border-l-2 border-emerald-500"><p class="text-[10px] text-slate-500 uppercase mono">RAM</p><p class="text-2xl font-black text-emerald-500"><span id="stat-ram">0.0</span>%</p></div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="glass-panel p-4 text-center border-l-2 border-sky-500"><p class="text-[10px] text-slate-500 uppercase mono">CPU Load</p><p class="text-2xl font-black text-sky-500"><span id="stat-cpu">0.0</span>%</p></div>
+                <div class="glass-panel p-4 text-center border-l-2 border-emerald-500"><p class="text-[10px] text-slate-500 uppercase mono">RAM Usage</p><p class="text-2xl font-black text-emerald-500"><span id="stat-ram">0.0</span>%</p></div>
                 <div class="glass-panel p-4 text-center border-l-2 border-purple-500"><p class="text-[10px] text-slate-500 uppercase mono">Ping</p><p class="text-2xl font-black text-purple-500"><span id="stat-ping">0</span>ms</p></div>
+                <div class="glass-panel p-4 text-center border-l-2 border-orange-500"><p class="text-[10px] text-slate-500 uppercase mono">Total Visitors</p><p class="text-2xl font-black text-orange-500" id="stat-total">0</p></div>
+                <div class="glass-panel p-4 text-center border-l-2 border-pink-500"><p class="text-[10px] text-slate-500 uppercase mono">Today Visitors</p><p class="text-2xl font-black text-pink-500" id="stat-today">0</p></div>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-8">
                 <div class="space-y-8">
                     <div class="glass-panel p-6 border-t-2 border-blue-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="user" class="w-5 h-5 text-blue-500"></i> Profile Management</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="user" class="w-5 h-5 text-blue-500"></i> Profile Details</h3>
                         <form id="profileForm" class="space-y-3">
                             <input type="hidden" id="p-id">
                             <input type="text" id="p-name" placeholder="Full Name" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <input type="text" id="p-title" placeholder="Job Title" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <textarea id="p-bio" placeholder="Biography details..." rows="3" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none"></textarea>
-                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded text-xs font-bold w-full uppercase">Update Profile</button>
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Update Profile</button>
                         </form>
                     </div>
 
                     <div class="glass-panel p-6 border-t-2 border-emerald-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="graduation-cap" class="w-5 h-5 text-emerald-500"></i> Education Records</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="graduation-cap" class="w-5 h-5 text-emerald-500"></i> Education</h3>
                         <form id="addEduForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
                             <input type="text" id="e-degree" placeholder="Degree (e.g., BSc Computer Science)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="text" id="e-inst" placeholder="Institution" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                                <input type="text" id="e-year" placeholder="Year (e.g., May 2026)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                                <input type="text" id="e-year" placeholder="Year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             </div>
-                            <textarea id="e-details" placeholder="Details/Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
-                            <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase">Add Education</button>
+                            <textarea id="e-details" placeholder="Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Add Education</button>
                         </form>
                         <div id="eduList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
+                    </div>
+
+                    <div class="glass-panel p-6 border-t-2 border-pink-500">
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="award" class="w-5 h-5 text-pink-500"></i> Achievements & Certifications</h3>
+                        <form id="addAchForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
+                            <input type="text" id="a-title" placeholder="Title (e.g., National CTF Champion)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="text" id="a-org" placeholder="Organization" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                                <input type="text" id="a-year" placeholder="Year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                            </div>
+                            <textarea id="a-details" placeholder="Details..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
+                            <button type="submit" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Add Achievement</button>
+                        </form>
+                        <div id="achList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
                 </div>
 
                 <div class="space-y-8">
                     <div class="glass-panel p-6 border-t-2 border-purple-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="briefcase" class="w-5 h-5 text-purple-500"></i> Project Deployment</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="briefcase" class="w-5 h-5 text-purple-500"></i> Projects</h3>
                         <form id="addProjForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
                             <input type="text" id="pr-title" placeholder="Project Title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                            <input type="text" id="pr-tags" placeholder="Tags (comma separated e.g., Python, ML)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                            <input type="text" id="pr-tags" placeholder="Tags (comma separated)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <textarea id="pr-desc" placeholder="Project Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
-                            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase">Deploy Project</button>
+                            <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Deploy Project</button>
                         </form>
                         <div id="projList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
@@ -113,17 +128,27 @@
                             <input type="file" id="g-img" accept="image/*" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-slate-300 outline-none">
                             <input type="text" id="g-title" placeholder="Title" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <textarea id="g-details" placeholder="Details" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
-                            <button type="submit" class="bg-amber-600 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase">Upload Archive</button>
+                            <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Upload Archive</button>
                         </form>
                         <div id="galleryList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
+                    </div>
+
+                    <div class="glass-panel p-6 border-t-2 border-red-500">
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="key" class="w-5 h-5 text-red-500"></i> Change Password</h3>
+                        <form id="passChangeForm" class="space-y-3">
+                            <input type="text" id="cp-user" placeholder="Username" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                            <input type="password" id="cp-old" placeholder="Old Password" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                            <input type="password" id="cp-new" placeholder="New Password" required class="w-full border border-red-500/50 bg-red-900/20 focus:border-red-500 rounded px-3 py-2 text-xs text-white outline-none">
+                            <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Update Password</button>
+                        </form>
                     </div>
                 </div>
             </div>
 
-            <div class="glass-panel p-6 border-t-2 border-red-500">
-                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="mail" class="w-5 h-5 text-red-500"></i> Secure Comms (Inbox)</h3>
+            <div class="glass-panel p-6 border-t-2 border-emerald-500">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="mail" class="w-5 h-5 text-emerald-500"></i> Secure Inbox</h3>
                 <div id="messageList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto custom-scrollbar p-2">
-                    <p class="text-xs text-slate-500 mono">Fetching secure messages...</p>
+                    <p class="text-xs text-slate-500 mono">Fetching messages...</p>
                 </div>
             </div>
         </section>
@@ -155,7 +180,7 @@
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান (e.g. 'https://your-site.onrender.com/api')
 
-        // Theme
+        // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
@@ -163,7 +188,7 @@
             lucide.createIcons();
         });
 
-        // Auth
+        // Login Auth
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const res = await fetch(`${API_BASE}/login`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({username: document.getElementById('username').value, password: document.getElementById('password').value}) });
@@ -184,12 +209,14 @@
                     document.getElementById('stat-cpu').innerText = data.cpu;
                     document.getElementById('stat-ram').innerText = data.ram;
                     document.getElementById('stat-ping').innerText = data.ping;
+                    document.getElementById('stat-total').innerText = data.total_visitor;
+                    document.getElementById('stat-today').innerText = data.today_visitor;
                 } catch(e){}
             }, 3000);
-            loadProfile(); loadEducation(); loadProjects(); loadGallery(); loadMessages();
+            loadProfile(); loadEducation(); loadProjects(); loadAchievements(); loadGallery(); loadMessages();
         }
 
-        // --- Profile CRUD ---
+        // --- Profile ---
         async function loadProfile() {
             const data = await (await fetch(`${API_BASE}/profile`)).json();
             if(data.id) {
@@ -205,12 +232,12 @@
             alert('Profile Updated Successfully!');
         });
 
-        // --- Education CRUD ---
+        // --- Education ---
         async function loadEducation() {
             const items = await (await fetch(`${API_BASE}/education`)).json();
             const list = document.getElementById('eduList'); list.innerHTML = '';
             items.forEach(item => {
-                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5"><div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.degree}</p><p class="text-[10px] text-slate-400">${item.institution}</p></div><button onclick="deleteRow('education', ${item.id})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5"><div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.degree}</p><p class="text-[10px] text-slate-400">${item.institution}</p></div><button onclick="deleteRow('education', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
             });
             lucide.createIcons();
         }
@@ -220,12 +247,12 @@
             e.target.reset(); loadEducation();
         });
 
-        // --- Projects CRUD ---
+        // --- Projects ---
         async function loadProjects() {
             const items = await (await fetch(`${API_BASE}/projects`)).json();
             const list = document.getElementById('projList'); list.innerHTML = '';
             items.forEach(item => {
-                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5"><div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.tags}</p></div><button onclick="deleteRow('projects', ${item.id})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5"><div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.tags}</p></div><button onclick="deleteRow('projects', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
             });
             lucide.createIcons();
         }
@@ -235,12 +262,27 @@
             e.target.reset(); loadProjects();
         });
 
-        // --- Archive CRUD ---
+        // --- Achievements ---
+        async function loadAchievements() {
+            const items = await (await fetch(`${API_BASE}/achievements`)).json();
+            const list = document.getElementById('achList'); list.innerHTML = '';
+            items.forEach(item => {
+                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5"><div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.organization}</p></div><button onclick="deleteRow('achievements', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+            });
+            lucide.createIcons();
+        }
+        document.getElementById('addAchForm').addEventListener('submit', async(e) => {
+            e.preventDefault();
+            await fetch(`${API_BASE}/achievements`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ title: document.getElementById('a-title').value, organization: document.getElementById('a-org').value, year: document.getElementById('a-year').value, details: document.getElementById('a-details').value }) });
+            e.target.reset(); loadAchievements();
+        });
+
+        // --- Archive (Gallery) ---
         async function loadGallery() {
             const items = await (await fetch(`${API_BASE}/gallery`)).json();
             const list = document.getElementById('galleryList'); list.innerHTML = '';
             items.forEach(item => {
-                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-2 rounded border border-white/5"><div class="flex items-center gap-2 truncate"><img src="${item.image_url}" class="w-8 h-8 object-cover rounded"><p class="text-xs text-white truncate">${item.title}</p></div><button onclick="deleteRow('gallery', ${item.id})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-2 rounded border border-white/5"><div class="flex items-center gap-2 truncate"><img src="${item.image_url}" class="w-8 h-8 object-cover rounded"><p class="text-xs text-white truncate">${item.title}</p></div><button onclick="deleteRow('gallery', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
             });
             lucide.createIcons();
         }
@@ -259,9 +301,24 @@
         async function deleteRow(table, id) {
             if(confirm('Delete permanently?')) {
                 await fetch(`${API_BASE}/${table}/${id}`, { method: 'DELETE' });
-                if(table==='education') loadEducation(); else if(table==='projects') loadProjects(); else if(table==='gallery') loadGallery();
+                if(table==='education') loadEducation(); else if(table==='projects') loadProjects(); else if(table==='gallery') loadGallery(); else if(table==='achievements') loadAchievements();
             }
         }
+
+        // --- Change Password ---
+        document.getElementById('passChangeForm').addEventListener('submit', async(e) => {
+            e.preventDefault();
+            const res = await fetch(`${API_BASE}/change-password`, { 
+                method: 'POST', 
+                headers:{'Content-Type':'application/json'}, 
+                body: JSON.stringify({ username: document.getElementById('cp-user').value, old_password: document.getElementById('cp-old').value, new_password: document.getElementById('cp-new').value }) 
+            });
+            const data = await res.json();
+            if(data.success) {
+                alert('Password Changed Successfully! Please login with new password next time.');
+                e.target.reset();
+            } else alert(data.message);
+        });
 
         // --- Messages Logic with Local PC Time ---
         async function loadMessages() {
@@ -270,12 +327,11 @@
             if(msgs.length === 0) { list.innerHTML = '<p class="text-xs text-slate-500">Inbox is empty.</p>'; return; }
 
             msgs.forEach(msg => {
-                // Formatting Date to PC Local Time
+                // local time formatting based on your PC
                 const localDate = new Date(msg.created_at);
                 const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
                 const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
                 const formattedDate = `${localDate.toLocaleDateString(undefined, dateOptions)} - ${localDate.toLocaleTimeString(undefined, timeOptions)}`;
-                
                 const safePayload = (msg.data_payload || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
                 list.innerHTML += `
@@ -283,7 +339,7 @@
                         <div>
                             <div class="flex justify-between items-start mb-2">
                                 <p class="text-sm font-bold text-white uppercase truncate pr-2 group-hover:text-emerald-400 transition">${msg.identity_name}</p>
-                                <button onclick="event.stopPropagation(); deleteMsg(${msg.id})" class="text-slate-500 hover:text-red-500 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                <button onclick="event.stopPropagation(); deleteMsg(${msg.id})" class="text-slate-500 hover:text-white hover:bg-red-500 p-1.5 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                             </div>
                             <p class="text-[10px] text-sky-400 mono mb-3 truncate">${msg.contact_vector}</p>
                             <p class="text-xs text-slate-300 line-clamp-2">${msg.data_payload}</p>
