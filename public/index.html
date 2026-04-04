@@ -14,7 +14,7 @@
         .mono { font-family: 'JetBrains Mono', monospace; }
         .bg-cyber { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 1)), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/svg%3E"); }
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
-        .glass-nav { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; transition: background 0.5s; }
+        .glass-nav { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; transition: all 0.5s; }
         
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
@@ -27,41 +27,76 @@
             position: relative;
             overflow: hidden;
             box-shadow: inset 0 0 20px rgba(14, 165, 233, 0.05);
+            transition: all 0.3s;
         }
-        /* Crosshairs */
         .sci-fi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 15px; height: 15px; border-top: 2px solid #0ea5e9; border-left: 2px solid #0ea5e9; transition: all 0.3s; }
         .sci-fi-card::after { content: ''; position: absolute; bottom: 0; right: 0; width: 15px; height: 15px; border-bottom: 2px solid #0ea5e9; border-right: 2px solid #0ea5e9; transition: all 0.3s; }
         .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 0 25px rgba(14, 165, 233, 0.15); transform: translateY(-5px); }
         .sci-fi-card:hover::before, .sci-fi-card:hover::after { width: 25px; height: 25px; }
         
-        /* Scanline Animation */
         .cyber-line { position: absolute; top: 0; left: -100%; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, #0ea5e9, transparent); animation: scanline 3s linear infinite; z-index: 5; }
         .cyber-line.purple { background: linear-gradient(90deg, transparent, #a855f7, transparent); }
         .cyber-line.amber { background: linear-gradient(90deg, transparent, #f59e0b, transparent); }
         @keyframes scanline { 100% { left: 100%; } }
 
-        /* Glowing Text */
         .glow-text { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
 
-        /* Scanner Profile */
         .scanner-container { position: relative; overflow: hidden; border-radius: 1rem; }
         .scanner-line { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: rgba(14, 165, 233, 0.9); box-shadow: 0 0 15px rgba(14, 165, 233, 1), 0 0 30px rgba(14, 165, 233, 0.8); animation: scan 3.5s cubic-bezier(0.53, 0.21, 0.29, 0.67) infinite; z-index: 10; }
         @keyframes scan { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
 
-        /* ================= LIGHT MODE OVERRIDES ================= */
-        body.light-mode { background-color: #e5e7eb; color: #0f172a; }
-        body.light-mode .bg-cyber { background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15), transparent 80%), linear-gradient(to bottom, rgba(229, 231, 235, 0.95), #e5e7eb), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1'/%3E%3C/svg%3E"); }
-        body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.05); color: #1e293b; }
-        body.light-mode .text-slate-400 { color: #475569; }
-        body.light-mode .text-white { color: #0f172a; }
-        body.light-mode h1, body.light-mode h2, body.light-mode h3 { color: #020617; }
-        body.light-mode .glass-nav { background: rgba(2, 6, 23, 0.95); color: #f8fafc; }
-        body.light-mode input, body.light-mode textarea { background-color: rgba(255, 255, 255, 0.8) !important; color: #0f172a !important; border-color: rgba(0, 0, 0, 0.2) !important; }
-        body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; }
+        /* ================= REFINED LIGHT MODE (DAY MODE) ================= */
+        body.light-mode { background-color: #f8fafc; color: #0f172a; }
+        body.light-mode .bg-cyber { 
+            background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05), transparent 80%), 
+                        linear-gradient(to bottom, rgba(241, 245, 249, 0.9), #f8fafc), 
+                        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(0,0,0,0.04)' stroke-width='1'/%3E%3C/svg%3E"); 
+        }
         
+        body.light-mode .glass-panel, body.light-mode .sci-fi-card { 
+            background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.04); color: #1e293b; 
+        }
+        body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.4); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.1); }
+        
+        /* Text Color Fixes for Light Mode */
+        body.light-mode .text-white { color: #0f172a !important; }
+        body.light-mode .text-slate-300, body.light-mode .text-slate-400 { color: #475569 !important; }
+        body.light-mode .text-slate-500 { color: #64748b !important; }
+        body.light-mode h1, body.light-mode h2, body.light-mode h3 { color: #020617 !important; }
+        
+        /* Fix Light colors turning dark for contrast */
+        body.light-mode .text-sky-400 { color: #0284c7 !important; }
+        body.light-mode .text-emerald-400 { color: #059669 !important; }
+        body.light-mode .text-purple-400 { color: #7e22ce !important; }
+        body.light-mode .text-amber-400 { color: #d97706 !important; }
+        body.light-mode .glow-text { text-shadow: none !important; } /* Remove blurry glow in light mode */
+
+        /* Navigation Fix */
+        body.light-mode .glass-nav { background: rgba(255, 255, 255, 0.9); color: #0f172a; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        body.light-mode .nav-link { color: #475569; }
+        body.light-mode .nav-link.text-sky-500, body.light-mode .nav-link:hover { color: #0ea5e9 !important; }
+        
+        /* Inputs & Forms */
+        body.light-mode input, body.light-mode textarea { background-color: rgba(255, 255, 255, 0.9) !important; color: #0f172a !important; border: 1px solid rgba(0, 0, 0, 0.2) !important; }
+        body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; box-shadow: 0 0 0 1px #0ea5e9; }
+        body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #94a3b8 !important; }
+        
+        /* Inner boxes background */
+        body.light-mode .bg-black\/20, body.light-mode .bg-black\/30, body.light-mode .bg-black\/40, body.light-mode .bg-black\/50 { 
+            background-color: rgba(0, 0, 0, 0.04) !important; border-color: rgba(0, 0, 0, 0.08) !important; 
+        }
+
+        /* Footer & Modals */
+        body.light-mode footer { background-color: #f1f5f9; border-top: 1px solid rgba(0,0,0,0.05); color: #475569; }
+        body.light-mode footer a { border-color: rgba(0,0,0,0.1); color: #475569; }
+        body.light-mode footer a:hover { background-color: rgba(0,0,0,0.05); color: #0ea5e9; }
+        body.light-mode .modal-overlay .glass-panel { background: rgba(255, 255, 255, 0.98); color: #0f172a; } 
+        body.light-mode #modal-body .text-slate-300 { color: #334155 !important; }
+
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(14, 165, 233, 0.8); }
     </style>
 </head>
 <body>
@@ -73,28 +108,28 @@
                 <div class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981] animate-pulse"></div>
                 <span class="text-[10px] font-bold uppercase tracking-[0.2em] mono text-emerald-500">System_Online</span>
             </div>
-            <div class="hidden md:flex items-center space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-300">
-                <a href="#about" class="nav-link hover:text-sky-400 transition">Profile</a>
-                <a href="#education" class="nav-link hover:text-sky-400 transition">Education</a>
-                <a href="#project" class="nav-link hover:text-sky-400 transition">Project</a>
-                <a href="#achievements" class="nav-link hover:text-sky-400 transition">Achievements</a>
-                <a href="#archive" class="nav-link hover:text-sky-400 transition">Archive</a>
-                <a href="#communication" class="nav-link hover:text-sky-400 transition">Comms</a>
+            <div class="hidden md:flex items-center space-x-8 text-[10px] font-bold uppercase tracking-widest">
+                <a href="#about" class="nav-link text-slate-300 hover:text-sky-400 transition">Profile</a>
+                <a href="#education" class="nav-link text-slate-300 hover:text-sky-400 transition">Education</a>
+                <a href="#project" class="nav-link text-slate-300 hover:text-sky-400 transition">Project</a>
+                <a href="#achievements" class="nav-link text-slate-300 hover:text-sky-400 transition">Achievements</a>
+                <a href="#archive" class="nav-link text-slate-300 hover:text-sky-400 transition">Archive</a>
+                <a href="#communication" class="nav-link text-slate-300 hover:text-sky-400 transition">Comms</a>
             </div>
             <div class="flex items-center gap-4">
-                <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10 flex items-center justify-center w-9 h-9"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
+                <button id="themeToggle" class="p-2 rounded-full bg-black/20 hover:bg-black/40 transition border border-white/10 flex items-center justify-center w-9 h-9"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
                 <a href="/admin.html" target="_blank" class="hidden sm:inline-block text-xs font-bold mono text-sky-500 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 hover:bg-sky-500/20 transition">MH_ROOT</a>
-                <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-300 hover:text-white transition"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-sky-500 transition"><i data-lucide="menu" class="w-6 h-6"></i></button>
             </div>
         </div>
-        <div id="mobileMenu" class="hidden absolute top-16 left-0 w-full glass-nav flex flex-col items-center py-6 space-y-6 text-[10px] font-bold uppercase tracking-widest text-slate-300 border-b border-white/10 shadow-2xl md:hidden">
-            <a href="#about" class="nav-link mobile-link hover:text-sky-400 transition">Profile</a>
-            <a href="#education" class="nav-link mobile-link hover:text-sky-400 transition">Education</a>
-            <a href="#project" class="nav-link mobile-link hover:text-sky-400 transition">Project</a>
-            <a href="#achievements" class="nav-link mobile-link hover:text-sky-400 transition">Achievements</a>
-            <a href="#archive" class="nav-link mobile-link hover:text-sky-400 transition">Archive</a>
-            <a href="#communication" class="nav-link mobile-link hover:text-sky-400 transition">Communication</a>
-            <a href="/admin.html" class="mobile-link text-sky-500 mt-2 border border-sky-500/30 px-6 py-2 rounded-full">Admin Login</a>
+        <div id="mobileMenu" class="hidden absolute top-16 left-0 w-full glass-nav flex flex-col items-center py-6 space-y-6 text-[10px] font-bold uppercase tracking-widest shadow-2xl md:hidden">
+            <a href="#about" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Profile</a>
+            <a href="#education" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Education</a>
+            <a href="#project" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Project</a>
+            <a href="#achievements" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Achievements</a>
+            <a href="#archive" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Archive</a>
+            <a href="#communication" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Communication</a>
+            <a href="/admin.html" class="mobile-link text-sky-500 mt-2 border border-sky-500/30 px-6 py-2 rounded-full hover:bg-sky-500/10">Admin Login</a>
         </div>
     </nav>
 
@@ -102,11 +137,11 @@
         
         <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-32 gap-10 reveal pt-10">
             <div class="flex-1 space-y-6 text-center md:text-left">
-                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-400">
+                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-500">
                     <i data-lucide="lock" class="w-4 h-4"></i>
                     <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">Auth Granted // UID: 0x99A3</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95]">
+                <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] text-white">
                     Architecting <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500">Secure AI</span><br>
                     Futures.
@@ -180,7 +215,7 @@
             </div>
             <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
             <div class="text-center mt-12">
-                <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/10 transition mono shadow-lg shadow-sky-500/10 hover:shadow-sky-500/30">LOAD_MORE_ARCHIVES //...</button>
+                <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/10 transition mono shadow-lg shadow-sky-500/10 hover:shadow-sky-500/30 bg-black/20">LOAD_MORE_ARCHIVES //...</button>
             </div>
         </section>
 
@@ -221,19 +256,19 @@
                             <i data-lucide="send" class="w-4 h-4"></i> Transmit Packet
                         </button>
                     </form>
-                    <p id="formSuccess" class="hidden text-emerald-500 text-xs font-bold mono text-center mt-4">✓ Payload Transmitted Securely.</p>
+                    <p id="formSuccess" class="hidden text-emerald-500 text-xs font-bold mono text-center mt-4 bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">✓ Payload Transmitted Securely.</p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <footer class="pb-10 pt-10 text-center relative z-50">
+    <footer class="pb-10 pt-10 text-center relative z-50 transition-colors duration-500">
         <div class="flex justify-center gap-6 mb-8">
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 hover:bg-sky-500/20 hover:text-sky-400 transition text-slate-400 border border-white/5"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-400 transition text-slate-400 border border-white/5"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 hover:bg-blue-600/20 hover:text-blue-500 transition text-slate-400 border border-white/5"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 hover:bg-pink-500/20 hover:text-pink-400 transition text-slate-400 border border-white/5"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/20 hover:bg-sky-500/20 hover:text-sky-500 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/20 hover:bg-emerald-500/20 hover:text-emerald-500 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
+            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/20 hover:bg-blue-600/20 hover:text-blue-600 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/20 hover:bg-pink-500/20 hover:text-pink-500 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
         </div>
         <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Ahmedul Hasan. Design: Hyper-Security OS v2</p>
     </footer>
@@ -242,21 +277,22 @@
         <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="galleryModal-content">
             <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
                 <div><h2 class="text-2xl font-black text-white">Complete <span class="text-sky-500">Archives</span></h2></div>
-                <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-white bg-black/40 p-2 rounded-full border border-white/5"><i data-lucide="x" class="w-6 h-6"></i></button>
+                <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
             <div id="all-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar"></div>
         </div>
     </div>
+    
     <div id="singleLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="glass-panel max-w-3xl w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="singleLightbox-content">
-            <button onclick="closeSingleLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/40 p-2 rounded-full border border-white/5 z-10"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <button onclick="closeSingleLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-10 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
             <div id="modal-body" class="mt-2 text-white text-center"></div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান (e.g. 'https://your-site.onrender.com/api')
+        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
         // Fetch Dynamic Data from Admin Panel
         async function fetchAllDynamicData() {
@@ -284,15 +320,16 @@
                                 <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-3 flex items-center gap-2">
                                     <i data-lucide="database" class="w-4 h-4"></i> Data_Node: ${item.institution}
                                 </span>
-                                <h3 class="text-2xl font-black mb-3 text-white group-hover:text-emerald-400 transition">${item.degree}</h3>
+                                <h3 class="text-2xl font-black mb-3 text-white group-hover:text-emerald-500 transition">${item.degree}</h3>
                                 <div class="inline-block bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded mb-4">
-                                    <p class="text-[10px] text-emerald-400 font-mono">Timestamp: ${item.pass_year}</p>
+                                    <p class="text-[10px] text-emerald-500 font-mono">Timestamp: ${item.pass_year}</p>
                                 </div>
                                 <p class="text-slate-400 text-sm leading-relaxed border-l-2 border-emerald-500/30 pl-4">${item.details}</p>
                             </div>
                         `;
                     });
-                    lucide.createIcons();
+                } else {
+                    eduContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No academic records found.</p>';
                 }
 
                 // 3. Projects (Sci-Fi Look)
@@ -302,22 +339,24 @@
                 if(projData.length > 0) {
                     projContainer.innerHTML = '';
                     projData.forEach(item => {
-                        const tagsHtml = item.tags.split(',').map(tag => `<span class="text-[10px] font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 uppercase tracking-wider">${tag.trim()}</span>`).join('');
+                        const tagsHtml = item.tags.split(',').map(tag => `<span class="text-[10px] font-bold text-purple-500 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 uppercase tracking-wider">${tag.trim()}</span>`).join('');
                         projContainer.innerHTML += `
                             <div class="sci-fi-card p-8 rounded-xl hover:-translate-y-2 transition duration-300 group">
                                 <div class="cyber-line purple" style="animation-delay: 1s;"></div>
                                 <div class="flex justify-between items-start mb-4">
-                                    <h3 class="text-2xl font-bold text-white group-hover:text-purple-400 transition">${item.title}</h3>
-                                    <i data-lucide="terminal" class="w-6 h-6 text-purple-500/50 group-hover:text-purple-400"></i>
+                                    <h3 class="text-2xl font-bold text-white group-hover:text-purple-500 transition">${item.title}</h3>
+                                    <i data-lucide="terminal" class="w-6 h-6 text-purple-500/50 group-hover:text-purple-500 transition"></i>
                                 </div>
                                 <p class="text-slate-400 text-sm mb-6 leading-relaxed border-l-2 border-purple-500/30 pl-4">${item.description}</p>
                                 <div class="flex flex-wrap gap-2">${tagsHtml}</div>
                             </div>
                         `;
                     });
-                    lucide.createIcons();
+                } else {
+                    projContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No active projects found.</p>';
                 }
-                // 3.5 Achievements (Sci-Fi Look)
+
+                // 4. Achievements (Sci-Fi Look)
                 const achRes = await fetch(`${API_BASE}/achievements`);
                 const achData = await achRes.json();
                 const certContainer = document.getElementById('certContainer');
@@ -332,19 +371,21 @@
                                     <div class="bg-amber-500/10 p-2 rounded border border-amber-500/20">
                                         <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
                                     </div>
-                                    <span class="text-[9px] mono text-amber-500/50 uppercase">Year: ${item.year}</span>
+                                    <span class="text-[9px] mono text-amber-500/80 uppercase font-bold">Year: ${item.year}</span>
                                 </div>
-                                <h3 class="font-bold text-white mb-1 group-hover:text-amber-400 transition">${item.title}</h3>
-                                <p class="text-[10px] text-sky-400 font-mono mb-3">${item.organization}</p>
+                                <h3 class="font-bold text-white mb-1 group-hover:text-amber-500 transition">${item.title}</h3>
+                                <p class="text-[10px] text-sky-500 font-mono mb-3">${item.organization}</p>
                                 <p class="text-xs text-slate-400 leading-relaxed border-l-2 border-amber-500/30 pl-3">${item.details}</p>
                             </div>
                         `;
                     });
-                    lucide.createIcons();
                 } else {
                     certContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No achievements found.</p>';
                 }
-                // 4. Archives
+                
+                lucide.createIcons(); // Refresh all dynamically added icons
+                
+                // 5. Archives
                 loadMainGallery();
             } catch (e) {
                 console.error("Data fetching error", e);
@@ -376,6 +417,7 @@
             });
         });
 
+        // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
@@ -397,7 +439,7 @@
                 allGalleryItems.slice(0, 4).forEach(item => {
                     const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                     container.innerHTML += `
-                        <div class="glass-panel p-2 rounded-2xl overflow-hidden cursor-pointer hover:border-sky-500/50 hover:-translate-y-2 transition duration-300 group" onclick="openSingleLightbox('${item.image_url}', '${item.title}', '${safeDetails}')">
+                        <div class="glass-panel p-2 rounded-2xl overflow-hidden cursor-pointer hover:border-sky-500/50 hover:-translate-y-2 transition duration-300 group bg-black/20" onclick="openSingleLightbox('${item.image_url}', '${item.title}', '${safeDetails}')">
                             <div class="relative h-48 w-full mb-3 rounded-xl overflow-hidden"><img src="${item.image_url}" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" onerror="this.src='https://via.placeholder.com/400x300'"></div>
                             <p class="text-[10px] font-bold text-sky-500 mb-1 mono px-2">${item.title}</p>
                             <p class="text-xs font-bold text-slate-400 px-2 pb-2 truncate">${item.subtitle || ''}</p>
@@ -429,7 +471,7 @@
         const singleLightbox = document.getElementById('singleLightbox');
         const singleContent = document.getElementById('singleLightbox-content');
         function openSingleLightbox(img, title, details) {
-            document.getElementById('modal-body').innerHTML = `<img src="${img}" class="w-full max-h-[50vh] object-contain rounded-xl mb-6 mx-auto bg-black/40 border border-white/10"><h3 class="text-2xl font-black text-sky-500 mb-3">${title}</h3><p class="text-sm text-slate-300 leading-relaxed">${details}</p>`;
+            document.getElementById('modal-body').innerHTML = `<img src="${img}" class="w-full max-h-[50vh] object-contain rounded-xl mb-6 mx-auto bg-black/20 border border-white/10"><h3 class="text-2xl font-black text-sky-500 mb-3">${title}</h3><p class="text-sm text-slate-300 leading-relaxed">${details}</p>`;
             singleLightbox.classList.remove('hidden'); setTimeout(() => { singleLightbox.classList.remove('opacity-0'); singleContent.classList.remove('scale-95'); }, 10);
         }
         function closeSingleLightbox() { singleLightbox.classList.add('opacity-0'); singleContent.classList.add('scale-95'); setTimeout(() => singleLightbox.classList.add('hidden'), 300); }
