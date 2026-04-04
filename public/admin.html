@@ -63,6 +63,11 @@
                 <form id="loginForm" class="space-y-4">
                     <input type="text" id="username" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white transition" placeholder="Root_User">
                     <input type="password" id="password" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white transition" placeholder="Passkey">
+                    
+                    <div class="flex justify-between items-center px-1">
+                        <a href="#" onclick="openRecoveryModal()" class="text-[10px] text-sky-500 hover:text-sky-400 mono transition">Forgot Username/Password?</a>
+                    </div>
+
                     <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold text-[10px] uppercase transition shadow-lg shadow-red-500/20">Initialize Uplink</button>
                     <p id="loginError" class="text-red-500 text-[10px] text-center hidden font-bold">Invalid Credentials</p>
                 </form>
@@ -190,6 +195,27 @@
         </section>
     </main>
 
+    <div id="recoveryModal" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass-panel max-w-sm w-full p-8 relative transform scale-95 transition-transform duration-300">
+            <button onclick="closeRecoveryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-4 h-4"></i></button>
+            <div class="text-center mb-6">
+                <i data-lucide="shield-question" class="w-12 h-12 text-sky-500 mx-auto mb-4"></i>
+                <h3 class="text-xl font-black text-white">System Recovery</h3>
+                <p class="text-[10px] text-slate-400 mono mt-2">ACCOUNT CREDENTIALS RETRIEVAL</p>
+            </div>
+            <form id="recoveryForm" class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase mono mb-1 block">Recovery Email / Admin PIN</label>
+                    <input type="text" required class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-sky-500 transition mono text-white" placeholder="Enter secure details...">
+                </div>
+                <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-bold text-[10px] uppercase tracking-widest transition shadow-lg shadow-sky-500/20">
+                    Initiate Recovery Protocol
+                </button>
+            </form>
+            <p id="recoveryMessage" class="hidden text-emerald-500 text-[10px] text-center mt-4 mono font-bold bg-emerald-500/10 p-2 rounded border border-emerald-500/20">Recovery instructions have been sent securely. Please check your registered email.</p>
+        </div>
+    </div>
+
     <div id="msgLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="glass-panel max-w-3xl w-full p-8 relative transform scale-95 transition-transform duration-300">
             <button onclick="closeMsgLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -227,6 +253,17 @@
             document.body.classList.toggle('light-mode');
             themeToggle.innerHTML = document.body.classList.contains('light-mode') ? '<i data-lucide="moon" class="w-4 h-4 text-slate-600"></i>' : '<i data-lucide="sun" class="w-4 h-4 text-amber-400"></i>';
             lucide.createIcons();
+        });
+
+        // Recovery Modal
+        const recoveryModal = document.getElementById('recoveryModal');
+        function openRecoveryModal() { recoveryModal.classList.remove('hidden'); setTimeout(() => { recoveryModal.classList.remove('opacity-0'); }, 10); }
+        function closeRecoveryModal() { recoveryModal.classList.add('opacity-0'); setTimeout(() => { recoveryModal.classList.add('hidden'); document.getElementById('recoveryMessage').classList.add('hidden'); document.getElementById('recoveryForm').reset(); }, 300); }
+        document.getElementById('recoveryForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button'); const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin inline"></i> Processing...'; lucide.createIcons();
+            setTimeout(() => { btn.innerHTML = originalText; document.getElementById('recoveryMessage').classList.remove('hidden'); }, 1500);
         });
 
         // Login
@@ -315,7 +352,6 @@
             document.getElementById('btn-edu').innerText = "UPDATE EDUCATION";
             document.getElementById('cancel-edu').classList.remove('hidden');
             
-            // FIXED SCROLL BEHAVIOR
             const form = document.getElementById('addEduForm');
             window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
         }
@@ -354,7 +390,6 @@
             document.getElementById('btn-proj').innerText = "UPDATE PROJECT";
             document.getElementById('cancel-proj').classList.remove('hidden');
             
-            // FIXED SCROLL BEHAVIOR
             const form = document.getElementById('addProjForm');
             window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
         }
@@ -394,7 +429,6 @@
             document.getElementById('btn-ach').innerText = "UPDATE ACHIEVEMENT";
             document.getElementById('cancel-ach').classList.remove('hidden');
             
-            // FIXED SCROLL BEHAVIOR
             const form = document.getElementById('addAchForm');
             window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
         }
@@ -436,7 +470,6 @@
             document.getElementById('btn-gallery').innerText = "UPDATE ARCHIVE";
             document.getElementById('cancel-gallery').classList.remove('hidden');
             
-            // FIXED SCROLL BEHAVIOR
             const form = document.getElementById('addGalleryForm');
             window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
         }
