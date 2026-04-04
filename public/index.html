@@ -15,39 +15,53 @@
         .bg-cyber { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 1)), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/svg%3E"); }
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
         .glass-nav { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; transition: background 0.5s; }
-        .pulse-green { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); animation: pulse 2s infinite; }
-        @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        .cyber-card-frame { background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); transition: all 0.5s; }
         .modal-overlay { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
 
-        /* Light Mode Overrides */
-        body.light-mode { background-color: #e5e7eb; color: #0f172a; }
-        body.light-mode .bg-cyber { background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15), transparent 80%), linear-gradient(to bottom, rgba(229, 231, 235, 0.95), #e5e7eb), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1'/%3E%3C/svg%3E"); }
-        body.light-mode .glass-panel, body.light-mode .cyber-card-frame { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.05); color: #1e293b; }
-        body.light-mode .text-slate-400 { color: #475569; }
-        body.light-mode .text-white { color: #0f172a; }
-        body.light-mode h1, body.light-mode h2, body.light-mode h3 { color: #020617; }
-        body.light-mode .glass-nav { background: rgba(2, 6, 23, 0.95); color: #f8fafc; }
-        body.light-mode footer { background-color: #020617; color: #f8fafc; border-top: 1px solid rgba(255,255,255,0.1); }
-        body.light-mode .modal-overlay .glass-panel { background: rgba(15, 23, 42, 0.95); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1); } 
-        body.light-mode .modal-overlay h2, body.light-mode .modal-overlay h3 { color: #0ea5e9; }
-        body.light-mode input, body.light-mode textarea { background-color: rgba(255, 255, 255, 0.8) !important; color: #0f172a !important; border-color: rgba(0, 0, 0, 0.2) !important; }
-        body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; }
-        body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #64748b !important; }
-        body.light-mode .group label, body.light-mode .group i { color: #475569 !important; }
+        /* ================= SCI-FI ELEMENTS ================= */
+        .sci-fi-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0.95) 100%);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(14, 165, 233, 0.05);
+        }
+        /* Crosshairs */
+        .sci-fi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 15px; height: 15px; border-top: 2px solid #0ea5e9; border-left: 2px solid #0ea5e9; transition: all 0.3s; }
+        .sci-fi-card::after { content: ''; position: absolute; bottom: 0; right: 0; width: 15px; height: 15px; border-bottom: 2px solid #0ea5e9; border-right: 2px solid #0ea5e9; transition: all 0.3s; }
+        .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 0 25px rgba(14, 165, 233, 0.15); transform: translateY(-5px); }
+        .sci-fi-card:hover::before, .sci-fi-card:hover::after { width: 25px; height: 25px; }
+        
+        /* Scanline Animation */
+        .cyber-line { position: absolute; top: 0; left: -100%; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, #0ea5e9, transparent); animation: scanline 3s linear infinite; z-index: 5; }
+        .cyber-line.purple { background: linear-gradient(90deg, transparent, #a855f7, transparent); }
+        .cyber-line.amber { background: linear-gradient(90deg, transparent, #f59e0b, transparent); }
+        @keyframes scanline { 100% { left: 100%; } }
 
-        /* Scanner */
+        /* Glowing Text */
+        .glow-text { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+
+        /* Scanner Profile */
         .scanner-container { position: relative; overflow: hidden; border-radius: 1rem; }
         .scanner-line { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: rgba(14, 165, 233, 0.9); box-shadow: 0 0 15px rgba(14, 165, 233, 1), 0 0 30px rgba(14, 165, 233, 0.8); animation: scan 3.5s cubic-bezier(0.53, 0.21, 0.29, 0.67) infinite; z-index: 10; }
         @keyframes scan { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
 
-        /* Scrollbar */
+        /* ================= LIGHT MODE OVERRIDES ================= */
+        body.light-mode { background-color: #e5e7eb; color: #0f172a; }
+        body.light-mode .bg-cyber { background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.15), transparent 80%), linear-gradient(to bottom, rgba(229, 231, 235, 0.95), #e5e7eb), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1'/%3E%3C/svg%3E"); }
+        body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.05); color: #1e293b; }
+        body.light-mode .text-slate-400 { color: #475569; }
+        body.light-mode .text-white { color: #0f172a; }
+        body.light-mode h1, body.light-mode h2, body.light-mode h3 { color: #020617; }
+        body.light-mode .glass-nav { background: rgba(2, 6, 23, 0.95); color: #f8fafc; }
+        body.light-mode input, body.light-mode textarea { background-color: rgba(255, 255, 255, 0.8) !important; color: #0f172a !important; border-color: rgba(0, 0, 0, 0.2) !important; }
+        body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; }
+        
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(14, 165, 233, 0.8); }
     </style>
 </head>
 <body>
@@ -56,15 +70,16 @@
     <nav class="fixed top-0 w-full glass-nav transition-all">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-3 h-3 rounded-full bg-emerald-500 pulse-green"></div>
+                <div class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981] animate-pulse"></div>
                 <span class="text-[10px] font-bold uppercase tracking-[0.2em] mono text-emerald-500">System_Online</span>
             </div>
-            <div class="hidden md:flex items-center space-x-10 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+            <div class="hidden md:flex items-center space-x-8 text-[10px] font-bold uppercase tracking-widest text-slate-300">
                 <a href="#about" class="nav-link hover:text-sky-400 transition">Profile</a>
                 <a href="#education" class="nav-link hover:text-sky-400 transition">Education</a>
                 <a href="#project" class="nav-link hover:text-sky-400 transition">Project</a>
+                <a href="#achievements" class="nav-link hover:text-sky-400 transition">Achievements</a>
                 <a href="#archive" class="nav-link hover:text-sky-400 transition">Archive</a>
-                <a href="#communication" class="nav-link hover:text-sky-400 transition">Communication</a>
+                <a href="#communication" class="nav-link hover:text-sky-400 transition">Comms</a>
             </div>
             <div class="flex items-center gap-4">
                 <button id="themeToggle" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition border border-white/10 flex items-center justify-center w-9 h-9"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
@@ -76,6 +91,7 @@
             <a href="#about" class="nav-link mobile-link hover:text-sky-400 transition">Profile</a>
             <a href="#education" class="nav-link mobile-link hover:text-sky-400 transition">Education</a>
             <a href="#project" class="nav-link mobile-link hover:text-sky-400 transition">Project</a>
+            <a href="#achievements" class="nav-link mobile-link hover:text-sky-400 transition">Achievements</a>
             <a href="#archive" class="nav-link mobile-link hover:text-sky-400 transition">Archive</a>
             <a href="#communication" class="nav-link mobile-link hover:text-sky-400 transition">Communication</a>
             <a href="/admin.html" class="mobile-link text-sky-500 mt-2 border border-sky-500/30 px-6 py-2 rounded-full">Admin Login</a>
@@ -95,19 +111,17 @@
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500">Secure AI</span><br>
                     Futures.
                 </h1>
-                <p id="profile-bio" class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed mx-auto md:mx-0">
-                    Loading biography...
-                </p>
+                <p id="profile-bio" class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed mx-auto md:mx-0">Loading biography...</p>
             </div>
             
-            <div class="w-72 md:w-80 cyber-card-frame backdrop-blur-xl rounded-[2rem] p-4 relative mx-auto md:mx-0">
+            <div class="w-72 md:w-80 glass-panel backdrop-blur-xl rounded-[2rem] p-4 relative mx-auto md:mx-0">
                 <div class="scanner-container w-full h-80 mb-4 bg-black/50">
                     <img src="./profile.jpg" class="w-full h-full object-cover rounded-2xl" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
                     <div class="scanner-line"></div>
                 </div>
-                <h3 id="profile-name" class="text-xl font-bold text-white mb-1">Loading...</h3>
+                <h3 id="profile-name" class="text-xl font-bold text-white mb-1 glow-text">Loading...</h3>
                 <p id="profile-title" class="text-[9px] font-bold text-sky-500 uppercase tracking-[0.2em] mono mb-3">Loading...</p>
-                <div class="flex justify-between bg-black/20 p-2 rounded-xl border border-white/5">
+                <div class="flex justify-between bg-black/40 p-2 rounded-xl border border-white/5">
                     <span class="text-[8px] mono text-slate-400">Clearance: <span class="text-emerald-500">LVL_01</span></span>
                     <span class="text-[8px] mono text-slate-400">Node: <span class="text-sky-500">Cyber_AI</span></span>
                 </div>
@@ -116,45 +130,105 @@
 
         <section id="education" class="mb-32 reveal pt-10">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-black mb-4">Academic <span class="text-emerald-500">Records</span></h2>
-                <p class="text-slate-500 text-sm mono uppercase tracking-widest">Major_Operation.edu</p>
+                <div class="inline-flex items-center justify-center p-3 bg-emerald-500/10 rounded-full border border-emerald-500/30 mb-4">
+                    <i data-lucide="cpu" class="w-6 h-6 text-emerald-500"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 glow-text text-white">Academic <span class="text-emerald-500">Records</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Database_Query: Education_Node</p>
             </div>
             
             <div id="educationContainer" class="grid md:grid-cols-2 gap-8">
-                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading education records...</p>
+                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading academic nodes...</p>
             </div>
         </section>
 
         <section id="project" class="mb-32 reveal pt-10">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-black mb-4">Active <span class="text-purple-500">Projects</span></h2>
-                <p class="text-slate-500 text-sm mono uppercase tracking-widest">Secure_Operations</p>
+                <div class="inline-flex items-center justify-center p-3 bg-purple-500/10 rounded-full border border-purple-500/30 mb-4">
+                    <i data-lucide="terminal-square" class="w-6 h-6 text-purple-500"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 glow-text text-white">Active <span class="text-purple-500">Deployments</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Executing_Operations</p>
             </div>
             
             <div id="projectContainer" class="grid md:grid-cols-2 gap-8">
-                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading active projects...</p>
+                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading active protocols...</p>
+            </div>
+        </section>
+
+        <section id="achievements" class="mb-32 reveal pt-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center p-3 bg-amber-500/10 rounded-full border border-amber-500/30 mb-4">
+                    <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 glow-text text-white">Achievements & <span class="text-amber-500">Certifications</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Verified_Credentials</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6" id="certContainer">
+                <div class="sci-fi-card p-6 rounded-xl group transition duration-300">
+                    <div class="cyber-line amber"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="bg-amber-500/10 p-2 rounded border border-amber-500/20">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-amber-500"></i>
+                        </div>
+                        <span class="text-[9px] mono text-amber-500/50 uppercase">Hash: 0x8F9A</span>
+                    </div>
+                    <h3 class="font-bold text-white mb-1 group-hover:text-amber-400 transition">Certified Ethical Hacker (CEH)</h3>
+                    <p class="text-[10px] text-sky-400 font-mono mb-3">EC-Council • 2025</p>
+                    <p class="text-xs text-slate-400 leading-relaxed border-l-2 border-amber-500/30 pl-3">Validated expertise in network security, penetration testing, and vulnerability assessment.</p>
+                </div>
+
+                <div class="sci-fi-card p-6 rounded-xl group transition duration-300">
+                    <div class="cyber-line amber" style="animation-delay: 1s;"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="bg-emerald-500/10 p-2 rounded border border-emerald-500/20">
+                            <i data-lucide="trophy" class="w-6 h-6 text-emerald-500"></i>
+                        </div>
+                        <span class="text-[9px] mono text-emerald-500/50 uppercase">Rank: #1</span>
+                    </div>
+                    <h3 class="font-bold text-white mb-1 group-hover:text-emerald-400 transition">National CTF Champion</h3>
+                    <p class="text-[10px] text-sky-400 font-mono mb-3">Cyber Security BD • 2024</p>
+                    <p class="text-xs text-slate-400 leading-relaxed border-l-2 border-emerald-500/30 pl-3">Led the 'Null Script Infiltrators' team to victory by solving advanced cryptography challenges.</p>
+                </div>
+
+                <div class="sci-fi-card p-6 rounded-xl group transition duration-300">
+                    <div class="cyber-line amber" style="animation-delay: 2s;"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="bg-blue-500/10 p-2 rounded border border-blue-500/20">
+                            <i data-lucide="file-text" class="w-6 h-6 text-blue-500"></i>
+                        </div>
+                        <span class="text-[9px] mono text-blue-500/50 uppercase">Pub_ID: 1042</span>
+                    </div>
+                    <h3 class="font-bold text-white mb-1 group-hover:text-blue-400 transition">Research Publication</h3>
+                    <p class="text-[10px] text-sky-400 font-mono mb-3">IEEE Conference • 2026</p>
+                    <p class="text-xs text-slate-400 leading-relaxed border-l-2 border-blue-500/30 pl-3">Published framework on "Explainable GANs for Intrusion Detection" with 97.2% accuracy model.</p>
+                </div>
             </div>
         </section>
 
         <section id="archive" class="mb-32 reveal pt-10">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-black mb-4">Visual <span class="text-amber-500">Archives</span></h2>
-                <p class="text-slate-500 text-sm mono uppercase tracking-widest">Secure_Gallery_Access</p>
+                <div class="inline-flex items-center justify-center p-3 bg-sky-500/10 rounded-full border border-sky-500/30 mb-4">
+                    <i data-lucide="database" class="w-6 h-6 text-sky-500"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 glow-text text-white">Visual <span class="text-sky-500">Archives</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Secure_Gallery_Access</p>
             </div>
-            
             <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-            
             <div class="text-center mt-12">
-                <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/10 transition mono shadow-lg shadow-sky-500/10">LOAD_MORE_ARCHIVES //...</button>
+                <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/10 transition mono shadow-lg shadow-sky-500/10 hover:shadow-sky-500/30">LOAD_MORE_ARCHIVES //...</button>
             </div>
         </section>
 
         <section id="communication" class="reveal mb-10 pt-10">
-            <div class="glass-panel p-6 md:p-16 border-t-2 border-sky-500/50 relative overflow-hidden">
+            <div class="sci-fi-card p-6 md:p-16 border-t-2 border-sky-500/50 relative overflow-hidden rounded-[2rem]">
+                <div class="cyber-line"></div>
                 <div class="relative z-10 max-w-2xl mx-auto">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl font-black mb-4">Initialize <span class="text-sky-500">Uplink</span></h2>
-                        <p class="text-slate-500 text-sm leading-relaxed">Secure protocol established for recruitment and research collaboration.</p>
+                        <i data-lucide="radio-tower" class="w-10 h-10 text-sky-500 mx-auto mb-4 animate-pulse"></i>
+                        <h2 class="text-4xl font-black mb-4 text-white">Initialize <span class="text-sky-500">Uplink</span></h2>
+                        <p class="text-slate-400 text-sm leading-relaxed">Secure protocol established for recruitment and research collaboration.</p>
                     </div>
                     <form id="commForm" class="space-y-6">
                         <div class="grid md:grid-cols-2 gap-6">
@@ -180,7 +254,7 @@
                                 <textarea id="i-msg" required rows="4" placeholder="ENTER_MESSAGE_HERE..." class="w-full bg-black/40 border border-white/10 focus:border-sky-500/50 rounded-2xl pl-12 pr-4 py-6 text-xs outline-none transition mono text-white"></textarea>
                             </div>
                         </div>
-                        <button type="submit" id="submitBtn" class="w-full py-5 bg-sky-600 hover:bg-sky-500 text-white rounded-2xl font-bold text-[10px] uppercase tracking-[0.3em] shadow-2xl shadow-sky-500/30 flex items-center justify-center gap-3 transition">
+                        <button type="submit" id="submitBtn" class="w-full py-5 bg-sky-600 hover:bg-sky-500 text-white rounded-2xl font-bold text-[10px] uppercase tracking-[0.3em] shadow-lg shadow-sky-500/20 flex items-center justify-center gap-3 transition">
                             <i data-lucide="send" class="w-4 h-4"></i> Transmit Packet
                         </button>
                     </form>
@@ -198,7 +272,7 @@
             <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 hover:bg-blue-600/20 hover:text-blue-500 transition text-slate-400 border border-white/5"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
             <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 hover:bg-pink-500/20 hover:text-pink-400 transition text-slate-400 border border-white/5"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
         </div>
-        <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Mahmudul Hasan. Design: Hyper-Security OS v2</p>
+        <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Ahmedul Hasan. Design: Hyper-Security OS v2</p>
     </footer>
 
     <div id="galleryModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
@@ -221,10 +295,10 @@
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান (e.g. 'https://your-site.onrender.com/api')
 
-        // Fetch Dynamic Data from Admin Panel (Backend)
+        // Fetch Dynamic Data from Admin Panel
         async function fetchAllDynamicData() {
             try {
-                // 1. Load Profile
+                // 1. Profile
                 const profRes = await fetch(`${API_BASE}/profile`);
                 const profData = await profRes.json();
                 if(profData.full_name) {
@@ -234,7 +308,7 @@
                     document.getElementById('footer-text').innerText = `© 2026 ${profData.full_name}. Design: Hyper-Security OS v2`;
                 }
 
-                // 2. Load Education
+                // 2. Education (Sci-Fi Look)
                 const eduRes = await fetch(`${API_BASE}/education`);
                 const eduData = await eduRes.json();
                 const eduContainer = document.getElementById('educationContainer');
@@ -242,37 +316,46 @@
                     eduContainer.innerHTML = '';
                     eduData.forEach(item => {
                         eduContainer.innerHTML += `
-                            <div class="glass-panel p-8 relative overflow-hidden group hover:-translate-y-2 transition duration-300">
-                                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-colors"></div>
-                                <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-3 block">Institution: ${item.institution}</span>
-                                <h3 class="text-2xl font-black mb-2 text-white">${item.degree}</h3>
-                                <p class="text-xs text-sky-400 font-mono mb-4">Passing Year: ${item.pass_year}</p>
-                                <p class="text-slate-400 text-sm leading-relaxed relative z-10">${item.details}</p>
+                            <div class="sci-fi-card p-8 rounded-xl hover:-translate-y-2 transition duration-300 group">
+                                <div class="cyber-line"></div>
+                                <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-3 flex items-center gap-2">
+                                    <i data-lucide="database" class="w-4 h-4"></i> Data_Node: ${item.institution}
+                                </span>
+                                <h3 class="text-2xl font-black mb-3 text-white group-hover:text-emerald-400 transition">${item.degree}</h3>
+                                <div class="inline-block bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded mb-4">
+                                    <p class="text-[10px] text-emerald-400 font-mono">Timestamp: ${item.pass_year}</p>
+                                </div>
+                                <p class="text-slate-400 text-sm leading-relaxed border-l-2 border-emerald-500/30 pl-4">${item.details}</p>
                             </div>
                         `;
                     });
-                } else eduContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No academic records found.</p>';
+                    lucide.createIcons();
+                }
 
-                // 3. Load Projects
+                // 3. Projects (Sci-Fi Look)
                 const projRes = await fetch(`${API_BASE}/projects`);
                 const projData = await projRes.json();
                 const projContainer = document.getElementById('projectContainer');
                 if(projData.length > 0) {
                     projContainer.innerHTML = '';
                     projData.forEach(item => {
-                        const tagsHtml = item.tags.split(',').map(tag => `<span class="text-[10px] font-bold text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 uppercase tracking-wider">${tag.trim()}</span>`).join('');
+                        const tagsHtml = item.tags.split(',').map(tag => `<span class="text-[10px] font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 uppercase tracking-wider">${tag.trim()}</span>`).join('');
                         projContainer.innerHTML += `
-                            <div class="glass-panel p-8 border-t-2 border-purple-500/50 hover:-translate-y-2 transition duration-300 relative overflow-hidden group">
-                                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
-                                <h3 class="text-2xl font-bold mb-3 text-white relative z-10">${item.title}</h3>
-                                <p class="text-slate-400 text-sm mb-6 leading-relaxed relative z-10">${item.description}</p>
-                                <div class="flex flex-wrap gap-2 relative z-10">${tagsHtml}</div>
+                            <div class="sci-fi-card p-8 rounded-xl hover:-translate-y-2 transition duration-300 group">
+                                <div class="cyber-line purple" style="animation-delay: 1s;"></div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-2xl font-bold text-white group-hover:text-purple-400 transition">${item.title}</h3>
+                                    <i data-lucide="terminal" class="w-6 h-6 text-purple-500/50 group-hover:text-purple-400"></i>
+                                </div>
+                                <p class="text-slate-400 text-sm mb-6 leading-relaxed border-l-2 border-purple-500/30 pl-4">${item.description}</p>
+                                <div class="flex flex-wrap gap-2">${tagsHtml}</div>
                             </div>
                         `;
                     });
-                } else projContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No active projects found.</p>';
+                    lucide.createIcons();
+                }
 
-                // 4. Load Archives
+                // 4. Archives
                 loadMainGallery();
             } catch (e) {
                 console.error("Data fetching error", e);
@@ -284,10 +367,9 @@
             document.querySelectorAll(".reveal").forEach(el => {
                 if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add("active");
             });
-            // Nav Highlight
             let current = "";
             document.querySelectorAll("section").forEach((section) => {
-                if (window.scrollY >= section.offsetTop - 100) current = section.getAttribute("id");
+                if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute("id");
             });
             document.querySelectorAll(".nav-link").forEach((link) => {
                 link.classList.remove("text-sky-500"); link.classList.add("text-slate-300");
@@ -296,7 +378,6 @@
         });
         window.dispatchEvent(new Event("scroll"));
 
-        // Smooth Scroll
         document.querySelectorAll(".nav-link").forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -306,7 +387,6 @@
             });
         });
 
-        // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
@@ -353,7 +433,7 @@
                         <p class="text-[10px] font-bold text-sky-500 mb-1 mono px-1 truncate">${item.title}</p>
                     </div>`;
             });
-            galleryModal.classList.remove('hidden'); setTimeout(() => { galleryModal.classList.remove('opacity-0'); galleryContent.classList.remove('scale-95'); lucide.createIcons(); }, 10);
+            galleryModal.classList.remove('hidden'); setTimeout(() => { galleryModal.classList.remove('opacity-0'); galleryContent.classList.remove('scale-95'); }, 10);
         }
         function closeGalleryModal() { galleryModal.classList.add('opacity-0'); galleryContent.classList.add('scale-95'); setTimeout(() => galleryModal.classList.add('hidden'), 300); }
 
