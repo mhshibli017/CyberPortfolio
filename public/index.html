@@ -317,7 +317,33 @@
                     });
                     lucide.createIcons();
                 }
-
+                // 3.5 Achievements (Sci-Fi Look)
+                const achRes = await fetch(`${API_BASE}/achievements`);
+                const achData = await achRes.json();
+                const certContainer = document.getElementById('certContainer');
+                if(achData.length > 0) {
+                    certContainer.innerHTML = '';
+                    achData.forEach((item, index) => {
+                        const delay = index * 0.5; // Animation delay
+                        certContainer.innerHTML += `
+                            <div class="sci-fi-card p-6 rounded-xl group transition duration-300">
+                                <div class="cyber-line amber" style="animation-delay: ${delay}s;"></div>
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="bg-amber-500/10 p-2 rounded border border-amber-500/20">
+                                        <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
+                                    </div>
+                                    <span class="text-[9px] mono text-amber-500/50 uppercase">Year: ${item.year}</span>
+                                </div>
+                                <h3 class="font-bold text-white mb-1 group-hover:text-amber-400 transition">${item.title}</h3>
+                                <p class="text-[10px] text-sky-400 font-mono mb-3">${item.organization}</p>
+                                <p class="text-xs text-slate-400 leading-relaxed border-l-2 border-amber-500/30 pl-3">${item.details}</p>
+                            </div>
+                        `;
+                    });
+                    lucide.createIcons();
+                } else {
+                    certContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No achievements found.</p>';
+                }
                 // 4. Archives
                 loadMainGallery();
             } catch (e) {
