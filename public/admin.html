@@ -53,6 +53,7 @@
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 pt-24 pb-20">
+        
         <section id="loginSection" class="min-h-[70vh] flex items-center justify-center">
             <div class="glass-panel p-8 w-full max-w-md border-t-2 border-red-500/50">
                 <div class="text-center mb-8">
@@ -152,7 +153,7 @@
                             <input type="text" id="g-title" placeholder="Title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
                             <textarea id="g-details" placeholder="Details" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition" rows="2"></textarea>
                             <div class="flex gap-2">
-                                <button type="submit" id="btn-gallery" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Upload Archive</button>
+                                <button type="submit" id="btn-gallery" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Upload Archive</button>
                                 <button type="button" onclick="resetForm('addGalleryForm', 'btn-gallery', 'Upload Archive')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-gallery">Cancel</button>
                             </div>
                         </form>
@@ -313,7 +314,10 @@
             document.getElementById('e-details').value = item.details;
             document.getElementById('btn-edu').innerText = "UPDATE EDUCATION";
             document.getElementById('cancel-edu').classList.remove('hidden');
-            window.scrollTo({ top: document.getElementById('addEduForm').offsetTop - 100, behavior: 'smooth' });
+            
+            // FIXED SCROLL BEHAVIOR
+            const form = document.getElementById('addEduForm');
+            window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
         }
         document.getElementById('addEduForm').addEventListener('submit', async(e) => {
             e.preventDefault();
@@ -349,7 +353,10 @@
             document.getElementById('pr-desc').value = item.description;
             document.getElementById('btn-proj').innerText = "UPDATE PROJECT";
             document.getElementById('cancel-proj').classList.remove('hidden');
-            window.scrollTo({ top: document.getElementById('addProjForm').offsetTop - 100, behavior: 'smooth' });
+            
+            // FIXED SCROLL BEHAVIOR
+            const form = document.getElementById('addProjForm');
+            window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
         }
         document.getElementById('addProjForm').addEventListener('submit', async(e) => {
             e.preventDefault();
@@ -386,7 +393,10 @@
             document.getElementById('a-details').value = item.details;
             document.getElementById('btn-ach').innerText = "UPDATE ACHIEVEMENT";
             document.getElementById('cancel-ach').classList.remove('hidden');
-            window.scrollTo({ top: document.getElementById('addAchForm').offsetTop - 100, behavior: 'smooth' });
+            
+            // FIXED SCROLL BEHAVIOR
+            const form = document.getElementById('addAchForm');
+            window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
         }
         document.getElementById('addAchForm').addEventListener('submit', async(e) => {
             e.preventDefault();
@@ -420,13 +430,15 @@
             document.getElementById('g-title').value = item.title;
             document.getElementById('g-details').value = item.details;
             
-            // Image is optional for update
             document.getElementById('g-img').required = false;
             document.getElementById('g-img-hint').classList.remove('hidden');
             
             document.getElementById('btn-gallery').innerText = "UPDATE ARCHIVE";
             document.getElementById('cancel-gallery').classList.remove('hidden');
-            window.scrollTo({ top: document.getElementById('addGalleryForm').offsetTop - 100, behavior: 'smooth' });
+            
+            // FIXED SCROLL BEHAVIOR
+            const form = document.getElementById('addGalleryForm');
+            window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
         }
         document.getElementById('addGalleryForm').addEventListener('submit', async(e) => {
             e.preventDefault();
