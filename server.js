@@ -23,8 +23,8 @@ app.get('/api/stats', (req, res) => {
         cpu: os.loadavg()[0].toFixed(1),
         ram: (((totalMem - freeMem) / totalMem) * 100).toFixed(1),
         ping: Math.floor(Math.random() * 15) + 10,
-        total_visitor: 1204, // ডেমো ডাটা
-        today_visitor: 42   // ডেমো ডাটা
+        total_visitor: 1204,
+        today_visitor: 42
     });
 });
 
@@ -37,11 +37,9 @@ app.post('/api/login', async (req, res) => {
 
 app.post('/api/change-password', async (req, res) => {
     const { username, old_password, new_password } = req.body;
-    // Check old credentials
     const { data } = await supabase.from('admin_data').select('*').eq('username', username).eq('password', old_password).single();
     if (!data) return res.json({ success: false, message: 'Invalid Username or Old Password' });
     
-    // Update new password
     const { error } = await supabase.from('admin_data').update({ password: new_password }).eq('id', data.id);
     res.json({ success: !error });
 });
@@ -82,6 +80,11 @@ app.post('/api/education', async (req, res) => {
     const { error } = await supabase.from('education_data').insert([{ degree, institution, pass_year, details }]);
     res.json({ success: !error });
 });
+app.put('/api/education/:id', async (req, res) => {
+    const { degree, institution, pass_year, details } = req.body;
+    const { error } = await supabase.from('education_data').update({ degree, institution, pass_year, details }).eq('id', req.params.id);
+    res.json({ success: !error });
+});
 app.delete('/api/education/:id', async (req, res) => {
     const { error } = await supabase.from('education_data').delete().eq('id', req.params.id);
     res.json({ success: !error });
@@ -95,6 +98,11 @@ app.get('/api/projects', async (req, res) => {
 app.post('/api/projects', async (req, res) => {
     const { title, description, tags } = req.body;
     const { error } = await supabase.from('projects_data').insert([{ title, description, tags }]);
+    res.json({ success: !error });
+});
+app.put('/api/projects/:id', async (req, res) => {
+    const { title, description, tags } = req.body;
+    const { error } = await supabase.from('projects_data').update({ title, description, tags }).eq('id', req.params.id);
     res.json({ success: !error });
 });
 app.delete('/api/projects/:id', async (req, res) => {
@@ -112,12 +120,17 @@ app.post('/api/achievements', async (req, res) => {
     const { error } = await supabase.from('achievements_data').insert([{ title, organization, year, details }]);
     res.json({ success: !error });
 });
+app.put('/api/achievements/:id', async (req, res) => {
+    const { title, organization, year, details } = req.body;
+    const { error } = await supabase.from('achievements_data').update({ title, organization, year, details }).eq('id', req.params.id);
+    res.json({ success: !error });
+});
 app.delete('/api/achievements/:id', async (req, res) => {
     const { error } = await supabase.from('achievements_data').delete().eq('id', req.params.id);
     res.json({ success: !error });
 });
 
-// Gallery Data (Image Upload)
+// Gallery Data
 app.get('/api/gallery', async (req, res) => {
     const { data } = await supabase.from('gallery').select('*').order('created_at', { ascending: false });
     res.json(data);
