@@ -71,7 +71,7 @@
             <div class="grid lg:grid-cols-2 gap-8">
                 <div class="space-y-8">
                     <div class="glass-panel p-6 border-t-2 border-blue-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="user" class="w-5 h-5 text-blue-500"></i> Profile Details</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="user" class="w-5 h-5 text-blue-500"></i> About / Profile Details</h3>
                         <form id="profileForm" class="space-y-3">
                             <input type="hidden" id="p-id">
                             <input type="text" id="p-name" placeholder="Full Name" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
@@ -84,27 +84,35 @@
                     <div class="glass-panel p-6 border-t-2 border-emerald-500">
                         <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="graduation-cap" class="w-5 h-5 text-emerald-500"></i> Education</h3>
                         <form id="addEduForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
+                            <input type="hidden" id="e-id">
                             <input type="text" id="e-degree" placeholder="Degree (e.g., BSc Computer Science)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="text" id="e-inst" placeholder="Institution" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                                 <input type="text" id="e-year" placeholder="Year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             </div>
                             <textarea id="e-details" placeholder="Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
-                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Add Education</button>
+                            <div class="flex gap-2">
+                                <button type="submit" id="btn-edu" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Add Education</button>
+                                <button type="button" onclick="resetForm('addEduForm', 'btn-edu', 'Add Education')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-edu">Cancel</button>
+                            </div>
                         </form>
                         <div id="eduList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
 
                     <div class="glass-panel p-6 border-t-2 border-pink-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="award" class="w-5 h-5 text-pink-500"></i> Achievements & Certifications</h3>
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="award" class="w-5 h-5 text-pink-500"></i> Achievements & Certs</h3>
                         <form id="addAchForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
+                            <input type="hidden" id="a-id">
                             <input type="text" id="a-title" placeholder="Title (e.g., National CTF Champion)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="text" id="a-org" placeholder="Organization" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                                 <input type="text" id="a-year" placeholder="Year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             </div>
                             <textarea id="a-details" placeholder="Details..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
-                            <button type="submit" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Add Achievement</button>
+                            <div class="flex gap-2">
+                                <button type="submit" id="btn-ach" class="flex-1 bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Add Achievement</button>
+                                <button type="button" onclick="resetForm('addAchForm', 'btn-ach', 'Add Achievement')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-ach">Cancel</button>
+                            </div>
                         </form>
                         <div id="achList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
@@ -114,10 +122,14 @@
                     <div class="glass-panel p-6 border-t-2 border-purple-500">
                         <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="briefcase" class="w-5 h-5 text-purple-500"></i> Projects</h3>
                         <form id="addProjForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
+                            <input type="hidden" id="pr-id">
                             <input type="text" id="pr-title" placeholder="Project Title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <input type="text" id="pr-tags" placeholder="Tags (comma separated)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
                             <textarea id="pr-desc" placeholder="Project Description..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none" rows="2"></textarea>
-                            <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Deploy Project</button>
+                            <div class="flex gap-2">
+                                <button type="submit" id="btn-proj" class="flex-1 bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Deploy Project</button>
+                                <button type="button" onclick="resetForm('addProjForm', 'btn-proj', 'Deploy Project')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-proj">Cancel</button>
+                            </div>
                         </form>
                         <div id="projList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
@@ -132,25 +144,26 @@
                         </form>
                         <div id="galleryList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
-
-                    <div class="glass-panel p-6 border-t-2 border-red-500">
-                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="key" class="w-5 h-5 text-red-500"></i> Change Password</h3>
-                        <form id="passChangeForm" class="space-y-3">
-                            <input type="text" id="cp-user" placeholder="Username" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                            <input type="password" id="cp-old" placeholder="Old Password" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
-                            <input type="password" id="cp-new" placeholder="New Password" required class="w-full border border-red-500/50 bg-red-900/20 focus:border-red-500 rounded px-3 py-2 text-xs text-white outline-none">
-                            <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Update Password</button>
-                        </form>
-                    </div>
                 </div>
             </div>
 
             <div class="glass-panel p-6 border-t-2 border-emerald-500">
-                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="mail" class="w-5 h-5 text-emerald-500"></i> Secure Inbox</h3>
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="mail" class="w-5 h-5 text-emerald-500"></i> Secure Inbox (Messages)</h3>
                 <div id="messageList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto custom-scrollbar p-2">
                     <p class="text-xs text-slate-500 mono">Fetching messages...</p>
                 </div>
             </div>
+
+            <div class="glass-panel p-6 border-t-2 border-red-500 max-w-md mx-auto">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="key" class="w-5 h-5 text-red-500"></i> Change Password</h3>
+                <form id="passChangeForm" class="space-y-3">
+                    <input type="text" id="cp-user" placeholder="Username" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                    <input type="password" id="cp-old" placeholder="Old Password" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none">
+                    <input type="password" id="cp-new" placeholder="New Password" required class="w-full border border-red-500/50 bg-red-900/20 focus:border-red-500 rounded px-3 py-2 text-xs text-white outline-none">
+                    <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Update Password</button>
+                </form>
+            </div>
+
         </section>
     </main>
 
@@ -180,7 +193,12 @@
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান (e.g. 'https://your-site.onrender.com/api')
 
-        // Theme Toggle
+        // Data Arrays for Edit functioning
+        let eduDataArray = [];
+        let projDataArray = [];
+        let achDataArray = [];
+
+        // Theme
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
@@ -188,7 +206,7 @@
             lucide.createIcons();
         });
 
-        // Login Auth
+        // Auth
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const res = await fetch(`${API_BASE}/login`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({username: document.getElementById('username').value, password: document.getElementById('password').value}) });
@@ -216,6 +234,18 @@
             loadProfile(); loadEducation(); loadProjects(); loadAchievements(); loadGallery(); loadMessages();
         }
 
+        // Generic Reset Form
+        function resetForm(formId, btnId, originalText) {
+            document.getElementById(formId).reset();
+            const idField = document.getElementById(formId).querySelector('input[type="hidden"]');
+            if(idField) idField.value = '';
+            document.getElementById(btnId).innerText = originalText;
+            
+            if(formId === 'addEduForm') document.getElementById('cancel-edu').classList.add('hidden');
+            if(formId === 'addProjForm') document.getElementById('cancel-proj').classList.add('hidden');
+            if(formId === 'addAchForm') document.getElementById('cancel-ach').classList.add('hidden');
+        }
+
         // --- Profile ---
         async function loadProfile() {
             const data = await (await fetch(`${API_BASE}/profile`)).json();
@@ -234,47 +264,127 @@
 
         // --- Education ---
         async function loadEducation() {
-            const items = await (await fetch(`${API_BASE}/education`)).json();
+            eduDataArray = await (await fetch(`${API_BASE}/education`)).json();
             const list = document.getElementById('eduList'); list.innerHTML = '';
-            items.forEach(item => {
-                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5"><div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.degree}</p><p class="text-[10px] text-slate-400">${item.institution}</p></div><button onclick="deleteRow('education', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+            eduDataArray.forEach(item => {
+                list.innerHTML += `
+                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5">
+                    <div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.degree}</p><p class="text-[10px] text-slate-400">${item.institution}</p></div>
+                    <div class="flex gap-1">
+                        <button onclick="editEdu(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="deleteRow('education', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>`;
             });
             lucide.createIcons();
         }
+        function editEdu(id) {
+            const item = eduDataArray.find(x => x.id === id);
+            if(!item) return;
+            document.getElementById('e-id').value = item.id;
+            document.getElementById('e-degree').value = item.degree;
+            document.getElementById('e-inst').value = item.institution;
+            document.getElementById('e-year').value = item.pass_year;
+            document.getElementById('e-details').value = item.details;
+            document.getElementById('btn-edu').innerText = "UPDATE EDUCATION";
+            document.getElementById('cancel-edu').classList.remove('hidden');
+            window.scrollTo({ top: document.getElementById('addEduForm').offsetTop - 100, behavior: 'smooth' });
+        }
         document.getElementById('addEduForm').addEventListener('submit', async(e) => {
             e.preventDefault();
-            await fetch(`${API_BASE}/education`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ degree: document.getElementById('e-degree').value, institution: document.getElementById('e-inst').value, pass_year: document.getElementById('e-year').value, details: document.getElementById('e-details').value }) });
-            e.target.reset(); loadEducation();
+            const id = document.getElementById('e-id').value;
+            const payload = { degree: document.getElementById('e-degree').value, institution: document.getElementById('e-inst').value, pass_year: document.getElementById('e-year').value, details: document.getElementById('e-details').value };
+            
+            if(id) {
+                await fetch(`${API_BASE}/education/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            } else {
+                await fetch(`${API_BASE}/education`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            }
+            resetForm('addEduForm', 'btn-edu', 'Add Education');
+            loadEducation();
         });
 
         // --- Projects ---
         async function loadProjects() {
-            const items = await (await fetch(`${API_BASE}/projects`)).json();
+            projDataArray = await (await fetch(`${API_BASE}/projects`)).json();
             const list = document.getElementById('projList'); list.innerHTML = '';
-            items.forEach(item => {
-                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5"><div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.tags}</p></div><button onclick="deleteRow('projects', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+            projDataArray.forEach(item => {
+                list.innerHTML += `
+                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5">
+                    <div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.tags}</p></div>
+                    <div class="flex gap-1">
+                        <button onclick="editProj(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="deleteRow('projects', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>`;
             });
             lucide.createIcons();
         }
+        function editProj(id) {
+            const item = projDataArray.find(x => x.id === id);
+            if(!item) return;
+            document.getElementById('pr-id').value = item.id;
+            document.getElementById('pr-title').value = item.title;
+            document.getElementById('pr-tags').value = item.tags;
+            document.getElementById('pr-desc').value = item.description;
+            document.getElementById('btn-proj').innerText = "UPDATE PROJECT";
+            document.getElementById('cancel-proj').classList.remove('hidden');
+            window.scrollTo({ top: document.getElementById('addProjForm').offsetTop - 100, behavior: 'smooth' });
+        }
         document.getElementById('addProjForm').addEventListener('submit', async(e) => {
             e.preventDefault();
-            await fetch(`${API_BASE}/projects`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ title: document.getElementById('pr-title').value, tags: document.getElementById('pr-tags').value, description: document.getElementById('pr-desc').value }) });
-            e.target.reset(); loadProjects();
+            const id = document.getElementById('pr-id').value;
+            const payload = { title: document.getElementById('pr-title').value, tags: document.getElementById('pr-tags').value, description: document.getElementById('pr-desc').value };
+            
+            if(id) {
+                await fetch(`${API_BASE}/projects/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            } else {
+                await fetch(`${API_BASE}/projects`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            }
+            resetForm('addProjForm', 'btn-proj', 'Deploy Project');
+            loadProjects();
         });
 
         // --- Achievements ---
         async function loadAchievements() {
-            const items = await (await fetch(`${API_BASE}/achievements`)).json();
+            achDataArray = await (await fetch(`${API_BASE}/achievements`)).json();
             const list = document.getElementById('achList'); list.innerHTML = '';
-            items.forEach(item => {
-                list.innerHTML += `<div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5"><div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.organization}</p></div><button onclick="deleteRow('achievements', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`;
+            achDataArray.forEach(item => {
+                list.innerHTML += `
+                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5">
+                    <div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.organization}</p></div>
+                    <div class="flex gap-1">
+                        <button onclick="editAch(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="deleteRow('achievements', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>`;
             });
             lucide.createIcons();
         }
+        function editAch(id) {
+            const item = achDataArray.find(x => x.id === id);
+            if(!item) return;
+            document.getElementById('a-id').value = item.id;
+            document.getElementById('a-title').value = item.title;
+            document.getElementById('a-org').value = item.organization;
+            document.getElementById('a-year').value = item.year;
+            document.getElementById('a-details').value = item.details;
+            document.getElementById('btn-ach').innerText = "UPDATE ACHIEVEMENT";
+            document.getElementById('cancel-ach').classList.remove('hidden');
+            window.scrollTo({ top: document.getElementById('addAchForm').offsetTop - 100, behavior: 'smooth' });
+        }
         document.getElementById('addAchForm').addEventListener('submit', async(e) => {
             e.preventDefault();
-            await fetch(`${API_BASE}/achievements`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ title: document.getElementById('a-title').value, organization: document.getElementById('a-org').value, year: document.getElementById('a-year').value, details: document.getElementById('a-details').value }) });
-            e.target.reset(); loadAchievements();
+            const id = document.getElementById('a-id').value;
+            const payload = { title: document.getElementById('a-title').value, organization: document.getElementById('a-org').value, year: document.getElementById('a-year').value, details: document.getElementById('a-details').value };
+            
+            if(id) {
+                await fetch(`${API_BASE}/achievements/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            } else {
+                await fetch(`${API_BASE}/achievements`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            }
+            resetForm('addAchForm', 'btn-ach', 'Add Achievement');
+            loadAchievements();
         });
 
         // --- Archive (Gallery) ---
@@ -308,16 +418,10 @@
         // --- Change Password ---
         document.getElementById('passChangeForm').addEventListener('submit', async(e) => {
             e.preventDefault();
-            const res = await fetch(`${API_BASE}/change-password`, { 
-                method: 'POST', 
-                headers:{'Content-Type':'application/json'}, 
-                body: JSON.stringify({ username: document.getElementById('cp-user').value, old_password: document.getElementById('cp-old').value, new_password: document.getElementById('cp-new').value }) 
-            });
+            const res = await fetch(`${API_BASE}/change-password`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: document.getElementById('cp-user').value, old_password: document.getElementById('cp-old').value, new_password: document.getElementById('cp-new').value }) });
             const data = await res.json();
-            if(data.success) {
-                alert('Password Changed Successfully! Please login with new password next time.');
-                e.target.reset();
-            } else alert(data.message);
+            if(data.success) { alert('Password Changed Successfully! Please login with new password next time.'); e.target.reset(); } 
+            else alert(data.message);
         });
 
         // --- Messages Logic with Local PC Time ---
@@ -327,7 +431,6 @@
             if(msgs.length === 0) { list.innerHTML = '<p class="text-xs text-slate-500">Inbox is empty.</p>'; return; }
 
             msgs.forEach(msg => {
-                // local time formatting based on your PC
                 const localDate = new Date(msg.created_at);
                 const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
                 const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
