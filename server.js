@@ -22,15 +22,28 @@ app.get('/api/stats', (req, res) => {
     res.json({
         cpu: os.loadavg()[0].toFixed(1),
         ram: (((totalMem - freeMem) / totalMem) * 100).toFixed(1),
-        ping: Math.floor(Math.random() * 15) + 10
+        ping: Math.floor(Math.random() * 15) + 10,
+        total_visitor: 1204, // ডেমো ডাটা
+        today_visitor: 42   // ডেমো ডাটা
     });
 });
 
-// Admin Login
+// Admin Auth & Password Change
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     const { data } = await supabase.from('admin_data').select('*').eq('username', username).eq('password', password).single();
     res.json({ success: !!data });
+});
+
+app.post('/api/change-password', async (req, res) => {
+    const { username, old_password, new_password } = req.body;
+    // Check old credentials
+    const { data } = await supabase.from('admin_data').select('*').eq('username', username).eq('password', old_password).single();
+    if (!data) return res.json({ success: false, message: 'Invalid Username or Old Password' });
+    
+    // Update new password
+    const { error } = await supabase.from('admin_data').update({ password: new_password }).eq('id', data.id);
+    res.json({ success: !error });
 });
 
 // Messages
@@ -86,6 +99,21 @@ app.post('/api/projects', async (req, res) => {
 });
 app.delete('/api/projects/:id', async (req, res) => {
     const { error } = await supabase.from('projects_data').delete().eq('id', req.params.id);
+    res.json({ success: !error });
+});
+
+// Achievements Data
+app.get('/api/achievements', async (req, res) => {
+    const { data } = await supabase.from('achievements_data').select('*').order('created_at', { ascending: false });
+    res.json(data);
+});
+app.post('/api/achievements', async (req, res) => {
+    const { title, organization, year, details } = req.body;
+    const { error } = await supabase.from('achievements_data').insert([{ title, organization, year, details }]);
+    res.json({ success: !error });
+});
+app.delete('/api/achievements/:id', async (req, res) => {
+    const { error } = await supabase.from('achievements_data').delete().eq('id', req.params.id);
     res.json({ success: !error });
 });
 
