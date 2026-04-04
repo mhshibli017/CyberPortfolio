@@ -18,12 +18,19 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 4px; }
         
-        /* Light Mode */
+        /* ================= LIGHT MODE FIXES ================= */
         body.light-mode { background-color: #d1d5db; color: #0f172a; }
-        body.light-mode .glass-panel { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.1); color: #1e293b; }
+        body.light-mode .glass-panel { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.1); color: #1e293b; }
         body.light-mode input, body.light-mode textarea { background-color: rgba(255,255,255,0.9)!important; color: #0f172a!important; border-color: rgba(0,0,0,0.2)!important; }
         body.light-mode .glass-nav { color: #fff; }
-        body.light-mode .modal-overlay .glass-panel { background: rgba(15, 23, 42, 0.95); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1); } 
+        
+        /* Modals & Messages Light Mode */
+        body.light-mode .modal-overlay .glass-panel { background: rgba(255, 255, 255, 0.98); color: #0f172a; border: 1px solid rgba(0, 0, 0, 0.1); } 
+        body.light-mode #msgLightbox .text-white, body.light-mode #messageList .text-white { color: #0f172a !important; }
+        body.light-mode #msgLightbox .text-slate-300, body.light-mode #messageList .text-slate-300 { color: #334155 !important; }
+        body.light-mode #msgLightbox .text-slate-400, body.light-mode #messageList .text-slate-400 { color: #475569 !important; }
+        body.light-mode .bg-black\/30 { background-color: rgba(0, 0, 0, 0.05) !important; border-color: rgba(0,0,0,0.1) !important; }
+        body.light-mode .bg-black\/40 { background-color: rgba(0, 0, 0, 0.1) !important; }
     </style>
 </head>
 <body>
@@ -48,7 +55,7 @@
             <div class="glass-panel p-8 w-full max-w-md border-t-2 border-red-500/50">
                 <div class="text-center mb-8">
                     <i data-lucide="fingerprint" class="w-12 h-12 text-red-500 mx-auto mb-4"></i>
-                    <h2 class="text-2xl font-black">System Auth</h2>
+                    <h2 class="text-2xl font-black text-white">System Auth</h2>
                 </div>
                 <form id="loginForm" class="space-y-4">
                     <input type="text" id="username" class="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-3 text-sm outline-none focus:border-red-500 text-white" placeholder="Root_User">
@@ -169,7 +176,7 @@
 
     <div id="msgLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="glass-panel max-w-3xl w-full p-8 relative transform scale-95 transition-transform duration-300">
-            <button onclick="closeMsgLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/40 p-2 rounded-full border border-white/5"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <button onclick="closeMsgLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5"><i data-lucide="x" class="w-5 h-5"></i></button>
             <div class="border-b border-white/10 pb-4 mb-6">
                 <div class="flex justify-between items-start">
                     <div>
@@ -184,21 +191,21 @@
                 </div>
             </div>
             <div class="bg-black/30 p-6 rounded-xl border border-white/5 max-h-[50vh] overflow-y-auto custom-scrollbar">
-                <p id="lb-msg" class="text-slate-300 font-mono text-sm leading-relaxed whitespace-pre-wrap"></p>
+                <p id="lb-msg" class="text-slate-300 font-mono text-sm leading-relaxed"></p>
             </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান (e.g. 'https://your-site.onrender.com/api')
+        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
         // Data Arrays for Edit functioning
         let eduDataArray = [];
         let projDataArray = [];
         let achDataArray = [];
 
-        // Theme
+        // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
@@ -206,7 +213,7 @@
             lucide.createIcons();
         });
 
-        // Auth
+        // Login
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const res = await fetch(`${API_BASE}/login`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({username: document.getElementById('username').value, password: document.getElementById('password').value}) });
@@ -294,14 +301,9 @@
             e.preventDefault();
             const id = document.getElementById('e-id').value;
             const payload = { degree: document.getElementById('e-degree').value, institution: document.getElementById('e-inst').value, pass_year: document.getElementById('e-year').value, details: document.getElementById('e-details').value };
-            
-            if(id) {
-                await fetch(`${API_BASE}/education/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            } else {
-                await fetch(`${API_BASE}/education`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            }
-            resetForm('addEduForm', 'btn-edu', 'Add Education');
-            loadEducation();
+            if(id) await fetch(`${API_BASE}/education/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            else await fetch(`${API_BASE}/education`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            resetForm('addEduForm', 'btn-edu', 'Add Education'); loadEducation();
         });
 
         // --- Projects ---
@@ -335,14 +337,9 @@
             e.preventDefault();
             const id = document.getElementById('pr-id').value;
             const payload = { title: document.getElementById('pr-title').value, tags: document.getElementById('pr-tags').value, description: document.getElementById('pr-desc').value };
-            
-            if(id) {
-                await fetch(`${API_BASE}/projects/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            } else {
-                await fetch(`${API_BASE}/projects`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            }
-            resetForm('addProjForm', 'btn-proj', 'Deploy Project');
-            loadProjects();
+            if(id) await fetch(`${API_BASE}/projects/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            else await fetch(`${API_BASE}/projects`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            resetForm('addProjForm', 'btn-proj', 'Deploy Project'); loadProjects();
         });
 
         // --- Achievements ---
@@ -377,14 +374,9 @@
             e.preventDefault();
             const id = document.getElementById('a-id').value;
             const payload = { title: document.getElementById('a-title').value, organization: document.getElementById('a-org').value, year: document.getElementById('a-year').value, details: document.getElementById('a-details').value };
-            
-            if(id) {
-                await fetch(`${API_BASE}/achievements/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            } else {
-                await fetch(`${API_BASE}/achievements`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            }
-            resetForm('addAchForm', 'btn-ach', 'Add Achievement');
-            loadAchievements();
+            if(id) await fetch(`${API_BASE}/achievements/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            else await fetch(`${API_BASE}/achievements`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            resetForm('addAchForm', 'btn-ach', 'Add Achievement'); loadAchievements();
         });
 
         // --- Archive (Gallery) ---
@@ -424,7 +416,7 @@
             else alert(data.message);
         });
 
-        // --- Messages Logic with Local PC Time ---
+        // --- Messages Logic with Fix for Newlines ---
         async function loadMessages() {
             const msgs = await (await fetch(`${API_BASE}/messages`)).json();
             const list = document.getElementById('messageList'); list.innerHTML = '';
@@ -435,7 +427,13 @@
                 const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
                 const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
                 const formattedDate = `${localDate.toLocaleDateString(undefined, dateOptions)} - ${localDate.toLocaleTimeString(undefined, timeOptions)}`;
-                const safePayload = (msg.data_payload || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                
+                // CRITICAL FIX: Escape quotes and newlines for inline JS
+                const safePayload = (msg.data_payload || '')
+                    .replace(/\\/g, '\\\\')
+                    .replace(/'/g, "\\'")
+                    .replace(/"/g, '&quot;')
+                    .replace(/\n/g, '<br>');
 
                 list.innerHTML += `
                     <div class="glass-panel p-4 hover:border-emerald-500/50 transition cursor-pointer flex flex-col justify-between h-40 group" onclick="openMsgModal('${msg.identity_name}', '${msg.contact_vector}', '${safePayload}', '${formattedDate}')">
@@ -463,12 +461,12 @@
             }
         }
 
-        // Message Modal
+        // Message Modal Logic
         const msgModal = document.getElementById('msgLightbox');
         function openMsgModal(name, email, msg, date) {
             document.getElementById('lb-name').innerText = name;
             document.getElementById('lb-email').innerText = email;
-            document.getElementById('lb-msg').innerText = msg;
+            document.getElementById('lb-msg').innerHTML = msg; // Using innerHTML because of <br> tags
             document.getElementById('lb-date').innerText = date;
             msgModal.classList.remove('hidden');
             setTimeout(() => msgModal.classList.remove('opacity-0'), 10);
