@@ -20,30 +20,18 @@
         
         /* ================= LIGHT MODE FIXES ================= */
         body.light-mode { background-color: #d1d5db; color: #0f172a; }
-        body.light-mode .bg-cyber {
-            background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(209, 213, 219, 0.95), #d1d5db);
-        }
+        body.light-mode .bg-cyber { background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(209, 213, 219, 0.95), #d1d5db); }
         body.light-mode .glass-panel { background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(0, 0, 0, 0.1); color: #1e293b; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-        
-        /* Input & Form Fixes for Light Mode */
-        body.light-mode input, body.light-mode textarea { 
-            background-color: rgba(255,255,255,0.9) !important; 
-            color: #0f172a !important; 
-            border: 1px solid rgba(0,0,0,0.2) !important; 
-        }
+        body.light-mode input, body.light-mode textarea { background-color: rgba(255,255,255,0.9) !important; color: #0f172a !important; border: 1px solid rgba(0,0,0,0.2) !important; }
         body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; box-shadow: 0 0 0 1px #0ea5e9; }
         body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #64748b !important; }
-        body.light-mode .glass-nav { color: #fff; } /* Keep header text white */
-        
-        /* List Items & Modals in Light Mode */
+        body.light-mode .glass-nav { color: #fff; } 
         body.light-mode .bg-black\/30, body.light-mode .bg-black\/20 { background-color: rgba(0, 0, 0, 0.05) !important; border-color: rgba(0,0,0,0.1) !important; }
         body.light-mode .text-white { color: #0f172a !important; }
         body.light-mode .text-slate-400 { color: #475569 !important; }
         body.light-mode .text-slate-300 { color: #334155 !important; }
         body.light-mode .modal-overlay .glass-panel { background: rgba(255, 255, 255, 0.98); color: #0f172a; } 
         body.light-mode #msgLightbox .text-white, body.light-mode #messageList .text-white { color: #0f172a !important; }
-        
-        /* Specific override for Password Box in Light Mode */
         body.light-mode #cp-new { background-color: rgba(254, 226, 226, 0.5) !important; border-color: rgba(239, 68, 68, 0.5) !important; }
         body.light-mode #cp-new:focus { border-color: #ef4444 !important; }
     </style>
@@ -65,7 +53,6 @@
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 pt-24 pb-20">
-        
         <section id="loginSection" class="min-h-[70vh] flex items-center justify-center">
             <div class="glass-panel p-8 w-full max-w-md border-t-2 border-red-500/50">
                 <div class="text-center mb-8">
@@ -159,10 +146,15 @@
                     <div class="glass-panel p-6 border-t-2 border-amber-500">
                         <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="image" class="w-5 h-5 text-amber-500"></i> Visual Archives</h3>
                         <form id="addGalleryForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
-                            <input type="file" id="g-img" accept="image/*" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-slate-300 outline-none transition">
-                            <input type="text" id="g-title" placeholder="Title" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                            <input type="hidden" id="g-id">
+                            <input type="file" id="g-img" accept="image/*" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-slate-400 outline-none transition">
+                            <p class="text-[9px] text-amber-500 hidden mono" id="g-img-hint">* Leave file empty to keep existing image</p>
+                            <input type="text" id="g-title" placeholder="Title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
                             <textarea id="g-details" placeholder="Details" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition" rows="2"></textarea>
-                            <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded text-[10px] font-bold w-full uppercase transition">Upload Archive</button>
+                            <div class="flex gap-2">
+                                <button type="submit" id="btn-gallery" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Upload Archive</button>
+                                <button type="button" onclick="resetForm('addGalleryForm', 'btn-gallery', 'Upload Archive')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-gallery">Cancel</button>
+                            </div>
                         </form>
                         <div id="galleryList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
@@ -194,7 +186,6 @@
                     <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 py-3 rounded text-[10px] font-bold w-full uppercase transition shadow-lg shadow-red-500/20">Update Password</button>
                 </form>
             </div>
-
         </section>
     </main>
 
@@ -227,6 +218,7 @@
         let eduDataArray = [];
         let projDataArray = [];
         let achDataArray = [];
+        let galleryDataArray = [];
 
         // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
@@ -273,6 +265,10 @@
             if(formId === 'addEduForm') document.getElementById('cancel-edu').classList.add('hidden');
             if(formId === 'addProjForm') document.getElementById('cancel-proj').classList.add('hidden');
             if(formId === 'addAchForm') document.getElementById('cancel-ach').classList.add('hidden');
+            if(formId === 'addGalleryForm') {
+                document.getElementById('cancel-gallery').classList.add('hidden');
+                document.getElementById('g-img-hint').classList.add('hidden');
+            }
         }
 
         // --- Profile ---
@@ -401,28 +397,57 @@
             resetForm('addAchForm', 'btn-ach', 'Add Achievement'); loadAchievements();
         });
 
-        // --- Archive (Gallery) ---
+        // --- Archive (Gallery) with Update Logic ---
         async function loadGallery() {
-            const items = await (await fetch(`${API_BASE}/gallery`)).json();
+            galleryDataArray = await (await fetch(`${API_BASE}/gallery`)).json();
             const list = document.getElementById('galleryList'); list.innerHTML = '';
-            items.forEach(item => {
+            galleryDataArray.forEach(item => {
                 list.innerHTML += `
                 <div class="flex justify-between items-center bg-black/30 p-2 rounded border border-white/5 hover:border-amber-500/30 transition">
                     <div class="flex items-center gap-2 truncate"><img src="${item.image_url}" class="w-8 h-8 object-cover rounded"><p class="text-xs text-white truncate">${item.title}</p></div>
-                    <button onclick="deleteRow('gallery', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1.5 rounded transition shrink-0"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <div class="flex gap-1 shrink-0">
+                        <button onclick="editGallery(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1.5 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="deleteRow('gallery', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1.5 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
                 </div>`;
             });
             lucide.createIcons();
         }
+        function editGallery(id) {
+            const item = galleryDataArray.find(x => x.id === id);
+            if(!item) return;
+            document.getElementById('g-id').value = item.id;
+            document.getElementById('g-title').value = item.title;
+            document.getElementById('g-details').value = item.details;
+            
+            // Image is optional for update
+            document.getElementById('g-img').required = false;
+            document.getElementById('g-img-hint').classList.remove('hidden');
+            
+            document.getElementById('btn-gallery').innerText = "UPDATE ARCHIVE";
+            document.getElementById('cancel-gallery').classList.remove('hidden');
+            window.scrollTo({ top: document.getElementById('addGalleryForm').offsetTop - 100, behavior: 'smooth' });
+        }
         document.getElementById('addGalleryForm').addEventListener('submit', async(e) => {
             e.preventDefault();
+            const id = document.getElementById('g-id').value;
+            const fileInput = document.getElementById('g-img');
+            
+            if(!id && fileInput.files.length === 0) return alert("Please select an image to upload!");
+
             const formData = new FormData();
-            formData.append('image', document.getElementById('g-img').files[0]);
+            if(fileInput.files.length > 0) formData.append('image', fileInput.files[0]);
             formData.append('title', document.getElementById('g-title').value);
             formData.append('details', document.getElementById('g-details').value);
-            const btn = e.target.querySelector('button'); btn.innerText = 'UPLOADING...';
-            await fetch(`${API_BASE}/gallery`, { method: 'POST', body: formData });
-            btn.innerText = 'UPLOAD ARCHIVE'; e.target.reset(); loadGallery();
+            
+            const btn = e.target.querySelector('button[type="submit"]'); 
+            btn.innerText = 'UPLOADING...';
+            
+            if(id) await fetch(`${API_BASE}/gallery/${id}`, { method: 'PUT', body: formData });
+            else await fetch(`${API_BASE}/gallery`, { method: 'POST', body: formData });
+            
+            resetForm('addGalleryForm', 'btn-gallery', 'Upload Archive');
+            loadGallery();
         });
 
         // Generic Delete
@@ -442,7 +467,7 @@
             else alert(data.message);
         });
 
-        // --- Messages Logic with Fix for Newlines ---
+        // --- Messages Logic ---
         async function loadMessages() {
             const msgs = await (await fetch(`${API_BASE}/messages`)).json();
             const list = document.getElementById('messageList'); list.innerHTML = '';
