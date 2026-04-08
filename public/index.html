@@ -23,16 +23,16 @@
                 url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 V 0 H 100' fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1'/%3E%3Cpath d='M0 50 H 100 M 50 0 V 100' fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1' stroke-dasharray='4,4'/%3E%3Ccircle cx='50' cy='50' r='2' fill='rgba(14,165,233,0.2)'/%3E%3C/svg%3E");
             background-size: 100px 100px;
         }
-        /* Cyber Art Decals (Corners & Edges) */
+        /* Cyber Art Decals (Corners & Edges) - Extreme Hacker Vibe */
         .bg-cyber::before {
-            content: 'SYS.CORE // ONLINE \A DEF_PROTOCOL // SECURE \A NODE_ID // 0x99A3';
+            content: 'SYS.CORE // ONLINE \A DEF_PROTOCOL // SECURE \A NODE_ID // 0x99A3 \A MEM_ADDR // 0x7FFF \A SYS_CALL(0x1337)';
             position: absolute; bottom: 5%; left: 2%;
             font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold;
             color: rgba(16, 185, 129, 0.12); line-height: 1.8; white-space: pre; letter-spacing: 0.1em;
             pointer-events: none;
         }
         .bg-cyber::after {
-            content: '1011 0100 1101 \A 0010 1011 0110 \A 1101 0010 1011 \A 0110 1101 0100';
+            content: '0100 1101 0110 \A 1101 0010 1011 \A 0110 1101 0100 \A PUSH EBP \A MOV EBP, ESP \A SUB ESP, 0x10 \A MEM_ADDR: 0x7FFF';
             position: absolute; top: 30%; right: -3%;
             font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: bold;
             color: rgba(14, 165, 233, 0.08); line-height: 1.5; white-space: pre;
@@ -68,8 +68,10 @@
 
         .glow-text { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
 
+        /* ================= AGGRESSIVE SCANNING ANIMATION ================= */
         .scanner-container { position: relative; overflow: hidden; border-radius: 1rem; }
-        .scanner-line { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: rgba(14, 165, 233, 0.9); box-shadow: 0 0 15px rgba(14, 165, 233, 1), 0 0 30px rgba(14, 165, 233, 0.8); animation: scan 3.5s cubic-bezier(0.53, 0.21, 0.29, 0.67) infinite; z-index: 10; }
+        .scanner-line { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: rgba(14, 165, 233, 0.9); box-shadow: 0 0 15px rgba(14, 165, 233, 1), 0 0 30px rgba(14, 165, 233, 0.8); animation: scan 1.5s cubic-bezier(0.53, 0.21, 0.29, 0.67) infinite; z-index: 10; }
+        .scanner-data { position: absolute; top: 10%; left: 5%; color: rgba(14, 165, 233, 0.3); font-family: 'JetBrains Mono', monospace; font-size: 8px; line-height: 1.5; white-space: pre; pointer-events: none; z-index: 9; }
         @keyframes scan { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
 
         /* ================= REFINED LIGHT MODE (DAY MODE) ================= */
@@ -182,10 +184,16 @@
                 <p id="profile-bio" class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed mx-auto md:mx-0">Loading biography...</p>
             </div>
             
-            <div class="w-72 md:w-80 glass-panel backdrop-blur-xl rounded-[2rem] p-4 relative mx-auto md:mx-0">
-                <div class="scanner-container w-full h-80 mb-4 bg-black/50">
+            <div class="w-72 md:w-80 glass-panel backdrop-blur-xl rounded-[2rem] p-4 relative mx-auto md:mx-0 border-2 border-sky-500/30 shadow-[0_0_20px_rgba(14,165,233,0.2)]">
+                <div class="scanner-container w-full h-80 mb-4 bg-black/50 border border-white/10 rounded-2xl relative">
                     <img src="./profile.jpg" class="w-full h-full object-cover rounded-2xl" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
                     <div class="scanner-line"></div>
+                    <div class="scanner-data">
+SCANNING...
+UID: 0x99A3
+CLEARANCE: LVL_01
+NODE: CYBER_AI
+                    </div>
                 </div>
                 <h3 id="profile-name" class="text-xl font-bold text-white mb-1 glow-text">Loading...</h3>
                 <p id="profile-title" class="text-[9px] font-bold text-sky-500 uppercase tracking-[0.2em] mono mb-3">Loading...</p>
@@ -303,7 +311,7 @@
             <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/20 hover:bg-blue-600/20 hover:text-blue-600 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
             <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/20 hover:bg-pink-500/20 hover:text-pink-500 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
         </div>
-        <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Ahmedul Hasan. Design: Hyper-Security OS v2</p>
+        <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Mahmudul Hasan. Design: Hyper-Security OS v2</p>
     </footer>
 
     <div id="galleryModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
