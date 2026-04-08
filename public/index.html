@@ -19,7 +19,6 @@
             background-color: #020617; overflow: hidden;
         }
 
-        /* Ambient Glows */
         .bg-cyber::before {
             content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%;
             background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
@@ -31,7 +30,6 @@
             border-radius: 50%; filter: blur(60px); pointer-events: none;
         }
 
-        /* Hacker Decals (Static Text in Background) */
         .hacker-decals {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
             font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8;
@@ -45,7 +43,6 @@
         .decal-3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.02); font-size: 200px; font-weight: 900; letter-spacing: -15px; user-select: none; }
         .decal-3::before { content: "0xMH"; }
 
-        /* General UI Elements */
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
         .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; transition: all 0.5s; }
         
@@ -72,14 +69,10 @@
         @keyframes glitchScan { 0% { left: -100%; opacity: 0; } 10% { opacity: 1; } 50% { left: 100%; opacity: 0; } 100% { left: 100%; opacity: 0; } }
 
         .glow-text { text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); }
-        .blink { animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate; }
-        @keyframes blinker { 0% { opacity: 1; } 100% { opacity: 0.2; } }
 
-        /* ================= PROFILE SCANNER (IMAGE REPLICA) ================= */
-        .profile-box { background: #0A101F; border: 1px solid rgba(14, 165, 233, 0.2); }
+        /* ================= PROFILE SCANNER (NEW EXACT REPLICA) ================= */
         .scanner-container { position: relative; overflow: hidden; }
         
-        /* Slow, aggressive blue scanning line */
         .scanner-line { 
             position: absolute; top: 0; left: 0; width: 100%; height: 3px; 
             background: #0ea5e9; 
@@ -89,8 +82,14 @@
         }
         @keyframes slowScan { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
         
-        /* Scan Overlay */
         .scanner-overlay { position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.25) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; opacity: 0.5; }
+
+        /* Security Shield Blinking */
+        .blink-shield { animation: shieldPulse 1.5s ease-in-out infinite alternate; }
+        @keyframes shieldPulse {
+            0% { opacity: 0.3; transform: scale(0.95); box-shadow: 0 0 0 rgba(14, 165, 233, 0); }
+            100% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px rgba(14, 165, 233, 0.4); }
+        }
 
         /* ================= DAY MODE FIXES ================= */
         body.light-mode { background-color: #f1f5f9; color: #0f172a; }
@@ -102,11 +101,13 @@
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
         body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
         
-        /* Light mode specific for the profile box replica */
-        body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
-        body.light-mode .bg-\[\#111827\] { background: #f8fafc !important; border: 1px solid rgba(0,0,0,0.1) !important; }
-        body.light-mode .scanner-container { background: #e2e8f0 !important; }
-        body.light-mode .scanner-overlay { opacity: 0.1; }
+        /* Light mode explicit background fixes for the new profile card */
+        body.light-mode .bg-\[\#080d1a\] { background-color: #ffffff; border: 1px solid rgba(14, 165, 233, 0.3); }
+        body.light-mode .bg-\[\#050b14\] { background-color: #f1f5f9; border-color: rgba(14, 165, 233, 0.2); }
+        body.light-mode .bg-\[\#080d1a\]\/90 { background-color: rgba(255, 255, 255, 0.9); border-color: rgba(14, 165, 233, 0.2); }
+        body.light-mode .bg-\[\#080d1a\]\/80 { background-color: rgba(255, 255, 255, 0.8); }
+        body.light-mode .bg-\[\#0f172a\]\/60 { background-color: rgba(241, 245, 249, 0.8); border-color: rgba(0,0,0,0.05); }
+        body.light-mode .border-\[\#0ea5e9\]\/40 { border-color: rgba(14, 165, 233, 0.6); }
 
         body.light-mode .text-white { color: #0f172a !important; }
         body.light-mode .text-slate-300, body.light-mode .text-slate-400 { color: #475569 !important; }
@@ -183,8 +184,8 @@
         <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-32 gap-10 reveal pt-10">
             <div class="flex-1 space-y-6 text-center md:text-left">
                 <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-500">
-                    <i data-lucide="shield-check" class="w-4 h-4"></i>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">IDENTITY.V2.0_SECURE</span>
+                    <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">Auth Granted // UID: 0x99A3</span>
                 </div>
                 <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] text-white glow-text">
                     Architecting <br>
@@ -194,48 +195,64 @@
                 <p id="profile-bio" class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed mx-auto md:mx-0">Loading biography...</p>
             </div>
             
-            <div class="w-full max-w-[340px] mx-auto md:mx-0">
-                <div class="profile-box p-6 border-t-2 border-sky-500/50 relative overflow-hidden rounded-[2rem] shadow-[0_0_30px_rgba(14,165,233,0.15)]">
+            <div class="relative w-full max-w-[360px] mx-auto md:mx-0 mt-10 md:mt-0">
+                <div class="absolute -top-4 -left-4 w-16 h-16 border-t-[1.5px] border-l-[1.5px] border-[#0ea5e9]/40 rounded-tl-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b-[1.5px] border-r-[1.5px] border-[#0ea5e9]/40 rounded-br-3xl pointer-events-none"></div>
+
+                <div class="absolute -top-8 -right-8 w-20 h-20 bg-[#050b14] border border-white/5 rounded-full flex items-center justify-center z-20 blink-shield">
+                    <i data-lucide="shield-check" class="w-8 h-8 text-[#0ea5e9]"></i>
+                </div>
+
+                <div class="bg-[#080d1a] border border-white/5 rounded-[2rem] p-6 relative z-10 shadow-2xl">
                     
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="border border-sky-500/30 px-2 py-1 rounded bg-black/40">
-                            <p class="text-[7px] text-slate-400 font-mono font-bold leading-tight">NEURAL PROFILE</p>
-                            <p class="text-[9px] text-sky-400 font-mono font-bold leading-tight mt-0.5">ACTIVE_SYNC</p>
+                    <div class="flex items-center justify-between mb-5 pl-1 pr-6">
+                        <div class="flex gap-1.5">
+                            <div class="w-2 h-2 rounded-full bg-[#0ea5e9]"></div>
+                            <div class="w-2 h-2 rounded-full bg-[#0ea5e9]/60"></div>
+                            <div class="w-2 h-2 rounded-full bg-[#0ea5e9]/30"></div>
                         </div>
-                        <div class="border border-sky-500/30 p-2 rounded bg-black/40 blink">
-                            <i data-lucide="qr-code" class="w-4 h-4 text-slate-400"></i>
-                        </div>
+                        <span class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-widest mono">IDENTITY.V2.0_SECURE</span>
                     </div>
 
-                    <div class="scanner-container relative w-full h-64 mb-6 bg-black border-b border-sky-500/30 overflow-hidden rounded-lg">
-                        <img src="./profile.jpg" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
+                    <div class="scanner-container relative w-full h-[320px] mb-6 bg-[#050b14] border border-white/5 rounded-2xl overflow-hidden shadow-inner">
+                        <img src="./profile.jpg" class="w-full h-full object-cover opacity-80" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
                         <div class="scanner-overlay"></div>
                         <div class="scanner-line"></div>
-                        
-                        <div class="absolute bottom-3 left-3">
-                            <p class="text-[6px] mono text-slate-400 font-bold tracking-widest">COORD: 23.8103° N, 90.4125° E</p>
+
+                        <div class="absolute top-4 left-4 bg-[#080d1a]/90 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-sm">
+                            <p class="text-[6px] text-slate-400 font-bold font-mono tracking-wider mb-0.5">NEURAL PROFILE</p>
+                            <p class="text-[9px] text-[#0ea5e9] font-bold font-mono tracking-widest">ACTIVE_SYNC</p>
+                        </div>
+
+                        <div class="absolute top-4 right-4 border border-white/10 p-1.5 rounded-lg bg-[#080d1a]/80 backdrop-blur-sm">
+                            <i data-lucide="scan-line" class="w-4 h-4 text-slate-400"></i>
+                        </div>
+
+                        <div class="absolute bottom-4 left-4 w-full">
+                            <div class="w-8 h-[1px] bg-slate-500/50 mb-1.5"></div>
+                            <p class="text-[6px] text-slate-500/80 font-mono tracking-widest">COORD: 23.8103° N, 90.4125° E</p>
                         </div>
                     </div>
 
                     <div class="flex justify-between items-end mb-6">
                         <div>
-                            <h3 id="profile-name" class="text-2xl font-black text-white leading-tight">Mahmudul Hasan</h3>
-                            <p id="profile-title" class="text-[10px] font-bold text-sky-500 uppercase tracking-widest mono mt-1">SECURITY RESEARCHER</p>
+                            <h3 id="profile-name" class="text-[28px] font-extrabold text-white leading-none mb-1.5 tracking-tight">Mahmudul Hasan</h3>
+                            <p id="profile-title" class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-[0.2em] mono">SECURITY RESEARCHER</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-[7px] text-slate-400 mono">CLEARANCE</p>
-                            <p class="text-[12px] font-bold text-emerald-500 mono">LVL_01</p>
+                            <p class="text-[7px] text-slate-400 mono tracking-widest mb-1 uppercase">CLEARANCE</p>
+                            <p class="text-[12px] font-bold text-[#10b981] mono uppercase">LVL_01</p>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-[#111827] p-3 rounded-xl border border-white/5">
-                            <p class="text-[8px] text-slate-500 mono mb-1">CORE_NODE</p>
-                            <p class="text-xs font-bold text-white mono">CYBER_AI</p>
+                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5">
+                            <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">CORE_NODE</p>
+                            <p class="text-[11px] font-bold text-white mono uppercase">CYBER_AI</p>
                         </div>
-                        <div class="bg-[#111827] p-3 rounded-xl border border-white/5">
-                            <p class="text-[8px] text-slate-500 mono mb-1">PROTOCOL</p>
-                            <p class="text-xs font-bold text-white mono">ADVERSARIAL</p>
+                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5">
+                            <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">PROTOCOL</p>
+                            <p class="text-[11px] font-bold text-white mono uppercase">ADVERSARIAL</p>
                         </div>
                     </div>
                 </div>
@@ -374,7 +391,7 @@
                     document.getElementById('profile-name').innerText = profData.full_name;
                     document.getElementById('profile-title').innerText = profData.job_title;
                     document.getElementById('profile-bio').innerText = profData.bio;
-                    document.getElementById('footer-text').innerText = `© 2026 ${profData.full_name}. Design: Hyper-Security OS v2`;
+                    // Footer is hardcoded with name to avoid loading flash
                 }
 
                 // 2. Education
