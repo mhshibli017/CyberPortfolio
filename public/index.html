@@ -13,28 +13,40 @@
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; transition: background-color 0.5s, color 0.5s; margin: 0; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* ================= EXTREME CYBER BACKGROUND (Subtle Glitch Retained here) ================= */
+        /* ================= EXTREME CYBER BACKGROUND WITH GLITCH ================= */
         .bg-cyber { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
             background-color: #020617; overflow: hidden;
         }
 
+        /* Ambient Glows */
         .bg-cyber::before {
             content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%;
             background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
             border-radius: 50%; filter: blur(60px); pointer-events: none;
         }
+        
+        /* CRT Scanline Overlay */
         .bg-cyber::after {
-            content: ''; position: absolute; bottom: -20%; right: -10%; width: 60%; height: 60%;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
-            border-radius: 50%; filter: blur(60px); pointer-events: none;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 3px);
+            z-index: 1; pointer-events: none; opacity: 0.5;
         }
 
-        /* Hacker Decals - Subtle Background Elements */
+        /* Hacker Decals - Glitching Background Elements */
         .hacker-decals {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
             font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8;
+            animation: backgroundGlitch 4s infinite;
         }
+        
+        @keyframes backgroundGlitch {
+            0%, 90%, 100% { transform: translate(0, 0); opacity: 0.8; filter: none; }
+            92% { transform: translate(-4px, 2px); opacity: 1; filter: drop-shadow(4px 0 0 rgba(239, 68, 68, 0.7)) drop-shadow(-4px 0 0 rgba(14, 165, 233, 0.7)); }
+            94% { transform: translate(4px, -2px); opacity: 0.5; filter: drop-shadow(-4px 0 0 rgba(239, 68, 68, 0.7)) drop-shadow(4px 0 0 rgba(14, 165, 233, 0.7)); }
+            96% { transform: translate(-1px, 1px); opacity: 0.9; filter: none; }
+        }
+
         .decal-1 { position: absolute; top: 15%; left: 2%; white-space: pre; line-height: 1.6; letter-spacing: 0.1em; color: rgba(14, 165, 233, 0.15); }
         .decal-1::before { content: "> INIT SECURE_BOOT...\A> LOAD KERNEL_MODULE_0x8F\A> BYPASSING FIREWALL... [OK]\A> MEM_ALLOC: 0x7FFE4000\A> THREAD_SYNC: IN_PROGRESS"; }
         
@@ -65,7 +77,6 @@
         .sci-fi-card::after { content: ']'; position: absolute; bottom: 10px; right: 10px; color: rgba(14, 165, 233, 0.5); font-family: monospace; font-size: 20px; transition: all 0.3s; }
         .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.8); box-shadow: inset 0 0 20px rgba(14, 165, 233, 0.2), 0 0 20px rgba(14, 165, 233, 0.3); transform: translateY(-5px); }
         
-        /* Background Glitch Lines - Subtle visual effects */
         .cyber-line { position: absolute; top: 0; left: -100%; width: 150%; height: 2px; background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.8), #fff, rgba(14, 165, 233, 0.8), transparent); animation: glitchScan 2.5s infinite; z-index: 5; opacity: 0.7; mix-blend-mode: overlay; }
         .cyber-line.purple { background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.8), #fff, transparent); animation-duration: 3s; }
         .cyber-line.amber { background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.8), #fff, transparent); animation-duration: 2s; }
@@ -95,9 +106,10 @@
             100% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px rgba(14, 165, 233, 0.4); }
         }
 
-        /* ================= DAY MODE FIXES (WITH EXPLICIT OVERRIDES) ================= */
+        /* ================= DAY MODE FIXES ================= */
         body.light-mode { background-color: #f1f5f9; color: #0f172a; }
         body.light-mode .bg-cyber { background-color: #f1f5f9; }
+        body.light-mode .bg-cyber::after { background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03) 1px, transparent 1px, transparent 3px); opacity: 0.3; }
         body.light-mode .decal-1::before { color: rgba(14, 165, 233, 0.3); }
         body.light-mode .decal-2::before { color: rgba(16, 185, 129, 0.3); }
         body.light-mode .decal-3::before { color: rgba(0, 0, 0, 0.03); }
@@ -105,12 +117,9 @@
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
         body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
         
-        /* EXPLICIT LIGHT MODE PROFILE BOX FIXES (Screen approved) */
         body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
-        body.light-mode .light-shield-box { background-color: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
-        body.light-mode .light-scanner { background-color: #f8fafc !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
-        body.light-mode .light-inner-box { background-color: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; color: #0f172a !important; }
-        body.light-mode .light-stat-box { background-color: #f1f5f9 !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
+        body.light-mode .bg-\[\#111827\] { background: #f8fafc !important; border: 1px solid rgba(0,0,0,0.1) !important; }
+        body.light-mode .scanner-container { background: #e2e8f0 !important; }
         body.light-mode .scanner-overlay { opacity: 0.1; }
 
         body.light-mode .text-white { color: #0f172a !important; }
@@ -175,12 +184,12 @@
             </div>
         </div>
         <div id="mobileMenu" class="hidden absolute top-16 left-0 w-full glass-nav flex flex-col items-center py-6 space-y-6 text-[10px] font-bold uppercase tracking-widest shadow-2xl md:hidden">
-            <a href="#about" class="nav-link text-slate-300 hover:text-sky-500 transition">Profile</a>
-            <a href="#education" class="nav-link text-slate-300 hover:text-sky-500 transition">Education</a>
-            <a href="#arsenal" class="nav-link text-slate-300 hover:text-sky-500 transition">Arsenal</a>
-            <a href="#project" class="nav-link text-slate-300 hover:text-sky-500 transition">Project</a>
-            <a href="#achievements" class="nav-link text-slate-300 hover:text-sky-500 transition">Achievements</a>
-            <a href="#archive" class="nav-link text-slate-300 hover:text-sky-500 transition">Archive</a>
+            <a href="#about" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Profile</a>
+            <a href="#education" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Education</a>
+            <a href="#arsenal" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Arsenal</a>
+            <a href="#project" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Project</a>
+            <a href="#achievements" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Achievements</a>
+            <a href="#archive" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Archive</a>
             <a href="/admin.html" class="text-sky-500 mt-2 border border-sky-500/30 px-6 py-2 rounded-full hover:bg-sky-500/10 transition">Admin Login</a>
         </div>
     </nav>
@@ -205,7 +214,7 @@
                 <div class="absolute -top-4 -left-4 w-16 h-16 border-t-[1.5px] border-l-[1.5px] border-[#0ea5e9]/40 rounded-tl-3xl pointer-events-none"></div>
                 <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b-[1.5px] border-r-[1.5px] border-[#0ea5e9]/40 rounded-br-3xl pointer-events-none"></div>
 
-                <div class="absolute -top-8 -right-8 w-20 h-20 bg-[#050b14] border border-white/5 rounded-full flex items-center justify-center z-20 blink-shield light-shield-box">
+                <div class="absolute -top-8 -right-8 w-20 h-20 bg-[#050b14] border border-white/5 rounded-full flex items-center justify-center z-20 blink-shield">
                     <i data-lucide="shield-check" class="w-8 h-8 text-[#0ea5e9]"></i>
                 </div>
 
@@ -219,17 +228,17 @@
                         <span class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-widest mono">IDENTITY.V2.0_SECURE</span>
                     </div>
 
-                    <div class="scanner-container relative w-full h-[320px] mb-6 bg-[#050b14] border border-white/5 rounded-2xl overflow-hidden shadow-inner light-scanner">
+                    <div class="scanner-container relative w-full h-[320px] mb-6 bg-[#050b14] border border-white/5 rounded-2xl overflow-hidden shadow-inner">
                         <img src="./profile.jpg" class="w-full h-full object-cover opacity-80" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
                         <div class="scanner-overlay"></div>
                         <div class="scanner-line"></div>
 
-                        <div class="absolute top-4 left-4 bg-[#080d1a]/90 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-sm light-inner-box">
+                        <div class="absolute top-4 left-4 bg-[#080d1a]/90 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-sm">
                             <p class="text-[6px] text-slate-400 font-bold font-mono tracking-wider mb-0.5">NEURAL PROFILE</p>
                             <p class="text-[9px] text-[#0ea5e9] font-bold font-mono tracking-widest">ACTIVE_SYNC</p>
                         </div>
 
-                        <div class="absolute top-4 right-4 border border-white/10 p-1.5 rounded-lg bg-[#080d1a]/80 backdrop-blur-sm light-inner-box">
+                        <div class="absolute top-4 right-4 border border-white/10 p-1.5 rounded-lg bg-[#080d1a]/80 backdrop-blur-sm">
                             <i data-lucide="scan-line" class="w-4 h-4 text-slate-400"></i>
                         </div>
 
@@ -251,11 +260,11 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5 light-stat-box">
+                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5">
                             <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">CORE_NODE</p>
                             <p class="text-[11px] font-bold text-white mono uppercase">CYBER_AI</p>
                         </div>
-                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5 light-stat-box">
+                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5">
                             <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">PROTOCOL</p>
                             <p class="text-[11px] font-bold text-white mono uppercase">ADVERSARIAL</p>
                         </div>
