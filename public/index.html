@@ -13,52 +13,29 @@
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; transition: background-color 0.5s, color 0.5s; margin: 0; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* ================= ASCII ART GLITCH (SAFE VERSION) ================= */
-        .ascii-art-wrapper {
-            width: 100%;
-            overflow-x: hidden;
-            display: flex;
-            justify-content: center;
+        /* ================= TERMINAL BOOT SEQUENCE ================= */
+        #boot-screen {
+            position: fixed; inset: 0; z-index: 9999; background: #020617; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        .ascii-art {
-            font-family: 'JetBrains Mono', monospace;
-            white-space: pre;
-            line-height: 1.1;
-            font-size: clamp(5px, 1.5vw, 16px);
-            color: rgba(14, 165, 233, 0.8);
-            text-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
-            animation: asciiGlitch 4s infinite alternate;
+        .boot-ascii {
+            font-family: 'JetBrains Mono', monospace; white-space: pre; line-height: 1.1;
+            font-size: clamp(5px, 1.5vw, 16px); color: #0ea5e9; text-shadow: 0 0 10px rgba(14,165,233,0.5);
+            margin-bottom: 2rem;
         }
-        @keyframes asciiGlitch {
-            0%, 90%, 100% { opacity: 1; transform: translate(0, 0); text-shadow: 0 0 10px rgba(14, 165, 233, 0.5); }
-            92% { opacity: 0.8; transform: translate(-2px, 1px); text-shadow: -2px 0 red, 2px 0 cyan; }
-            94% { opacity: 0.9; transform: translate(2px, -1px); text-shadow: 2px 0 red, -2px 0 cyan; }
-            96% { opacity: 1; transform: translate(0, 0); text-shadow: 0 0 10px rgba(14, 165, 233, 0.5); }
+        .boot-text {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #10b981;
+            width: 100%; max-width: 600px; text-align: left; padding: 0 20px;
         }
+        .typing-cursor::after { content: '█'; animation: blink 1s step-start infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
 
-        /* ================= EXTREME CYBER BACKGROUND WITH GLITCH ================= */
-        .bg-cyber { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
-            background-color: #020617; overflow: hidden;
-        }
-
-        .bg-cyber::before {
-            content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%;
-            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
-            border-radius: 50%; filter: blur(60px); pointer-events: none;
-        }
-        
-        .bg-cyber::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 3px);
-            z-index: 1; pointer-events: none; opacity: 0.5;
-        }
-
-        .hacker-decals {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
-            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8;
-            animation: backgroundGlitch 4s infinite;
-        }
+        /* ================= EXTREME CYBER BACKGROUND ================= */
+        .bg-cyber { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #020617; overflow: hidden; }
+        .bg-cyber::before { content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); pointer-events: none; }
+        .bg-cyber::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 3px); z-index: 1; pointer-events: none; opacity: 0.5; }
+        .hacker-decals { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8; animation: backgroundGlitch 4s infinite; }
         
         @keyframes backgroundGlitch {
             0%, 90%, 100% { transform: translate(0, 0); opacity: 0.8; filter: none; }
@@ -67,37 +44,26 @@
             96% { transform: translate(-1px, 1px); opacity: 0.9; filter: none; }
         }
 
-        /* Fixed the line breaks to use standard HTML display if needed, but in CSS content it needs to be \A */
-        /* Changed to avoid multiple backslashes in a single string that might trip some parsers */
         .decal-1 { position: absolute; top: 15%; left: 2%; white-space: pre; line-height: 1.6; letter-spacing: 0.1em; color: rgba(14, 165, 233, 0.15); }
         .decal-1::before { content: "> INIT SECURE_BOOT...\000A> LOAD KERNEL_MODULE_0x8F\000A> BYPASSING FIREWALL... [OK]\000A> MEM_ALLOC: 0x7FFE4000\000A> THREAD_SYNC: IN_PROGRESS"; }
-        
         .decal-2 { position: absolute; bottom: 20%; right: 2%; white-space: pre; line-height: 1.6; text-align: right; letter-spacing: 0.1em; color: rgba(16, 185, 129, 0.15); }
         .decal-2::before { content: "SYS_OVERRIDE_ENABLED\000A--------------------\000A ROOT ACCESS GRANTED\000A UPLINK ESTABLISHED\000A PORT_8080 // LISTENING"; }
-
         .decal-3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.02); font-size: clamp(80px, 15vw, 200px); font-weight: 900; letter-spacing: -15px; user-select: none; }
         .decal-3::before { content: "0xMH"; }
 
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
-        .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; transition: all 0.5s; }
+        .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; transition: all 0.5s; transform: translateY(-100%); animation: slideDown 0.5s forwards 3.8s; }
+        @keyframes slideDown { to { transform: translateY(0); } }
         
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .modal-overlay { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
 
         /* ================= SCI-FI CARDS ================= */
-        .sci-fi-card {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0.95) 100%);
-            border: 1px solid rgba(14, 165, 233, 0.3);
-            position: relative; overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(14, 165, 233, 0.05), 0 5px 15px rgba(0,0,0,0.5);
-            transition: all 0.3s;
-            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px)); 
-        }
+        .sci-fi-card { background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0.95) 100%); border: 1px solid rgba(14, 165, 233, 0.3); position: relative; overflow: hidden; box-shadow: inset 0 0 30px rgba(14, 165, 233, 0.05), 0 5px 15px rgba(0,0,0,0.5); transition: all 0.3s; clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px)); }
         .sci-fi-card::before { content: '['; position: absolute; top: 10px; left: 10px; color: rgba(14, 165, 233, 0.5); font-family: monospace; font-size: 20px; transition: all 0.3s; }
         .sci-fi-card::after { content: ']'; position: absolute; bottom: 10px; right: 10px; color: rgba(14, 165, 233, 0.5); font-family: monospace; font-size: 20px; transition: all 0.3s; }
         .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.8); box-shadow: inset 0 0 20px rgba(14, 165, 233, 0.2), 0 0 20px rgba(14, 165, 233, 0.3); transform: translateY(-5px); }
-        
         .cyber-line { position: absolute; top: 0; left: -100%; width: 150%; height: 2px; background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.8), #fff, rgba(14, 165, 233, 0.8), transparent); animation: glitchScan 2.5s infinite; z-index: 5; opacity: 0.7; mix-blend-mode: overlay; }
         .cyber-line.purple { background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.8), #fff, transparent); animation-duration: 3s; }
         .cyber-line.amber { background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.8), #fff, transparent); animation-duration: 2s; }
@@ -109,23 +75,14 @@
         /* ================= PROFILE SCANNER ================= */
         .profile-box { background: #0A101F; border: 1px solid rgba(14, 165, 233, 0.2); }
         .scanner-container { position: relative; overflow: hidden; }
-        
-        .scanner-line { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 3px; 
-            background: #0ea5e9; 
-            box-shadow: 0 0 15px #0ea5e9, 0 0 30px #0ea5e9; 
-            animation: slowScan 4s linear infinite; 
-            z-index: 10; mix-blend-mode: screen;
-        }
+        .scanner-line { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: #0ea5e9; box-shadow: 0 0 15px #0ea5e9, 0 0 30px #0ea5e9; animation: slowScan 4s linear infinite; z-index: 10; mix-blend-mode: screen; }
         @keyframes slowScan { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
-        
         .scanner-overlay { position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.25) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; opacity: 0.5; }
-
         .blink-shield { animation: shieldPulse 1.5s ease-in-out infinite alternate; }
-        @keyframes shieldPulse {
-            0% { opacity: 0.3; transform: scale(0.95); box-shadow: 0 0 0 rgba(14, 165, 233, 0); }
-            100% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px rgba(14, 165, 233, 0.4); }
-        }
+        @keyframes shieldPulse { 0% { opacity: 0.3; transform: scale(0.95); box-shadow: 0 0 0 rgba(14, 165, 233, 0); } 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px rgba(14, 165, 233, 0.4); } }
+
+        /* ================= MAIN CONTENT WRAPPER ================= */
+        #main-content { opacity: 0; transition: opacity 1s ease-in; }
 
         /* ================= DAY MODE FIXES ================= */
         body.light-mode { background-color: #f1f5f9; color: #0f172a; }
@@ -134,328 +91,359 @@
         body.light-mode .decal-1::before { color: rgba(14, 165, 233, 0.3); }
         body.light-mode .decal-2::before { color: rgba(16, 185, 129, 0.3); }
         body.light-mode .decal-3::before { color: rgba(0, 0, 0, 0.03); }
-        
-        body.light-mode .ascii-art { color: rgba(14, 165, 233, 0.5); text-shadow: none; }
-
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
         body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
-        
         body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
         body.light-mode .light-shield-box { background-color: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
         body.light-mode .light-scanner { background-color: #f8fafc !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
         body.light-mode .light-inner-box { background-color: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; color: #0f172a !important; }
         body.light-mode .light-stat-box { background-color: #f1f5f9 !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
         body.light-mode .scanner-overlay { opacity: 0.1; }
-
         body.light-mode .text-white { color: #0f172a !important; }
         body.light-mode .text-slate-300, body.light-mode .text-slate-400 { color: #475569 !important; }
         body.light-mode .text-slate-500 { color: #64748b !important; }
         body.light-mode h1, body.light-mode h2, body.light-mode h3 { color: #020617 !important; }
-        
         body.light-mode .text-sky-400, body.light-mode .text-sky-500 { color: #0284c7 !important; }
         body.light-mode .text-emerald-400, body.light-mode .text-emerald-500 { color: #059669 !important; }
         body.light-mode .text-purple-400, body.light-mode .text-purple-500 { color: #7e22ce !important; }
         body.light-mode .text-amber-400, body.light-mode .text-amber-500 { color: #b45309 !important; }
         body.light-mode .text-rose-400, body.light-mode .text-rose-500 { color: #e11d48 !important; }
         body.light-mode .glow-text { text-shadow: none !important; }
-
         body.light-mode .glass-nav { background: rgba(255, 255, 255, 0.98); color: #0f172a; border-bottom: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         body.light-mode .nav-link { color: #475569; }
         body.light-mode .nav-link.text-sky-500, body.light-mode .nav-link:hover { color: #0ea5e9 !important; }
-        
         body.light-mode input, body.light-mode textarea { background-color: #fff !important; color: #0f172a !important; border: 1px solid rgba(0, 0, 0, 0.2) !important; }
         body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; box-shadow: 0 0 0 2px rgba(14,165,233,0.2); }
         body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #94a3b8 !important; }
-        
         body.light-mode .bg-black\/40 { background-color: rgba(241, 245, 249, 0.8) !important; border-color: rgba(0, 0, 0, 0.1) !important; }
         body.light-mode footer { background-color: #e2e8f0; border-top: 1px solid rgba(0,0,0,0.1); color: #475569; }
         body.light-mode footer a { border-color: rgba(0,0,0,0.15); color: #475569; background-color: #fff; }
         body.light-mode footer a:hover { background-color: #f8fafc; color: #0ea5e9; border-color: #0ea5e9; }
         body.light-mode .modal-overlay .glass-panel { background: rgba(255, 255, 255, 0.98); color: #0f172a; } 
         body.light-mode .light-mode-divider { background-color: rgba(14, 165, 233, 0.4) !important; }
-
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 4px; }
     </style>
 </head>
 <body>
-    <div class="bg-cyber">
-        <div class="hacker-decals">
-            <div class="decal-1"></div>
-            <div class="decal-2"></div>
-            <div class="decal-3"></div>
-        </div>
-    </div>
 
-    <nav class="fixed top-0 w-full glass-nav transition-all">
-        <div class="w-full px-6 lg:px-12 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981] animate-pulse"></div>
-                <span class="text-[10px] font-bold uppercase tracking-[0.2em] mono text-emerald-500">System_Online</span>
-            </div>
-            <div class="hidden md:flex items-center space-x-8 text-[10px] font-bold uppercase tracking-widest">
-                <a href="#about" class="nav-link text-slate-300 hover:text-sky-400 transition">Profile</a>
-                <a href="#education" class="nav-link text-slate-300 hover:text-sky-400 transition">Education</a>
-                <a href="#arsenal" class="nav-link text-slate-300 hover:text-sky-400 transition">Arsenal</a>
-                <a href="#project" class="nav-link text-slate-300 hover:text-sky-400 transition">Project</a>
-                <a href="#achievements" class="nav-link text-slate-300 hover:text-sky-400 transition">Achievements</a>
-                <a href="#archive" class="nav-link text-slate-300 hover:text-sky-400 transition">Archive</a>
-            </div>
-            <div class="flex items-center gap-4">
-                <button id="themeToggle" class="p-2 rounded-full bg-black/20 hover:bg-black/40 transition border border-white/10 flex items-center justify-center w-9 h-9"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
-                <a href="/admin.html" target="_blank" class="hidden sm:inline-block text-xs font-bold mono text-sky-500 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 hover:bg-sky-500/20 transition">MH_ROOT</a>
-                <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-sky-500 transition"><i data-lucide="menu" class="w-6 h-6"></i></button>
-            </div>
-        </div>
-        <div id="mobileMenu" class="hidden absolute top-16 left-0 w-full glass-nav flex flex-col items-center py-6 space-y-6 text-[10px] font-bold uppercase tracking-widest shadow-2xl md:hidden">
-            <a href="#about" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Profile</a>
-            <a href="#education" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Education</a>
-            <a href="#arsenal" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Arsenal</a>
-            <a href="#project" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Project</a>
-            <a href="#achievements" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Achievements</a>
-            <a href="#archive" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Archive</a>
-            <a href="/admin.html" class="text-sky-500 mt-2 border border-sky-500/30 px-6 py-2 rounded-full hover:bg-sky-500/10 transition">Admin Login</a>
-        </div>
-    </nav>
-
-    <main class="max-w-5xl mx-auto px-6 pt-24 pb-20">
-        
-        <div class="ascii-art-wrapper mb-16 pt-8 reveal">
-            <div class="ascii-art text-center">
+    <div id="boot-screen">
+        <div class="boot-ascii text-center">
    _____ __  __ ____  ______ _____   _____ ______ _____ 
   / ____|\ \/ /|  _ \|  ____|  __ \ / ____|  ____|  __ \
  | |      \  / | |_) | |__  | |__) | (___ | |__  | |  | |
  | |       \/  |  _ <|  __| |  _  / \___ \|  __| | |  | |
  | |____   ||  | |_) | |____| | \ \ ____) | |____| |__| |
   \_____|  ||  |____/|______|_|  \_\_____/|______|_____/ 
-                                                                
-    >> INITIALIZING TERMINAL...
-    >> SYSTEM_AUTH: VERIFIED
-    >> WELCOME, USER.
+        </div>
+        <div class="boot-text" id="terminal-text"></div>
+    </div>
+
+    <div id="main-content">
+        <div class="bg-cyber">
+            <div class="hacker-decals">
+                <div class="decal-1"></div>
+                <div class="decal-2"></div>
+                <div class="decal-3"></div>
             </div>
         </div>
 
-        <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-24 gap-10 reveal">
-            <div class="flex-1 space-y-6 text-center md:text-left">
-                <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-500">
-                    <i data-lucide="shield-alert" class="w-4 h-4"></i>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">Auth Granted // UID: 0x99A3</span>
+        <nav class="fixed top-0 w-full glass-nav transition-all" id="navbar">
+            <div class="w-full px-6 lg:px-12 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981] animate-pulse"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] mono text-emerald-500">System_Online</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] text-white glow-text">
-                    Architecting <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500">Secure AI</span><br>
-                    Futures.
-                </h1>
-                <p id="profile-bio" class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed mx-auto md:mx-0">Loading biography...</p>
+                <div class="hidden md:flex items-center space-x-8 text-[10px] font-bold uppercase tracking-widest">
+                    <a href="#about" class="nav-link text-slate-300 hover:text-sky-400 transition">Profile</a>
+                    <a href="#education" class="nav-link text-slate-300 hover:text-sky-400 transition">Education</a>
+                    <a href="#arsenal" class="nav-link text-slate-300 hover:text-sky-400 transition">Arsenal</a>
+                    <a href="#project" class="nav-link text-slate-300 hover:text-sky-400 transition">Project</a>
+                    <a href="#achievements" class="nav-link text-slate-300 hover:text-sky-400 transition">Achievements</a>
+                    <a href="#archive" class="nav-link text-slate-300 hover:text-sky-400 transition">Archive</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="themeToggle" class="p-2 rounded-full bg-black/20 hover:bg-black/40 transition border border-white/10 flex items-center justify-center w-9 h-9"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
+                    <a href="/admin.html" target="_blank" class="hidden sm:inline-block text-xs font-bold mono text-sky-500 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 hover:bg-sky-500/20 transition">MH_ROOT</a>
+                    <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-400 hover:text-sky-500 transition"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                </div>
+            </div>
+            <div id="mobileMenu" class="hidden absolute top-16 left-0 w-full glass-nav flex flex-col items-center py-6 space-y-6 text-[10px] font-bold uppercase tracking-widest shadow-2xl md:hidden">
+                <a href="#about" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Profile</a>
+                <a href="#education" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Education</a>
+                <a href="#arsenal" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Arsenal</a>
+                <a href="#project" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Project</a>
+                <a href="#achievements" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Achievements</a>
+                <a href="#archive" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Archive</a>
+                <a href="/admin.html" class="text-sky-500 mt-2 border border-sky-500/30 px-6 py-2 rounded-full hover:bg-sky-500/10 transition">Admin Login</a>
+            </div>
+        </nav>
+
+        <main class="max-w-5xl mx-auto px-6 pt-24 pb-20">
+            
+            <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-24 gap-10 reveal pt-10">
+                <div class="flex-1 space-y-6 text-center md:text-left">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-500">
+                        <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                        <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">Auth Granted // UID: 0x99A3</span>
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] text-white glow-text">
+                        Architecting <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500">Secure AI</span><br>
+                        Futures.
+                    </h1>
+                    <p id="profile-bio" class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed mx-auto md:mx-0">Loading biography...</p>
+                </div>
+                
+                <div class="relative w-full max-w-[360px] mx-auto md:mx-0 mt-10 md:mt-0">
+                    <div class="absolute -top-4 -left-4 w-16 h-16 border-t-[1.5px] border-l-[1.5px] border-[#0ea5e9]/40 rounded-tl-3xl pointer-events-none"></div>
+                    <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b-[1.5px] border-r-[1.5px] border-[#0ea5e9]/40 rounded-br-3xl pointer-events-none"></div>
+
+                    <div class="absolute -top-8 -right-8 w-20 h-20 bg-[#050b14] border border-white/5 rounded-full flex items-center justify-center z-20 blink-shield light-shield-box">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-[#0ea5e9]"></i>
+                    </div>
+
+                    <div class="profile-box border border-white/5 rounded-[2rem] p-6 relative z-10 shadow-2xl">
+                        <div class="flex items-center justify-between mb-5 pl-1 pr-6">
+                            <div class="flex gap-1.5">
+                                <div class="w-2 h-2 rounded-full bg-[#0ea5e9]"></div>
+                                <div class="w-2 h-2 rounded-full bg-[#0ea5e9]/60"></div>
+                                <div class="w-2 h-2 rounded-full bg-[#0ea5e9]/30"></div>
+                            </div>
+                            <span class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-widest mono">IDENTITY.V2.0_SECURE</span>
+                        </div>
+
+                        <div class="scanner-container relative w-full h-[320px] mb-6 bg-[#050b14] border border-white/5 rounded-2xl overflow-hidden shadow-inner light-scanner">
+                            <img src="./profile.jpg" class="w-full h-full object-cover opacity-80" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
+                            <div class="scanner-overlay"></div>
+                            <div class="scanner-line"></div>
+
+                            <div class="absolute top-4 left-4 bg-[#080d1a]/90 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-sm light-inner-box">
+                                <p class="text-[6px] text-slate-400 font-bold font-mono tracking-wider mb-0.5">NEURAL PROFILE</p>
+                                <p class="text-[9px] text-[#0ea5e9] font-bold font-mono tracking-widest">ACTIVE_SYNC</p>
+                            </div>
+
+                            <div class="absolute top-4 right-4 border border-white/10 p-1.5 rounded-lg bg-[#080d1a]/80 backdrop-blur-sm light-inner-box">
+                                <i data-lucide="scan-line" class="w-4 h-4 text-slate-400"></i>
+                            </div>
+
+                            <div class="absolute bottom-4 left-4 w-full">
+                                <div class="w-8 h-[1px] bg-slate-500/50 mb-1.5"></div>
+                                <p class="text-[6px] text-slate-500/80 font-mono tracking-widest">COORD: 23.8103° N, 90.4125° E</p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-end mb-6">
+                            <div>
+                                <h3 id="profile-name" class="text-[28px] font-extrabold text-white leading-none mb-1.5 tracking-tight">Mahmudul Hasan</h3>
+                                <p id="profile-title" class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-[0.2em] mono">SECURITY RESEARCHER</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[7px] text-slate-400 mono tracking-widest mb-1 uppercase">CLEARANCE</p>
+                                <p class="text-[12px] font-bold text-[#10b981] mono uppercase">LVL_01</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5 light-stat-box">
+                                <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">CORE_NODE</p>
+                                <p class="text-[11px] font-bold text-white mono uppercase">CYBER_AI</p>
+                            </div>
+                            <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5 light-stat-box">
+                                <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">PROTOCOL</p>
+                                <p class="text-[11px] font-bold text-white mono uppercase">ADVERSARIAL</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="education" class="mb-32 reveal pt-10">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center justify-center p-3 bg-emerald-500/10 rounded-full border border-emerald-500/30 mb-4 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                        <i data-lucide="cpu" class="w-6 h-6 text-emerald-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-black mb-2 text-white">Academic <span class="text-emerald-500">Records</span></h2>
+                    <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Database_Query: Education_Node</p>
+                </div>
+                <div id="educationContainer" class="grid md:grid-cols-2 gap-8"></div>
+            </section>
+
+            <section id="arsenal" class="mb-32 reveal pt-10">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center justify-center p-3 bg-rose-500/10 rounded-full border border-rose-500/30 mb-4 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+                        <i data-lucide="crosshair" class="w-6 h-6 text-rose-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-black mb-2 text-white">Cyber <span class="text-rose-500">Arsenal</span></h2>
+                    <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Tactical_Tools_&_Frameworks</p>
+                </div>
+                <div id="arsenalContainer" class="grid md:grid-cols-3 gap-6"></div>
+            </section>
+
+            <section id="project" class="mb-32 reveal pt-10">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center justify-center p-3 bg-purple-500/10 rounded-full border border-purple-500/30 mb-4 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                        <i data-lucide="terminal-square" class="w-6 h-6 text-purple-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-black mb-2 text-white">Active <span class="text-purple-500">Deployments</span></h2>
+                    <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Executing_Operations</p>
+                </div>
+                <div id="projectContainer" class="grid md:grid-cols-2 gap-8"></div>
+            </section>
+
+            <section id="achievements" class="mb-32 reveal pt-10">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center justify-center p-3 bg-amber-500/10 rounded-full border border-amber-500/30 mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                        <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-black mb-2 text-white">Achievements & <span class="text-amber-500">Certifications</span></h2>
+                    <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Verified_Credentials</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6" id="certContainer"></div>
+            </section>
+
+            <section id="archive" class="mb-32 reveal pt-10">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center justify-center p-3 bg-sky-500/10 rounded-full border border-sky-500/30 mb-4 shadow-[0_0_15px_rgba(14,165,233,0.2)]">
+                        <i data-lucide="database" class="w-6 h-6 text-sky-500"></i>
+                    </div>
+                    <h2 class="text-3xl font-black mb-2 text-white">Visual <span class="text-sky-500">Archives</span></h2>
+                    <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Secure_Gallery_Access</p>
+                </div>
+                <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+                <div class="text-center mt-12">
+                    <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/20 transition mono shadow-[0_0_15px_rgba(14,165,233,0.2)] hover:shadow-[0_0_25px_rgba(14,165,233,0.4)] bg-black/20">LOAD_MORE_ARCHIVES //...</button>
+                </div>
+            </section>
+
+            <section id="communication" class="reveal mb-10 pt-10">
+                <div class="sci-fi-card p-6 md:p-16 border-t-2 border-sky-500/80 relative overflow-hidden rounded-[2rem]">
+                    <div class="cyber-line"></div>
+                    <div class="relative z-10 max-w-2xl mx-auto">
+                        <div class="text-center mb-12">
+                            <i data-lucide="radio-tower" class="w-10 h-10 text-sky-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_10px_rgba(14,165,233,0.8)]"></i>
+                            <h2 class="text-4xl font-black mb-4 text-white">Initialize <span class="text-sky-500">Uplink</span></h2>
+                            <p class="text-slate-400 text-sm leading-relaxed">Secure protocol established for recruitment and research collaboration.</p>
+                        </div>
+                        <form id="commForm" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="group">
+                                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Identity_Name</label>
+                                    <div class="relative">
+                                        <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                                        <input type="text" id="i-name" required placeholder="GUEST_USER" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
+                                    </div>
+                                </div>
+                                <div class="group">
+                                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Contact_Vector</label>
+                                    <div class="relative">
+                                        <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                                        <input type="email" id="i-email" required placeholder="USER@DOMAIN.COM" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Data_Payload</label>
+                                <div class="relative">
+                                    <i data-lucide="message-square" class="absolute left-4 top-6 w-4 h-4 text-slate-500"></i>
+                                    <textarea id="i-msg" required rows="4" placeholder="ENTER_MESSAGE_HERE..." class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-6 text-xs outline-none transition mono text-white"></textarea>
+                                </div>
+                            </div>
+                            <button type="submit" id="submitBtn" class="w-full py-5 bg-sky-600 hover:bg-sky-500 text-white rounded-2xl font-bold text-[10px] uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] flex items-center justify-center gap-3 transition">
+                                <i data-lucide="send" class="w-4 h-4"></i> Transmit Packet
+                            </button>
+                        </form>
+                        <p id="formSuccess" class="hidden text-emerald-500 text-xs font-bold mono text-center mt-4 bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">✓ Payload Transmitted Securely.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="pb-12 pt-10 text-center relative z-50 transition-colors duration-500">
+            <div class="flex justify-center gap-6 mb-12">
+                <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-sky-500/20 hover:text-sky-500 hover:border-sky-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-emerald-500/20 hover:text-emerald-500 hover:border-emerald-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
+                <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-blue-600/20 hover:text-blue-600 hover:border-blue-600/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-pink-500/20 hover:text-pink-500 hover:border-pink-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
             </div>
             
-            <div class="relative w-full max-w-[360px] mx-auto md:mx-0 mt-10 md:mt-0">
-                <div class="absolute -top-4 -left-4 w-16 h-16 border-t-[1.5px] border-l-[1.5px] border-[#0ea5e9]/40 rounded-tl-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b-[1.5px] border-r-[1.5px] border-[#0ea5e9]/40 rounded-br-3xl pointer-events-none"></div>
-
-                <div class="absolute -top-8 -right-8 w-20 h-20 bg-[#050b14] border border-white/5 rounded-full flex items-center justify-center z-20 blink-shield light-shield-box">
-                    <i data-lucide="shield-check" class="w-8 h-8 text-[#0ea5e9]"></i>
-                </div>
-
-                <div class="profile-box border border-white/5 rounded-[2rem] p-6 relative z-10 shadow-2xl">
-                    <div class="flex items-center justify-between mb-5 pl-1 pr-6">
-                        <div class="flex gap-1.5">
-                            <div class="w-2 h-2 rounded-full bg-[#0ea5e9]"></div>
-                            <div class="w-2 h-2 rounded-full bg-[#0ea5e9]/60"></div>
-                            <div class="w-2 h-2 rounded-full bg-[#0ea5e9]/30"></div>
-                        </div>
-                        <span class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-widest mono">IDENTITY.V2.0_SECURE</span>
-                    </div>
-
-                    <div class="scanner-container relative w-full h-[320px] mb-6 bg-[#050b14] border border-white/5 rounded-2xl overflow-hidden shadow-inner light-scanner">
-                        <img src="./profile.jpg" class="w-full h-full object-cover opacity-80" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
-                        <div class="scanner-overlay"></div>
-                        <div class="scanner-line"></div>
-
-                        <div class="absolute top-4 left-4 bg-[#080d1a]/90 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-sm light-inner-box">
-                            <p class="text-[6px] text-slate-400 font-bold font-mono tracking-wider mb-0.5">NEURAL PROFILE</p>
-                            <p class="text-[9px] text-[#0ea5e9] font-bold font-mono tracking-widest">ACTIVE_SYNC</p>
-                        </div>
-
-                        <div class="absolute top-4 right-4 border border-white/10 p-1.5 rounded-lg bg-[#080d1a]/80 backdrop-blur-sm light-inner-box">
-                            <i data-lucide="scan-line" class="w-4 h-4 text-slate-400"></i>
-                        </div>
-
-                        <div class="absolute bottom-4 left-4 w-full">
-                            <div class="w-8 h-[1px] bg-slate-500/50 mb-1.5"></div>
-                            <p class="text-[6px] text-slate-500/80 font-mono tracking-widest">COORD: 23.8103° N, 90.4125° E</p>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-end mb-6">
-                        <div>
-                            <h3 id="profile-name" class="text-[28px] font-extrabold text-white leading-none mb-1.5 tracking-tight">Mahmudul Hasan</h3>
-                            <p id="profile-title" class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-[0.2em] mono">SECURITY RESEARCHER</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[7px] text-slate-400 mono tracking-widest mb-1 uppercase">CLEARANCE</p>
-                            <p class="text-[12px] font-bold text-[#10b981] mono uppercase">LVL_01</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5 light-stat-box">
-                            <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">CORE_NODE</p>
-                            <p class="text-[11px] font-bold text-white mono uppercase">CYBER_AI</p>
-                        </div>
-                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5 light-stat-box">
-                            <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">PROTOCOL</p>
-                            <p class="text-[11px] font-bold text-white mono uppercase">ADVERSARIAL</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex flex-col items-center justify-center">
+                <p class="text-[8px] md:text-[9px] text-slate-500/70 font-bold uppercase tracking-[0.5em] mono ml-[0.5em] mb-6">
+                    BUILD_VERSION: 2.0.4 // REGION: BD-DHAKA // STATUS: SECURE
+                </p>
+                <div class="w-16 h-[2px] bg-[#0ea5e9]/50 rounded-full mb-6 light-mode-divider"></div>
+                <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mono">© 2026 MAHMUDUL HASAN. DESIGN: HYPER-SECURITY OS V2</p>
             </div>
-        </section>
+        </footer>
 
-        <section id="education" class="mb-32 reveal pt-10">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center p-3 bg-emerald-500/10 rounded-full border border-emerald-500/30 mb-4 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                    <i data-lucide="cpu" class="w-6 h-6 text-emerald-500"></i>
+        <a href="#communication" id="floatingMsg" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] glass-panel border-sky-500/50 p-4 rounded-full text-sky-500 hover:text-sky-400 hover:bg-sky-500/10 shadow-[0_0_15px_rgba(14,165,233,0.3)] hover:shadow-[0_0_25px_rgba(14,165,233,0.5)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center group bg-black/60 backdrop-blur-xl">
+            <i data-lucide="message-square" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+        </a>
+
+        <div id="galleryModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
+            <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="galleryModal-content">
+                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
+                    <div><h2 class="text-2xl font-black text-white">Complete <span class="text-sky-500">Archives</span></h2></div>
+                    <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
                 </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Academic <span class="text-emerald-500">Records</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Database_Query: Education_Node</p>
+                <div id="all-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar"></div>
             </div>
-            <div id="educationContainer" class="grid md:grid-cols-2 gap-8"></div>
-        </section>
-
-        <section id="arsenal" class="mb-32 reveal pt-10">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center p-3 bg-rose-500/10 rounded-full border border-rose-500/30 mb-4 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
-                    <i data-lucide="crosshair" class="w-6 h-6 text-rose-500"></i>
-                </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Cyber <span class="text-rose-500">Arsenal</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Tactical_Tools_&_Frameworks</p>
-            </div>
-            <div id="arsenalContainer" class="grid md:grid-cols-3 gap-6"></div>
-        </section>
-
-        <section id="project" class="mb-32 reveal pt-10">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center p-3 bg-purple-500/10 rounded-full border border-purple-500/30 mb-4 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                    <i data-lucide="terminal-square" class="w-6 h-6 text-purple-500"></i>
-                </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Active <span class="text-purple-500">Deployments</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Executing_Operations</p>
-            </div>
-            <div id="projectContainer" class="grid md:grid-cols-2 gap-8"></div>
-        </section>
-
-        <section id="achievements" class="mb-32 reveal pt-10">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center p-3 bg-amber-500/10 rounded-full border border-amber-500/30 mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-                    <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
-                </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Achievements & <span class="text-amber-500">Certifications</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Verified_Credentials</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6" id="certContainer"></div>
-        </section>
-
-        <section id="archive" class="mb-32 reveal pt-10">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center p-3 bg-sky-500/10 rounded-full border border-sky-500/30 mb-4 shadow-[0_0_15px_rgba(14,165,233,0.2)]">
-                    <i data-lucide="database" class="w-6 h-6 text-sky-500"></i>
-                </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Visual <span class="text-sky-500">Archives</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Secure_Gallery_Access</p>
-            </div>
-            <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-            <div class="text-center mt-12">
-                <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/20 transition mono shadow-[0_0_15px_rgba(14,165,233,0.2)] hover:shadow-[0_0_25px_rgba(14,165,233,0.4)] bg-black/20">LOAD_MORE_ARCHIVES //...</button>
-            </div>
-        </section>
-
-        <section id="communication" class="reveal mb-10 pt-10">
-            <div class="sci-fi-card p-6 md:p-16 border-t-2 border-sky-500/80 relative overflow-hidden rounded-[2rem]">
-                <div class="cyber-line"></div>
-                <div class="relative z-10 max-w-2xl mx-auto">
-                    <div class="text-center mb-12">
-                        <i data-lucide="radio-tower" class="w-10 h-10 text-sky-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_10px_rgba(14,165,233,0.8)]"></i>
-                        <h2 class="text-4xl font-black mb-4 text-white">Initialize <span class="text-sky-500">Uplink</span></h2>
-                        <p class="text-slate-400 text-sm leading-relaxed">Secure protocol established for recruitment and research collaboration.</p>
-                    </div>
-                    <form id="commForm" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="group">
-                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Identity_Name</label>
-                                <div class="relative">
-                                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-                                    <input type="text" id="i-name" required placeholder="GUEST_USER" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
-                                </div>
-                            </div>
-                            <div class="group">
-                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Contact_Vector</label>
-                                <div class="relative">
-                                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-                                    <input type="email" id="i-email" required placeholder="USER@DOMAIN.COM" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Data_Payload</label>
-                            <div class="relative">
-                                <i data-lucide="message-square" class="absolute left-4 top-6 w-4 h-4 text-slate-500"></i>
-                                <textarea id="i-msg" required rows="4" placeholder="ENTER_MESSAGE_HERE..." class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-6 text-xs outline-none transition mono text-white"></textarea>
-                            </div>
-                        </div>
-                        <button type="submit" id="submitBtn" class="w-full py-5 bg-sky-600 hover:bg-sky-500 text-white rounded-2xl font-bold text-[10px] uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] flex items-center justify-center gap-3 transition">
-                            <i data-lucide="send" class="w-4 h-4"></i> Transmit Packet
-                        </button>
-                    </form>
-                    <p id="formSuccess" class="hidden text-emerald-500 text-xs font-bold mono text-center mt-4 bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">✓ Payload Transmitted Securely.</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="pb-12 pt-10 text-center relative z-50 transition-colors duration-500">
-        <div class="flex justify-center gap-6 mb-12">
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-sky-500/20 hover:text-sky-500 hover:border-sky-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-emerald-500/20 hover:text-emerald-500 hover:border-emerald-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-blue-600/20 hover:text-blue-600 hover:border-blue-600/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-pink-500/20 hover:text-pink-500 hover:border-pink-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
         </div>
         
-        <div class="flex flex-col items-center justify-center">
-            <p class="text-[8px] md:text-[9px] text-slate-500/70 font-bold uppercase tracking-[0.5em] mono ml-[0.5em] mb-6">
-                BUILD_VERSION: 2.0.4 // REGION: BD-DHAKA // STATUS: SECURE
-            </p>
-            <div class="w-16 h-[2px] bg-[#0ea5e9]/50 rounded-full mb-6 light-mode-divider"></div>
-            <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mono">© 2026 MAHMUDUL HASAN. DESIGN: HYPER-SECURITY OS V2</p>
-        </div>
-    </footer>
-
-    <a href="#communication" id="floatingMsg" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] glass-panel border-sky-500/50 p-4 rounded-full text-sky-500 hover:text-sky-400 hover:bg-sky-500/10 shadow-[0_0_15px_rgba(14,165,233,0.3)] hover:shadow-[0_0_25px_rgba(14,165,233,0.5)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center group bg-black/60 backdrop-blur-xl">
-        <i data-lucide="message-square" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
-    </a>
-
-    <div id="galleryModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
-        <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="galleryModal-content">
-            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
-                <div><h2 class="text-2xl font-black text-white">Complete <span class="text-sky-500">Archives</span></h2></div>
-                <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+        <div id="singleLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+            <div class="glass-panel max-w-3xl w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-sky-500/50 shadow-[0_0_30px_rgba(14,165,233,0.15)]" id="singleLightbox-content">
+                <button onclick="closeSingleLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-10 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+                <div id="modal-body" class="mt-2 text-white text-center"></div>
             </div>
-            <div id="all-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar"></div>
         </div>
-    </div>
-    
-    <div id="singleLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="glass-panel max-w-3xl w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-sky-500/50 shadow-[0_0_30px_rgba(14,165,233,0.15)]" id="singleLightbox-content">
-            <button onclick="closeSingleLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-10 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
-            <div id="modal-body" class="mt-2 text-white text-center"></div>
-        </div>
-    </div>
-
-    <script>
+    </div> <script>
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
+
+        // ================= BOOT SEQUENCE LOGIC =================
+        const bootLines = [
+            "INITIALIZING KERNEL MODULES...",
+            "LOADING SECURE_BOOT PROFILES [OK]",
+            "ESTABLISHING SECURE UPLINK TO NODE 0x99A3...",
+            "BYPASSING FIREWALL PROTOCOLS [OK]",
+            "MOUNTING ENCRYPTED VOLUMES...",
+            "DECRYPTING PROFILE DATA...",
+            "ACCESS GRANTED."
+        ];
+        
+        const terminalText = document.getElementById('terminal-text');
+        let lineIndex = 0;
+        
+        function typeLine() {
+            if (lineIndex < bootLines.length) {
+                const p = document.createElement('p');
+                p.className = 'mb-1 text-slate-300';
+                p.innerHTML = `<span class="text-emerald-500">></span> ${bootLines[lineIndex]}`;
+                terminalText.appendChild(p);
+                lineIndex++;
+                setTimeout(typeLine, Math.random() * 200 + 100);
+            } else {
+                const cursor = document.createElement('span');
+                cursor.className = 'typing-cursor text-emerald-500';
+                cursor.innerText = '> ';
+                terminalText.appendChild(cursor);
+                
+                setTimeout(() => {
+                    document.getElementById('boot-screen').style.opacity = '0';
+                    document.getElementById('boot-screen').style.transform = 'scale(1.1)';
+                    document.getElementById('main-content').style.opacity = '1';
+                    setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; }, 800);
+                }, 800);
+            }
+        }
+        
+        // Start boot sequence
+        window.addEventListener('load', () => {
+            setTimeout(typeLine, 500);
+            fetchAllDynamicData(); // Fetch data while booting
+        });
 
         // Fetch Dynamic Data from Admin Panel
         async function fetchAllDynamicData() {
@@ -495,7 +483,7 @@
                     eduContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No academic records found.</p>';
                 }
 
-                // 3. Arsenal 
+                // 3. Arsenal
                 const arsRes = await fetch(`${API_BASE}/arsenal`);
                 const arsData = await arsRes.json();
                 const arsContainer = document.getElementById('arsenalContainer');
@@ -591,7 +579,6 @@
                 if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute("id");
             });
             
-            // Updated Nav Link Logic for Mobile & Desktop
             document.querySelectorAll(".nav-link").forEach((link) => {
                 link.classList.remove("text-sky-500"); 
                 link.classList.add("text-slate-300");
@@ -603,7 +590,6 @@
         });
         window.dispatchEvent(new Event("scroll"));
 
-        // Smooth Scrolling including floating message button
         document.querySelectorAll(".nav-link, #floatingMsg").forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -613,7 +599,6 @@
             });
         });
 
-        // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
@@ -683,9 +668,6 @@
             } catch(err){ alert("Failed!"); }
             btn.innerHTML = orgText; lucide.createIcons();
         });
-
-        // Initialize All Data
-        fetchAllDynamicData();
     </script>
 </body>
 </html>
