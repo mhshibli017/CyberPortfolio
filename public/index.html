@@ -13,27 +13,47 @@
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; transition: background-color 0.5s, color 0.5s; margin: 0; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         
+        /* ================= ASCII ART GLITCH & RESPONSIVE FIX ================= */
+        .ascii-art-wrapper {
+            width: 100%;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+        }
+        .ascii-art {
+            font-family: 'JetBrains Mono', monospace;
+            white-space: pre;
+            line-height: 1.1;
+            font-size: clamp(4.5px, 1.3vw, 14px); /* Auto-scales based on screen width */
+            color: rgba(14, 165, 233, 0.8);
+            text-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+            animation: asciiGlitch 4s infinite alternate;
+        }
+        @keyframes asciiGlitch {
+            0%, 90%, 100% { opacity: 1; transform: translate(0, 0); text-shadow: 0 0 10px rgba(14, 165, 233, 0.5); }
+            92% { opacity: 0.8; transform: translate(-2px, 1px); text-shadow: -2px 0 red, 2px 0 cyan; }
+            94% { opacity: 0.9; transform: translate(2px, -1px); text-shadow: 2px 0 red, -2px 0 cyan; }
+            96% { opacity: 1; transform: translate(0, 0); text-shadow: 0 0 10px rgba(14, 165, 233, 0.5); }
+        }
+
         /* ================= EXTREME CYBER BACKGROUND WITH GLITCH ================= */
         .bg-cyber { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
             background-color: #020617; overflow: hidden;
         }
 
-        /* Ambient Glows */
         .bg-cyber::before {
             content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%;
             background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
             border-radius: 50%; filter: blur(60px); pointer-events: none;
         }
         
-        /* CRT Scanline Overlay */
         .bg-cyber::after {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 3px);
             z-index: 1; pointer-events: none; opacity: 0.5;
         }
 
-        /* Hacker Decals - Glitching Background Elements */
         .hacker-decals {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
             font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8;
@@ -53,10 +73,9 @@
         .decal-2 { position: absolute; bottom: 20%; right: 2%; white-space: pre; line-height: 1.6; text-align: right; letter-spacing: 0.1em; color: rgba(16, 185, 129, 0.15); }
         .decal-2::before { content: "SYS_OVERRIDE_ENABLED\A--------------------\A ROOT ACCESS GRANTED\A UPLINK ESTABLISHED\A PORT_8080 // LISTENING"; }
 
-        .decal-3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.02); font-size: 200px; font-weight: 900; letter-spacing: -15px; user-select: none; }
+        .decal-3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.02); font-size: clamp(80px, 15vw, 200px); font-weight: 900; letter-spacing: -15px; user-select: none; }
         .decal-3::before { content: "0xMH"; }
 
-        /* General UI Elements */
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
         .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; transition: all 0.5s; }
         
@@ -113,13 +132,17 @@
         body.light-mode .decal-1::before { color: rgba(14, 165, 233, 0.3); }
         body.light-mode .decal-2::before { color: rgba(16, 185, 129, 0.3); }
         body.light-mode .decal-3::before { color: rgba(0, 0, 0, 0.03); }
+        
+        body.light-mode .ascii-art { color: rgba(14, 165, 233, 0.5); text-shadow: none; }
 
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
         body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
         
         body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
-        body.light-mode .bg-\[\#111827\] { background: #f8fafc !important; border: 1px solid rgba(0,0,0,0.1) !important; }
-        body.light-mode .scanner-container { background: #e2e8f0 !important; }
+        body.light-mode .light-shield-box { background-color: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
+        body.light-mode .light-scanner { background-color: #f8fafc !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
+        body.light-mode .light-inner-box { background-color: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; color: #0f172a !important; }
+        body.light-mode .light-stat-box { background-color: #f1f5f9 !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
         body.light-mode .scanner-overlay { opacity: 0.1; }
 
         body.light-mode .text-white { color: #0f172a !important; }
@@ -196,7 +219,22 @@
 
     <main class="max-w-5xl mx-auto px-6 pt-24 pb-20">
         
-        <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-24 gap-10 reveal pt-10">
+        <div class="ascii-art-wrapper mb-16 pt-8 reveal">
+            <div class="ascii-art text-center">
+   _____  __   __  ____   ______  _____   _____  ______   _____ 
+  / ____| \ \ / / |  _ \ |  ____||  __ \ / ____||  ____| / ____|
+ | |       \ V /  | |_) || |__   | |__) | (___  | |__   | |     
+ | |        | |   |  _ < |  __|  |  _  / \___ \ |  __|  | |     
+ | |____    | |   | |_) || |____ | | \ \ ____) || |____ | |____ 
+  \_____|   |_|   |____/ |______||_|  \_\_____/ |______| \_____|
+                                                                
+    >> INITIALIZING TERMINAL...
+    >> SYSTEM_AUTH: VERIFIED
+    >> WELCOME, USER.
+            </div>
+        </div>
+
+        <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-24 gap-10 reveal">
             <div class="flex-1 space-y-6 text-center md:text-left">
                 <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-500">
                     <i data-lucide="shield-alert" class="w-4 h-4"></i>
@@ -214,7 +252,7 @@
                 <div class="absolute -top-4 -left-4 w-16 h-16 border-t-[1.5px] border-l-[1.5px] border-[#0ea5e9]/40 rounded-tl-3xl pointer-events-none"></div>
                 <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b-[1.5px] border-r-[1.5px] border-[#0ea5e9]/40 rounded-br-3xl pointer-events-none"></div>
 
-                <div class="absolute -top-8 -right-8 w-20 h-20 bg-[#050b14] border border-white/5 rounded-full flex items-center justify-center z-20 blink-shield">
+                <div class="absolute -top-8 -right-8 w-20 h-20 bg-[#050b14] border border-white/5 rounded-full flex items-center justify-center z-20 blink-shield light-shield-box">
                     <i data-lucide="shield-check" class="w-8 h-8 text-[#0ea5e9]"></i>
                 </div>
 
@@ -228,17 +266,17 @@
                         <span class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-widest mono">IDENTITY.V2.0_SECURE</span>
                     </div>
 
-                    <div class="scanner-container relative w-full h-[320px] mb-6 bg-[#050b14] border border-white/5 rounded-2xl overflow-hidden shadow-inner">
+                    <div class="scanner-container relative w-full h-[320px] mb-6 bg-[#050b14] border border-white/5 rounded-2xl overflow-hidden shadow-inner light-scanner">
                         <img src="./profile.jpg" class="w-full h-full object-cover opacity-80" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
                         <div class="scanner-overlay"></div>
                         <div class="scanner-line"></div>
 
-                        <div class="absolute top-4 left-4 bg-[#080d1a]/90 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-sm">
+                        <div class="absolute top-4 left-4 bg-[#080d1a]/90 px-3 py-1.5 rounded-lg border border-white/10 backdrop-blur-sm light-inner-box">
                             <p class="text-[6px] text-slate-400 font-bold font-mono tracking-wider mb-0.5">NEURAL PROFILE</p>
                             <p class="text-[9px] text-[#0ea5e9] font-bold font-mono tracking-widest">ACTIVE_SYNC</p>
                         </div>
 
-                        <div class="absolute top-4 right-4 border border-white/10 p-1.5 rounded-lg bg-[#080d1a]/80 backdrop-blur-sm">
+                        <div class="absolute top-4 right-4 border border-white/10 p-1.5 rounded-lg bg-[#080d1a]/80 backdrop-blur-sm light-inner-box">
                             <i data-lucide="scan-line" class="w-4 h-4 text-slate-400"></i>
                         </div>
 
@@ -260,11 +298,11 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5">
+                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5 light-stat-box">
                             <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">CORE_NODE</p>
                             <p class="text-[11px] font-bold text-white mono uppercase">CYBER_AI</p>
                         </div>
-                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5">
+                        <div class="bg-[#0f172a]/60 p-4 rounded-xl border border-white/5 light-stat-box">
                             <p class="text-[7px] text-slate-400 mono tracking-widest mb-1.5 uppercase">PROTOCOL</p>
                             <p class="text-[11px] font-bold text-white mono uppercase">ADVERSARIAL</p>
                         </div>
@@ -551,7 +589,6 @@
                 if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute("id");
             });
             
-            // Updated Nav Link Logic for Mobile & Desktop
             document.querySelectorAll(".nav-link").forEach((link) => {
                 link.classList.remove("text-sky-500"); 
                 link.classList.add("text-slate-300");
@@ -563,7 +600,6 @@
         });
         window.dispatchEvent(new Event("scroll"));
 
-        // Smooth Scrolling including floating message button
         document.querySelectorAll(".nav-link, #floatingMsg").forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -573,7 +609,6 @@
             });
         });
 
-        // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
