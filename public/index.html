@@ -274,7 +274,7 @@
                 <div class="inline-flex items-center justify-center p-3 bg-rose-500/10 rounded-full border border-rose-500/30 mb-4 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
                     <i data-lucide="crosshair" class="w-6 h-6 text-rose-500"></i>
                 </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Arsenal</span></h2>
+                <h2 class="text-3xl font-black mb-2 text-white">Cyber <span class="text-rose-500">Arsenal</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Tactical_Tools_&_Frameworks</p>
             </div>
             <div id="arsenalContainer" class="grid md:grid-cols-3 gap-6"></div>
@@ -471,6 +471,7 @@
                 const projData = await projRes.json();
                 const projContainer = document.getElementById('projectContainer');
                 if(projData.length > 0) {
+                    projContainer.innerHTML = '';
                     projContainer.innerHTML = '';
                     projData.forEach(item => {
                         const tagsHtml = item.tags.split(',').map(tag => `<span class="text-[10px] font-bold text-purple-500 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 uppercase tracking-wider">${tag.trim()}</span>`).join('');
