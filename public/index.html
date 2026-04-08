@@ -66,6 +66,7 @@
         .cyber-line { position: absolute; top: 0; left: -100%; width: 150%; height: 2px; background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.8), #fff, rgba(14, 165, 233, 0.8), transparent); animation: glitchScan 2.5s infinite; z-index: 5; opacity: 0.7; mix-blend-mode: overlay; }
         .cyber-line.purple { background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.8), #fff, transparent); animation-duration: 3s; }
         .cyber-line.amber { background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.8), #fff, transparent); animation-duration: 2s; }
+        .cyber-line.rose { background: linear-gradient(90deg, transparent, rgba(244, 63, 94, 0.8), #fff, transparent); animation-duration: 2.8s; }
         @keyframes glitchScan { 0% { left: -100%; opacity: 0; } 10% { opacity: 1; } 50% { left: 100%; opacity: 0; } 100% { left: 100%; opacity: 0; } }
 
         .glow-text { text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); }
@@ -115,7 +116,7 @@
         body.light-mode .text-emerald-400, body.light-mode .text-emerald-500 { color: #059669 !important; }
         body.light-mode .text-purple-400, body.light-mode .text-purple-500 { color: #7e22ce !important; }
         body.light-mode .text-amber-400, body.light-mode .text-amber-500 { color: #b45309 !important; }
-        body.light-mode .text-orange-400, body.light-mode .text-orange-500 { color: #c2410c !important; }
+        body.light-mode .text-rose-400, body.light-mode .text-rose-500 { color: #e11d48 !important; }
         body.light-mode .glow-text { text-shadow: none !important; }
 
         body.light-mode .glass-nav { background: rgba(255, 255, 255, 0.98); color: #0f172a; border-bottom: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
@@ -156,10 +157,10 @@
             <div class="hidden md:flex items-center space-x-8 text-[10px] font-bold uppercase tracking-widest">
                 <a href="#about" class="nav-link text-slate-300 hover:text-sky-400 transition">Profile</a>
                 <a href="#education" class="nav-link text-slate-300 hover:text-sky-400 transition">Education</a>
+                <a href="#arsenal" class="nav-link text-slate-300 hover:text-sky-400 transition">Arsenal</a>
                 <a href="#project" class="nav-link text-slate-300 hover:text-sky-400 transition">Project</a>
                 <a href="#achievements" class="nav-link text-slate-300 hover:text-sky-400 transition">Achievements</a>
                 <a href="#archive" class="nav-link text-slate-300 hover:text-sky-400 transition">Archive</a>
-                <a href="#communication" class="nav-link text-slate-300 hover:text-sky-400 transition">Comms</a>
             </div>
             <div class="flex items-center gap-4">
                 <button id="themeToggle" class="p-2 rounded-full bg-black/20 hover:bg-black/40 transition border border-white/10 flex items-center justify-center w-9 h-9"><i data-lucide="sun" class="w-4 h-4 text-amber-400"></i></button>
@@ -170,10 +171,10 @@
         <div id="mobileMenu" class="hidden absolute top-16 left-0 w-full glass-nav flex flex-col items-center py-6 space-y-6 text-[10px] font-bold uppercase tracking-widest shadow-2xl md:hidden">
             <a href="#about" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Profile</a>
             <a href="#education" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Education</a>
+            <a href="#arsenal" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Arsenal</a>
             <a href="#project" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Project</a>
             <a href="#achievements" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Achievements</a>
             <a href="#archive" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Archive</a>
-            <a href="#communication" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Communication</a>
             <a href="/admin.html" class="mobile-link text-sky-500 mt-2 border border-sky-500/30 px-6 py-2 rounded-full hover:bg-sky-500/10">Admin Login</a>
         </div>
     </nav>
@@ -266,6 +267,19 @@
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Database_Query: Education_Node</p>
             </div>
             <div id="educationContainer" class="grid md:grid-cols-2 gap-8"></div>
+        </section>
+
+        <section id="arsenal" class="mb-32 reveal pt-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center p-3 bg-rose-500/10 rounded-full border border-rose-500/30 mb-4 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+                    <i data-lucide="crosshair" class="w-6 h-6 text-rose-500"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 text-white">Cyber <span class="text-rose-500">Arsenal</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Tactical_Tools_&_Frameworks</p>
+            </div>
+            <div id="arsenalContainer" class="grid md:grid-cols-3 gap-6">
+                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading arsenal inventory...</p>
+            </div>
         </section>
 
         <section id="project" class="mb-32 reveal pt-10">
@@ -365,6 +379,10 @@
         </div>
     </footer>
 
+    <a href="#communication" id="floatingMsg" class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[100] glass-panel border-sky-500/50 p-4 rounded-full text-sky-500 hover:text-sky-400 hover:bg-sky-500/10 shadow-[0_0_15px_rgba(14,165,233,0.3)] hover:shadow-[0_0_25px_rgba(14,165,233,0.5)] transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center group">
+        <i data-lucide="message-square" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+    </a>
+
     <div id="galleryModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
         <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="galleryModal-content">
             <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
@@ -396,7 +414,6 @@
                     document.getElementById('profile-name').innerText = profData.full_name;
                     document.getElementById('profile-title').innerText = profData.job_title;
                     document.getElementById('profile-bio').innerText = profData.bio;
-                    // EXACT FOOTER REPLICA UPDATER
                     document.getElementById('footer-text').innerText = `© 2026 ${profData.full_name.toUpperCase()}. DESIGN: HYPER-SECURITY OS V2`;
                 }
 
@@ -501,7 +518,8 @@
         });
         window.dispatchEvent(new Event("scroll"));
 
-        document.querySelectorAll(".nav-link").forEach(anchor => {
+        // Smooth Scrolling including floating message button
+        document.querySelectorAll(".nav-link, #floatingMsg").forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
