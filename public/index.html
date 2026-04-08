@@ -51,7 +51,6 @@
         /* General UI Elements */
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
         
-        /* Fixed Mobile Menu Animation Issue: Specific ID used for delay instead of general class */
         .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; transition: all 0.3s; }
         #navbar { transform: translateY(-100%); animation: slideDown 0.5s forwards 4s; }
         @keyframes slideDown { to { transform: translateY(0); } }
@@ -114,7 +113,7 @@
         body.light-mode .glow-text { text-shadow: none !important; }
         body.light-mode .glass-nav { background: rgba(255, 255, 255, 0.98); color: #0f172a; border-bottom: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         body.light-mode .nav-link { color: #475569; }
-        body.light-mode .nav-link.text-sky-500, body.light-mode .nav-link:hover { color: #0ea5e9 !important; }
+        body.light-mode .nav-link:hover { color: #0ea5e9 !important; }
         body.light-mode input, body.light-mode textarea { background-color: #fff !important; color: #0f172a !important; border: 1px solid rgba(0, 0, 0, 0.2) !important; }
         body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; box-shadow: 0 0 0 2px rgba(14,165,233,0.2); }
         body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #94a3b8 !important; }
@@ -437,8 +436,8 @@
             "EXTRACTING BROWSER HISTORY... <span class='text-emerald-500'>[100%]</span>",
             "ENCRYPTING LOCAL DRIVES (AES-256)... <span class='text-red-500'>[LOCKED]</span>",
             "ACTIVATING WEBCAM AND MICROPHONE... <span class='text-emerald-500'>[LIVE]</span>",
-            "<span class='text-red-500 font-black text-xl'>[!] FULL SYSTEM COMPROMISED. YOUR PC IS NOW MINE.</span>",
-            "<br><span class='text-sky-500 font-bold text-lg'>...JUST KIDDING! 😉</span>",
+            "<span class='text-red-500 font-black text-xl'>[!] FULL SYSTEM COMPROMISED. YOUR SYSTEM IS NOW MINE.</span>",
+            "<br><span class='text-sky-500 font-bold text-lg'>.......</span>",
             "<span class='text-sky-400'>WELCOME TO MAHMUDUL'S SECURE NODE.</span>"
         ];
         
@@ -609,15 +608,23 @@
             });
             let current = "";
             document.querySelectorAll("section").forEach((section) => {
-                if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute("id");
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute("id");
+                }
             });
             
             document.querySelectorAll(".nav-link").forEach((link) => {
-                link.classList.remove("text-sky-500"); 
-                link.classList.add("text-slate-300");
-                if (current && link.getAttribute("href").includes(current)) { 
-                    link.classList.remove("text-slate-300"); 
-                    link.classList.add("text-sky-500"); 
+                link.classList.remove("text-sky-500", "text-slate-300", "text-slate-400");
+                
+                if (current && link.getAttribute("href") === `#${current}`) {
+                    link.classList.add("text-sky-500");
+                } else {
+                    if (link.classList.contains("mobile-link")) {
+                        link.classList.add("text-slate-400");
+                    } else {
+                        link.classList.add("text-slate-300");
+                    }
                 }
             });
         });
