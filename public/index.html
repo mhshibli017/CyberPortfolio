@@ -13,7 +13,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; transition: background-color 0.5s, color 0.5s; margin: 0; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* ================= EXTREME CYBER BACKGROUND & GLITCH ================= */
+        /* ================= EXTREME CYBER BACKGROUND (Subtle Glitch Retained here) ================= */
         .bg-cyber { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
             background-color: #020617; overflow: hidden;
@@ -30,7 +30,7 @@
             border-radius: 50%; filter: blur(60px); pointer-events: none;
         }
 
-        /* Hacker Decals */
+        /* Hacker Decals - Subtle Background Elements */
         .hacker-decals {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
             font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8;
@@ -43,29 +43,6 @@
 
         .decal-3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.02); font-size: 200px; font-weight: 900; letter-spacing: -15px; user-select: none; }
         .decal-3::before { content: "0xMH"; }
-
-        /* GLOBAL CRT SCANLINE & GLITCH ANIMATIONS */
-        body::after {
-            content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%);
-            background-size: 100% 4px; pointer-events: none; z-index: 9999; opacity: 0.3;
-        }
-        
-        .glitch-text { animation: text-shadow-glitch 5s ease-in-out infinite; }
-        @keyframes text-shadow-glitch {
-            0%, 92%, 96%, 100% { text-shadow: none; transform: translate(0, 0); }
-            93% { text-shadow: -3px 0 0 #e11d48, 3px 0 0 #0ea5e9; transform: translate(-2px, 1px); }
-            95% { text-shadow: 3px 0 0 #e11d48, -3px 0 0 #0ea5e9; transform: translate(2px, -1px); }
-            97% { text-shadow: -1px 0 0 #e11d48, 1px 0 0 #0ea5e9; transform: translate(-1px, -1px); }
-        }
-
-        .glitch-img { animation: img-glitch 5s ease-in-out infinite; }
-        @keyframes img-glitch {
-            0%, 92%, 96%, 100% { transform: skew(0deg); filter: none; }
-            93% { transform: skew(3deg); filter: drop-shadow(-3px 0 0 rgba(225,29,72,0.6)) drop-shadow(3px 0 0 rgba(14,165,233,0.6)); }
-            95% { transform: skew(-3deg); filter: drop-shadow(3px 0 0 rgba(225,29,72,0.6)) drop-shadow(-3px 0 0 rgba(14,165,233,0.6)); }
-            97% { transform: skew(1deg); filter: none; }
-        }
 
         /* General UI Elements */
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
@@ -88,6 +65,7 @@
         .sci-fi-card::after { content: ']'; position: absolute; bottom: 10px; right: 10px; color: rgba(14, 165, 233, 0.5); font-family: monospace; font-size: 20px; transition: all 0.3s; }
         .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.8); box-shadow: inset 0 0 20px rgba(14, 165, 233, 0.2), 0 0 20px rgba(14, 165, 233, 0.3); transform: translateY(-5px); }
         
+        /* Background Glitch Lines - Subtle visual effects */
         .cyber-line { position: absolute; top: 0; left: -100%; width: 150%; height: 2px; background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.8), #fff, rgba(14, 165, 233, 0.8), transparent); animation: glitchScan 2.5s infinite; z-index: 5; opacity: 0.7; mix-blend-mode: overlay; }
         .cyber-line.purple { background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.8), #fff, transparent); animation-duration: 3s; }
         .cyber-line.amber { background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.8), #fff, transparent); animation-duration: 2s; }
@@ -119,7 +97,6 @@
 
         /* ================= DAY MODE FIXES (WITH EXPLICIT OVERRIDES) ================= */
         body.light-mode { background-color: #f1f5f9; color: #0f172a; }
-        body.light-mode::after { opacity: 0.03; } /* Lighter glitch scanline */
         body.light-mode .bg-cyber { background-color: #f1f5f9; }
         body.light-mode .decal-1::before { color: rgba(14, 165, 233, 0.3); }
         body.light-mode .decal-2::before { color: rgba(16, 185, 129, 0.3); }
@@ -128,7 +105,7 @@
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
         body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
         
-        /* EXPLICIT LIGHT MODE PROFILE BOX FIXES */
+        /* EXPLICIT LIGHT MODE PROFILE BOX FIXES (Screen approved) */
         body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
         body.light-mode .light-shield-box { background-color: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
         body.light-mode .light-scanner { background-color: #f8fafc !important; border: 1px solid rgba(14, 165, 233, 0.2) !important; }
@@ -198,12 +175,12 @@
             </div>
         </div>
         <div id="mobileMenu" class="hidden absolute top-16 left-0 w-full glass-nav flex flex-col items-center py-6 space-y-6 text-[10px] font-bold uppercase tracking-widest shadow-2xl md:hidden">
-            <a href="#about" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Profile</a>
-            <a href="#education" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Education</a>
-            <a href="#arsenal" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Arsenal</a>
-            <a href="#project" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Project</a>
-            <a href="#achievements" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Achievements</a>
-            <a href="#archive" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Archive</a>
+            <a href="#about" class="nav-link text-slate-300 hover:text-sky-500 transition">Profile</a>
+            <a href="#education" class="nav-link text-slate-300 hover:text-sky-500 transition">Education</a>
+            <a href="#arsenal" class="nav-link text-slate-300 hover:text-sky-500 transition">Arsenal</a>
+            <a href="#project" class="nav-link text-slate-300 hover:text-sky-500 transition">Project</a>
+            <a href="#achievements" class="nav-link text-slate-300 hover:text-sky-500 transition">Achievements</a>
+            <a href="#archive" class="nav-link text-slate-300 hover:text-sky-500 transition">Archive</a>
             <a href="/admin.html" class="text-sky-500 mt-2 border border-sky-500/30 px-6 py-2 rounded-full hover:bg-sky-500/10 transition">Admin Login</a>
         </div>
     </nav>
@@ -216,7 +193,7 @@
                     <i data-lucide="shield-alert" class="w-4 h-4"></i>
                     <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">Auth Granted // UID: 0x99A3</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] text-white glow-text glitch-text">
+                <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] text-white glow-text">
                     Architecting <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500">Secure AI</span><br>
                     Futures.
@@ -243,7 +220,7 @@
                     </div>
 
                     <div class="scanner-container relative w-full h-[320px] mb-6 bg-[#050b14] border border-white/5 rounded-2xl overflow-hidden shadow-inner light-scanner">
-                        <img src="./profile.jpg" class="w-full h-full object-cover opacity-80 glitch-img" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
+                        <img src="./profile.jpg" class="w-full h-full object-cover opacity-80" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
                         <div class="scanner-overlay"></div>
                         <div class="scanner-line"></div>
 
@@ -264,7 +241,7 @@
 
                     <div class="flex justify-between items-end mb-6">
                         <div>
-                            <h3 id="profile-name" class="text-[28px] font-extrabold text-white leading-none mb-1.5 tracking-tight glitch-text">Mahmudul Hasan</h3>
+                            <h3 id="profile-name" class="text-[28px] font-extrabold text-white leading-none mb-1.5 tracking-tight">Mahmudul Hasan</h3>
                             <p id="profile-title" class="text-[9px] font-bold text-[#0ea5e9] uppercase tracking-[0.2em] mono">SECURITY RESEARCHER</p>
                         </div>
                         <div class="text-right">
@@ -292,7 +269,7 @@
                 <div class="inline-flex items-center justify-center p-3 bg-emerald-500/10 rounded-full border border-emerald-500/30 mb-4 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                     <i data-lucide="cpu" class="w-6 h-6 text-emerald-500"></i>
                 </div>
-                <h2 class="text-3xl font-black mb-2 text-white glitch-text">Academic <span class="text-emerald-500">Records</span></h2>
+                <h2 class="text-3xl font-black mb-2 text-white">Academic <span class="text-emerald-500">Records</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Database_Query: Education_Node</p>
             </div>
             <div id="educationContainer" class="grid md:grid-cols-2 gap-8"></div>
@@ -303,7 +280,7 @@
                 <div class="inline-flex items-center justify-center p-3 bg-rose-500/10 rounded-full border border-rose-500/30 mb-4 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
                     <i data-lucide="crosshair" class="w-6 h-6 text-rose-500"></i>
                 </div>
-                <h2 class="text-3xl font-black mb-2 text-white glitch-text">Cyber <span class="text-rose-500">Arsenal</span></h2>
+                <h2 class="text-3xl font-black mb-2 text-white">Cyber <span class="text-rose-500">Arsenal</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Tactical_Tools_&_Frameworks</p>
             </div>
             <div id="arsenalContainer" class="grid md:grid-cols-3 gap-6"></div>
@@ -314,7 +291,7 @@
                 <div class="inline-flex items-center justify-center p-3 bg-purple-500/10 rounded-full border border-purple-500/30 mb-4 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
                     <i data-lucide="terminal-square" class="w-6 h-6 text-purple-500"></i>
                 </div>
-                <h2 class="text-3xl font-black mb-2 text-white glitch-text">Active <span class="text-purple-500">Deployments</span></h2>
+                <h2 class="text-3xl font-black mb-2 text-white">Active <span class="text-purple-500">Deployments</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Executing_Operations</p>
             </div>
             <div id="projectContainer" class="grid md:grid-cols-2 gap-8"></div>
@@ -325,7 +302,7 @@
                 <div class="inline-flex items-center justify-center p-3 bg-amber-500/10 rounded-full border border-amber-500/30 mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
                     <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
                 </div>
-                <h2 class="text-3xl font-black mb-2 text-white glitch-text">Achievements & <span class="text-amber-500">Certifications</span></h2>
+                <h2 class="text-3xl font-black mb-2 text-white">Achievements & <span class="text-amber-500">Certifications</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Verified_Credentials</p>
             </div>
             <div class="grid md:grid-cols-3 gap-6" id="certContainer"></div>
@@ -336,7 +313,7 @@
                 <div class="inline-flex items-center justify-center p-3 bg-sky-500/10 rounded-full border border-sky-500/30 mb-4 shadow-[0_0_15px_rgba(14,165,233,0.2)]">
                     <i data-lucide="database" class="w-6 h-6 text-sky-500"></i>
                 </div>
-                <h2 class="text-3xl font-black mb-2 text-white glitch-text">Visual <span class="text-sky-500">Archives</span></h2>
+                <h2 class="text-3xl font-black mb-2 text-white">Visual <span class="text-sky-500">Archives</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Secure_Gallery_Access</p>
             </div>
             <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
@@ -351,7 +328,7 @@
                 <div class="relative z-10 max-w-2xl mx-auto">
                     <div class="text-center mb-12">
                         <i data-lucide="radio-tower" class="w-10 h-10 text-sky-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_10px_rgba(14,165,233,0.8)]"></i>
-                        <h2 class="text-4xl font-black mb-4 text-white glitch-text">Initialize <span class="text-sky-500">Uplink</span></h2>
+                        <h2 class="text-4xl font-black mb-4 text-white">Initialize <span class="text-sky-500">Uplink</span></h2>
                         <p class="text-slate-400 text-sm leading-relaxed">Secure protocol established for recruitment and research collaboration.</p>
                     </div>
                     <form id="commForm" class="space-y-6">
