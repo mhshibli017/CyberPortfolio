@@ -13,7 +13,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; transition: background-color 0.5s, color 0.5s; margin: 0; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* ================= ASCII ART GLITCH & RESPONSIVE FIX ================= */
+        /* ================= ASCII ART GLITCH (SAFE VERSION) ================= */
         .ascii-art-wrapper {
             width: 100%;
             overflow-x: hidden;
@@ -24,7 +24,7 @@
             font-family: 'JetBrains Mono', monospace;
             white-space: pre;
             line-height: 1.1;
-            font-size: clamp(4.5px, 1.3vw, 14px); /* Auto-scales based on screen width */
+            font-size: clamp(5px, 1.5vw, 16px);
             color: rgba(14, 165, 233, 0.8);
             text-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
             animation: asciiGlitch 4s infinite alternate;
@@ -67,11 +67,13 @@
             96% { transform: translate(-1px, 1px); opacity: 0.9; filter: none; }
         }
 
+        /* Fixed the line breaks to use standard HTML display if needed, but in CSS content it needs to be \A */
+        /* Changed to avoid multiple backslashes in a single string that might trip some parsers */
         .decal-1 { position: absolute; top: 15%; left: 2%; white-space: pre; line-height: 1.6; letter-spacing: 0.1em; color: rgba(14, 165, 233, 0.15); }
-        .decal-1::before { content: "> INIT SECURE_BOOT...\A> LOAD KERNEL_MODULE_0x8F\A> BYPASSING FIREWALL... [OK]\A> MEM_ALLOC: 0x7FFE4000\A> THREAD_SYNC: IN_PROGRESS"; }
+        .decal-1::before { content: "> INIT SECURE_BOOT...\000A> LOAD KERNEL_MODULE_0x8F\000A> BYPASSING FIREWALL... [OK]\000A> MEM_ALLOC: 0x7FFE4000\000A> THREAD_SYNC: IN_PROGRESS"; }
         
         .decal-2 { position: absolute; bottom: 20%; right: 2%; white-space: pre; line-height: 1.6; text-align: right; letter-spacing: 0.1em; color: rgba(16, 185, 129, 0.15); }
-        .decal-2::before { content: "SYS_OVERRIDE_ENABLED\A--------------------\A ROOT ACCESS GRANTED\A UPLINK ESTABLISHED\A PORT_8080 // LISTENING"; }
+        .decal-2::before { content: "SYS_OVERRIDE_ENABLED\000A--------------------\000A ROOT ACCESS GRANTED\000A UPLINK ESTABLISHED\000A PORT_8080 // LISTENING"; }
 
         .decal-3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.02); font-size: clamp(80px, 15vw, 200px); font-weight: 900; letter-spacing: -15px; user-select: none; }
         .decal-3::before { content: "0xMH"; }
@@ -221,12 +223,12 @@
         
         <div class="ascii-art-wrapper mb-16 pt-8 reveal">
             <div class="ascii-art text-center">
-   _____  __   __  ____   ______  _____   _____  ______   _____ 
-  / ____| \ \ / / |  _ \ |  ____||  __ \ / ____||  ____| / ____|
- | |       \ V /  | |_) || |__   | |__) | (___  | |__   | |     
- | |        | |   |  _ < |  __|  |  _  / \___ \ |  __|  | |     
- | |____    | |   | |_) || |____ | | \ \ ____) || |____ | |____ 
-  \_____|   |_|   |____/ |______||_|  \_\_____/ |______| \_____|
+   _____ __  __ ____  ______ _____   _____ ______ _____ 
+  / ____|\ \/ /|  _ \|  ____|  __ \ / ____|  ____|  __ \
+ | |      \  / | |_) | |__  | |__) | (___ | |__  | |  | |
+ | |       \/  |  _ <|  __| |  _  / \___ \|  __| | |  | |
+ | |____   ||  | |_) | |____| | \ \ ____) | |____| |__| |
+  \_____|  ||  |____/|______|_|  \_\_____/|______|_____/ 
                                                                 
     >> INITIALIZING TERMINAL...
     >> SYSTEM_AUTH: VERIFIED
@@ -589,6 +591,7 @@
                 if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute("id");
             });
             
+            // Updated Nav Link Logic for Mobile & Desktop
             document.querySelectorAll(".nav-link").forEach((link) => {
                 link.classList.remove("text-sky-500"); 
                 link.classList.add("text-slate-300");
@@ -600,6 +603,7 @@
         });
         window.dispatchEvent(new Event("scroll"));
 
+        // Smooth Scrolling including floating message button
         document.querySelectorAll(".nav-link, #floatingMsg").forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -609,6 +613,7 @@
             });
         });
 
+        // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
