@@ -114,6 +114,21 @@
                         <div id="eduList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
                     </div>
 
+                    <div class="glass-panel p-6 border-t-2 border-rose-500">
+                        <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="crosshair" class="w-5 h-5 text-rose-500"></i> Cyber Arsenal</h3>
+                        <form id="addArsForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
+                            <input type="hidden" id="ar-id">
+                            <input type="text" id="ar-title" placeholder="Tool/Framework (e.g., Metasploit)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                            <input type="text" id="ar-category" placeholder="Category (e.g., Exploitation)" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition">
+                            <textarea id="ar-details" placeholder="Details/Features..." required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-xs text-white outline-none transition" rows="2"></textarea>
+                            <div class="flex gap-2">
+                                <button type="submit" id="btn-ars" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition">Add to Arsenal</button>
+                                <button type="button" onclick="resetForm('addArsForm', 'btn-ars', 'Add to Arsenal')" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-[10px] font-bold uppercase transition hidden" id="cancel-ars">Cancel</button>
+                            </div>
+                        </form>
+                        <div id="arsList" class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
+                    </div>
+
                     <div class="glass-panel p-6 border-t-2 border-pink-500">
                         <h3 class="font-bold text-lg mb-4 flex items-center gap-2 text-white"><i data-lucide="award" class="w-5 h-5 text-pink-500"></i> Achievements & Certs</h3>
                         <form id="addAchForm" class="bg-black/20 p-4 rounded-xl mb-4 space-y-3">
@@ -217,7 +232,7 @@
     </div>
 
     <div id="msgLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="glass-panel max-w-3xl w-full p-8 relative transform scale-95 transition-transform duration-300">
+        <div class="glass-panel max-w-3xl w-full p-8 relative transform scale-95 transition-transform duration-300 border-sky-500/50 shadow-[0_0_30px_rgba(14,165,233,0.15)]">
             <button onclick="closeMsgLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             <div class="border-b border-white/10 pb-4 mb-6">
                 <div class="flex justify-between items-start">
@@ -243,6 +258,7 @@
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
         let eduDataArray = [];
+        let arsenalDataArray = [];
         let projDataArray = [];
         let achDataArray = [];
         let galleryDataArray = [];
@@ -291,7 +307,7 @@
                     document.getElementById('stat-today').innerText = data.today_visitor;
                 } catch(e){}
             }, 3000);
-            loadProfile(); loadEducation(); loadProjects(); loadAchievements(); loadGallery(); loadMessages();
+            loadProfile(); loadEducation(); loadArsenal(); loadProjects(); loadAchievements(); loadGallery(); loadMessages();
         }
 
         function resetForm(formId, btnId, originalText) {
@@ -301,6 +317,7 @@
             document.getElementById(btnId).innerText = originalText;
             
             if(formId === 'addEduForm') document.getElementById('cancel-edu').classList.add('hidden');
+            if(formId === 'addArsForm') document.getElementById('cancel-ars').classList.add('hidden');
             if(formId === 'addProjForm') document.getElementById('cancel-proj').classList.add('hidden');
             if(formId === 'addAchForm') document.getElementById('cancel-ach').classList.add('hidden');
             if(formId === 'addGalleryForm') {
@@ -362,6 +379,44 @@
             if(id) await fetch(`${API_BASE}/education/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
             else await fetch(`${API_BASE}/education`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
             resetForm('addEduForm', 'btn-edu', 'Add Education'); loadEducation();
+        });
+
+        // --- Arsenal ---
+        async function loadArsenal() {
+            arsenalDataArray = await (await fetch(`${API_BASE}/arsenal`)).json();
+            const list = document.getElementById('arsList'); list.innerHTML = '';
+            arsenalDataArray.forEach(item => {
+                list.innerHTML += `
+                <div class="flex justify-between items-center bg-black/30 p-3 rounded border border-white/5 hover:border-rose-500/30 transition">
+                    <div class="truncate pr-2"><p class="text-xs font-bold text-white">${item.title}</p><p class="text-[10px] text-slate-400">${item.category}</p></div>
+                    <div class="flex gap-1 shrink-0">
+                        <button onclick="editArs(${item.id})" class="text-sky-500 hover:bg-sky-500 hover:text-white p-1.5 rounded transition"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                        <button onclick="deleteRow('arsenal', ${item.id})" class="text-red-500 hover:bg-red-500 hover:text-white p-1.5 rounded transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>`;
+            });
+            lucide.createIcons();
+        }
+        function editArs(id) {
+            const item = arsenalDataArray.find(x => x.id === id);
+            if(!item) return;
+            document.getElementById('ar-id').value = item.id;
+            document.getElementById('ar-title').value = item.title;
+            document.getElementById('ar-category').value = item.category;
+            document.getElementById('ar-details').value = item.details;
+            document.getElementById('btn-ars').innerText = "UPDATE ARSENAL";
+            document.getElementById('cancel-ars').classList.remove('hidden');
+            
+            const form = document.getElementById('addArsForm');
+            window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
+        }
+        document.getElementById('addArsForm').addEventListener('submit', async(e) => {
+            e.preventDefault();
+            const id = document.getElementById('ar-id').value;
+            const payload = { title: document.getElementById('ar-title').value, category: document.getElementById('ar-category').value, details: document.getElementById('ar-details').value };
+            if(id) await fetch(`${API_BASE}/arsenal/${id}`, { method: 'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            else await fetch(`${API_BASE}/arsenal`, { method: 'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            resetForm('addArsForm', 'btn-ars', 'Add to Arsenal'); loadArsenal();
         });
 
         // --- Projects ---
@@ -441,7 +496,7 @@
             resetForm('addAchForm', 'btn-ach', 'Add Achievement'); loadAchievements();
         });
 
-        // --- Archive (Gallery) with Update Logic ---
+        // --- Archive (Gallery) ---
         async function loadGallery() {
             galleryDataArray = await (await fetch(`${API_BASE}/gallery`)).json();
             const list = document.getElementById('galleryList'); list.innerHTML = '';
@@ -499,7 +554,7 @@
         async function deleteRow(table, id) {
             if(confirm('Delete permanently?')) {
                 await fetch(`${API_BASE}/${table}/${id}`, { method: 'DELETE' });
-                if(table==='education') loadEducation(); else if(table==='projects') loadProjects(); else if(table==='gallery') loadGallery(); else if(table==='achievements') loadAchievements();
+                if(table==='education') loadEducation(); else if(table==='projects') loadProjects(); else if(table==='gallery') loadGallery(); else if(table==='achievements') loadAchievements(); else if(table==='arsenal') loadArsenal();
             }
         }
 
