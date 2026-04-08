@@ -13,52 +13,41 @@
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; transition: background-color 0.5s, color 0.5s; margin: 0; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* ================= EXTREME CYBER BACKGROUND ================= */
+        /* ================= EXTREME CYBER BACKGROUND (NO GRIDS) ================= */
         .bg-cyber { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; 
-            background-color: #020617;
-            overflow: hidden;
+            background-color: #020617; overflow: hidden;
         }
 
         /* Ambient Glows */
         .bg-cyber::before {
             content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%;
-            background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
-            border-radius: 50%; filter: blur(50px); pointer-events: none;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+            border-radius: 50%; filter: blur(60px); pointer-events: none;
         }
         .bg-cyber::after {
             content: ''; position: absolute; bottom: -20%; right: -10%; width: 60%; height: 60%;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
             border-radius: 50%; filter: blur(60px); pointer-events: none;
         }
-
-        /* Matrix/Binary Rain Effect Layer */
-        .binary-rain {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background-image: repeating-linear-gradient(0deg, rgba(14, 165, 233, 0.03) 0px, transparent 1px, transparent 20px);
-            background-size: 100% 20px;
-            opacity: 0.5;
-            animation: rainDown 20s linear infinite;
-        }
-        @keyframes rainDown { 0% { background-position: 0 0; } 100% { background-position: 0 1000px; } }
 
         /* Hacker Decals (Static Text in Background) */
         .hacker-decals {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
-            font-family: 'JetBrains Mono', monospace; color: rgba(14, 165, 233, 0.15); font-size: 10px; font-weight: bold;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8;
         }
-        .decal-1 { position: absolute; top: 15%; left: 3%; white-space: pre; line-height: 1.5; letter-spacing: 0.1em; }
-        .decal-1::before { content: "> INIT SECURE_BOOT...\A> LOAD KERNEL_MODULE_0x8F\A> BYPASSING FIREWALL... [OK]\A> MEM_ALLOC: 0x7FFE4000"; }
+        .decal-1 { position: absolute; top: 15%; left: 2%; white-space: pre; line-height: 1.6; letter-spacing: 0.1em; color: rgba(14, 165, 233, 0.15); }
+        .decal-1::before { content: "> INIT SECURE_BOOT...\A> LOAD KERNEL_MODULE_0x8F\A> BYPASSING FIREWALL... [OK]\A> MEM_ALLOC: 0x7FFE4000\A> THREAD_SYNC: IN_PROGRESS"; }
         
-        .decal-2 { position: absolute; bottom: 20%; right: 3%; white-space: pre; line-height: 1.5; text-align: right; letter-spacing: 0.1em; color: rgba(16, 185, 129, 0.15); }
-        .decal-2::before { content: "SYS_OVERRIDE_ENABLED\A--------------------\A ROOT ACCESS GRANTED\A UPLINK ESTABLISHED"; }
+        .decal-2 { position: absolute; bottom: 20%; right: 2%; white-space: pre; line-height: 1.6; text-align: right; letter-spacing: 0.1em; color: rgba(16, 185, 129, 0.15); }
+        .decal-2::before { content: "SYS_OVERRIDE_ENABLED\A--------------------\A ROOT ACCESS GRANTED\A UPLINK ESTABLISHED\A PORT_8080 // LISTENING"; }
 
-        .decal-3 { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); opacity: 0.05; font-size: 150px; color: #fff; font-weight: 900; letter-spacing: -10px; }
-        .decal-3::before { content: "0x99"; }
+        .decal-3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.02); font-size: 200px; font-weight: 900; letter-spacing: -15px; user-select: none; }
+        .decal-3::before { content: "0xMH"; }
 
         /* General UI Elements */
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
-        .glass-nav { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; transition: all 0.5s; }
+        .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; transition: all 0.5s; }
         
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
@@ -68,90 +57,60 @@
         .sci-fi-card {
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0.95) 100%);
             border: 1px solid rgba(14, 165, 233, 0.3);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
             box-shadow: inset 0 0 30px rgba(14, 165, 233, 0.05), 0 5px 15px rgba(0,0,0,0.5);
             transition: all 0.3s;
             clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px)); 
         }
         .sci-fi-card::before { content: '['; position: absolute; top: 10px; left: 10px; color: rgba(14, 165, 233, 0.5); font-family: monospace; font-size: 20px; transition: all 0.3s; }
         .sci-fi-card::after { content: ']'; position: absolute; bottom: 10px; right: 10px; color: rgba(14, 165, 233, 0.5); font-family: monospace; font-size: 20px; transition: all 0.3s; }
-        
         .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.8); box-shadow: inset 0 0 20px rgba(14, 165, 233, 0.2), 0 0 20px rgba(14, 165, 233, 0.3); transform: translateY(-5px); }
-        .sci-fi-card:hover::before { color: #0ea5e9; text-shadow: 0 0 5px #0ea5e9; }
-        .sci-fi-card:hover::after { color: #0ea5e9; text-shadow: 0 0 5px #0ea5e9; }
         
         .cyber-line { position: absolute; top: 0; left: -100%; width: 150%; height: 2px; background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.8), #fff, rgba(14, 165, 233, 0.8), transparent); animation: glitchScan 2.5s infinite; z-index: 5; opacity: 0.7; mix-blend-mode: overlay; }
         .cyber-line.purple { background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.8), #fff, transparent); animation-duration: 3s; }
         .cyber-line.amber { background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.8), #fff, transparent); animation-duration: 2s; }
         @keyframes glitchScan { 0% { left: -100%; opacity: 0; } 10% { opacity: 1; } 50% { left: 100%; opacity: 0; } 100% { left: 100%; opacity: 0; } }
 
-        .glow-text { text-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
+        .glow-text { text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); }
+        .blink { animation: blinker 1.5s cubic-bezier(0.5, 0, 1, 1) infinite alternate; }
+        @keyframes blinker { 0% { opacity: 1; } 100% { opacity: 0.2; } }
 
-        /* ================= PROFIL SCANNER ================= */
-        .profile-container {
-            position: relative; padding: 4px; border-radius: 1.5rem;
-            background: linear-gradient(45deg, #0ea5e9, #8b5cf6, #10b981);
-            background-size: 200% 200%;
-            animation: gradientBorder 5s ease infinite;
-        }
-        @keyframes gradientBorder { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        /* ================= PROFILE SCANNER (IMAGE REPLICA) ================= */
+        .profile-box { background: #0A101F; border: 1px solid rgba(14, 165, 233, 0.2); }
+        .scanner-container { position: relative; overflow: hidden; }
         
-        .scanner-container { position: relative; overflow: hidden; border-radius: 1.25rem; background: #000; height: 320px; width: 100%; }
-        
-        /* Slow Scanline from image */
+        /* Slow, aggressive blue scanning line */
         .scanner-line { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 5px; 
-            background: rgba(239, 68, 68, 0.9); 
-            box-shadow: 0 -5px 15px rgba(239, 68, 68, 0.8), 0 5px 20px rgba(14, 165, 233, 0.6); 
-            animation: slowScan 3.5s cubic-bezier(0.1, 0.9, 0.2, 1) infinite alternate; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 3px; 
+            background: #0ea5e9; 
+            box-shadow: 0 0 15px #0ea5e9, 0 0 30px #0ea5e9; 
+            animation: slowScan 4s linear infinite; 
             z-index: 10; mix-blend-mode: screen;
         }
-        @keyframes slowScan { 
-            0% { top: -10%; height: 2px; background: #0ea5e9; } 
-            40% { height: 10px; background: #ef4444; }
-            50% { opacity: 0.5; }
-            100% { top: 110%; height: 2px; background: #10b981; } 
-        }
-
-        .scanner-data { 
-            position: absolute; top: 10px; left: 10px; color: rgba(16, 185, 129, 0.8); 
-            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; line-height: 1.3; 
-            white-space: pre; pointer-events: none; z-index: 9; text-shadow: 0 0 5px rgba(16,185,129,0.5);
-            animation: textFlicker 3s infinite;
-        }
-        @keyframes textFlicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } 52% { opacity: 1; } 54% { opacity: 0.3; } 56% { opacity: 1; } }
+        @keyframes slowScan { 0% { top: -10%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
         
-        .scanner-overlay {
-            position: absolute; inset: 0; background-image: linear-gradient(rgba(14, 165, 233, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 165, 233, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px; pointer-events: none; z-index: 5;
-        }
-        
-        /* Blinking corner icon from image */
-        .blink { animation: blinker 1s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0; } }
+        /* Scan Overlay */
+        .scanner-overlay { position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.25) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; opacity: 0.5; }
 
-        /* ================= REFINED LIGHT MODE (DAY MODE) ================= */
+        /* ================= DAY MODE FIXES ================= */
         body.light-mode { background-color: #f1f5f9; color: #0f172a; }
-        
-        body.light-mode .bg-cyber { 
-            background-color: #f1f5f9;
-        }
-        body.light-mode .bg-cyber::before, body.light-mode .bg-cyber::after { display: none; }
-        
-        body.light-mode .binary-rain { background-image: repeating-linear-gradient(0deg, rgba(15, 23, 42, 0.05) 0px, transparent 1px, transparent 20px); }
-        body.light-mode .hacker-decals { color: rgba(15, 23, 42, 0.2); }
-        body.light-mode .decal-2::before { color: rgba(5, 150, 105, 0.2); }
-        body.light-mode .decal-3::before { color: rgba(15, 23, 42, 0.03); }
+        body.light-mode .bg-cyber { background-color: #f1f5f9; }
+        body.light-mode .decal-1::before { color: rgba(14, 165, 233, 0.3); }
+        body.light-mode .decal-2::before { color: rgba(16, 185, 129, 0.3); }
+        body.light-mode .decal-3::before { color: rgba(0, 0, 0, 0.03); }
 
-        body.light-mode .glass-panel, body.light-mode .sci-fi-card { 
-            background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; 
-        }
-        body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); transform: translateY(-5px); }
+        body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
+        body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
         
+        /* Light mode specific for the profile box replica */
+        body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
+        body.light-mode .bg-\[\#111827\] { background: #f8fafc !important; border: 1px solid rgba(0,0,0,0.1) !important; }
+        body.light-mode .scanner-container { background: #e2e8f0 !important; }
+        body.light-mode .scanner-overlay { opacity: 0.1; }
+
         body.light-mode .text-white { color: #0f172a !important; }
-        body.light-mode .text-slate-300, body.light-mode .text-slate-400 { color: #334155 !important; }
-        body.light-mode .text-slate-500 { color: #475569 !important; }
+        body.light-mode .text-slate-300, body.light-mode .text-slate-400 { color: #475569 !important; }
+        body.light-mode .text-slate-500 { color: #64748b !important; }
         body.light-mode h1, body.light-mode h2, body.light-mode h3 { color: #020617 !important; }
         
         body.light-mode .text-sky-400, body.light-mode .text-sky-500 { color: #0284c7 !important; }
@@ -160,11 +119,7 @@
         body.light-mode .text-amber-400, body.light-mode .text-amber-500 { color: #b45309 !important; }
         body.light-mode .glow-text { text-shadow: none !important; }
 
-        body.light-mode .profile-container { background: linear-gradient(45deg, #0ea5e9, #3b82f6, #06b6d4); }
-        body.light-mode .scanner-container { background: #e2e8f0; }
-        body.light-mode .scanner-data { color: rgba(5, 150, 105, 0.9); text-shadow: none; }
-
-        body.light-mode .glass-nav { background: rgba(255, 255, 255, 0.95); color: #0f172a; border-bottom: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        body.light-mode .glass-nav { background: rgba(255, 255, 255, 0.98); color: #0f172a; border-bottom: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
         body.light-mode .nav-link { color: #475569; }
         body.light-mode .nav-link.text-sky-500, body.light-mode .nav-link:hover { color: #0ea5e9 !important; }
         
@@ -172,10 +127,7 @@
         body.light-mode input:focus, body.light-mode textarea:focus { border-color: #0ea5e9 !important; box-shadow: 0 0 0 2px rgba(14,165,233,0.2); }
         body.light-mode input::placeholder, body.light-mode textarea::placeholder { color: #94a3b8 !important; }
         
-        body.light-mode .bg-black\/20, body.light-mode .bg-black\/30, body.light-mode .bg-black\/40, body.light-mode .bg-black\/50 { 
-            background-color: rgba(241, 245, 249, 0.8) !important; border-color: rgba(0, 0, 0, 0.1) !important; 
-        }
-
+        body.light-mode .bg-black\/40 { background-color: rgba(241, 245, 249, 0.8) !important; border-color: rgba(0, 0, 0, 0.1) !important; }
         body.light-mode footer { background-color: #e2e8f0; border-top: 1px solid rgba(0,0,0,0.1); color: #475569; }
         body.light-mode footer a { border-color: rgba(0,0,0,0.15); color: #475569; background-color: #fff; }
         body.light-mode footer a:hover { background-color: #f8fafc; color: #0ea5e9; border-color: #0ea5e9; }
@@ -184,12 +136,10 @@
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(14, 165, 233, 0.8); }
     </style>
 </head>
 <body>
     <div class="bg-cyber">
-        <div class="binary-rain"></div>
         <div class="hacker-decals">
             <div class="decal-1"></div>
             <div class="decal-2"></div>
@@ -198,7 +148,7 @@
     </div>
 
     <nav class="fixed top-0 w-full glass-nav transition-all">
-        <div class="w-full px-6 lg:px-10 h-16 flex items-center justify-between">
+        <div class="w-full px-6 lg:px-12 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981] animate-pulse"></div>
                 <span class="text-[10px] font-bold uppercase tracking-[0.2em] mono text-emerald-500">System_Online</span>
@@ -233,8 +183,8 @@
         <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-32 gap-10 reveal pt-10">
             <div class="flex-1 space-y-6 text-center md:text-left">
                 <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-500">
-                    <i data-lucide="shield" class="w-4 h-4"></i>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">Auth Granted // UID: 0x99A3</span>
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.25em] mono">IDENTITY.V2.0_SECURE</span>
                 </div>
                 <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] text-white glow-text">
                     Architecting <br>
@@ -244,48 +194,49 @@
                 <p id="profile-bio" class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed mx-auto md:mx-0">Loading biography...</p>
             </div>
             
-            <div class="w-72 md:w-80 mx-auto md:mx-0 copiar-estilo-foto">
-                <div class="profile-container copiar-padding-redondo p-1 rounded-3xl">
-                    <div class="glass-panel dynamic-card backdrop-blur-xl rounded-[1.3rem] p-4 w-full h-full relative">
-                        <div class="flex justify-between items-center mb-4">
-                            <div class="flex gap-1.5 copiar-puntos-tres">
-                                <div class="w-2.5 h-2.5 rounded-full bg-[#0ea5e9]"></div>
-                                <div class="w-2.5 h-2.5 rounded-full bg-[#0ea5e9]"></div>
-                                <div class="w-2.5 h-2.5 rounded-full bg-[#0ea5e9]"></div>
-                            </div>
-                            <span class="text-[9px] mono text-[#0ea5e9]/70 font-bold uppercase">IDENTITY.V2.0_SECURE</span>
+            <div class="w-full max-w-[340px] mx-auto md:mx-0">
+                <div class="profile-box p-6 border-t-2 border-sky-500/50 relative overflow-hidden rounded-[2rem] shadow-[0_0_30px_rgba(14,165,233,0.15)]">
+                    
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="border border-sky-500/30 px-2 py-1 rounded bg-black/40">
+                            <p class="text-[7px] text-slate-400 font-mono font-bold leading-tight">NEURAL PROFILE</p>
+                            <p class="text-[9px] text-sky-400 font-mono font-bold leading-tight mt-0.5">ACTIVE_SYNC</p>
                         </div>
-                        
-                        <div class="scanner-container relative w-full h-80 mb-4 bg-black/50 border border-sky-500/30 rounded-xl">
-                            <img src="./profile.jpg" class="w-full h-full object-cover rounded-xl" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
-                            <div class="scanner-overlay"></div>
-                            <div class="scanner-line"></div> <div class="absolute top-4 left-4 bg-black/60 p-2 rounded border border-white/10 copiar-texto-neural">
-                                <span class="text-[7px] mono text-white/70 block uppercase">NEURAL PROFILE</span>
-                                <span class="text-[9px] mono text-[#0ea5e9] font-bold block uppercase tracking-wide">ACTIVE_SYNC</span>
-                            </div>
-                            <div class="absolute top-4 right-4 text-emerald-500/80 p-2 rounded border border-emerald-500/20 blink">
-                                <i data-lucide="qr-code" class="w-5 h-5 copiar-icon-qr"></i>
-                            </div>
-                            
-                            <div class="absolute bottom-4 left-4 text-[7px] mono text-white/50 bg-black/40 px-2 py-1 rounded">
-                                COORDINATE // [23.8103° N, 90.4125° E]
-                            </div>
+                        <div class="border border-sky-500/30 p-2 rounded bg-black/40 blink">
+                            <i data-lucide="qr-code" class="w-4 h-4 text-slate-400"></i>
                         </div>
+                    </div>
+
+                    <div class="scanner-container relative w-full h-64 mb-6 bg-black border-b border-sky-500/30 overflow-hidden rounded-lg">
+                        <img src="./profile.jpg" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
+                        <div class="scanner-overlay"></div>
+                        <div class="scanner-line"></div>
                         
-                        <h3 id="profile-name" class="text-3xl font-extrabold text-white mb-1 tracking-tight copiar-text-principal">Mahmudul Hasan</h3>
-                        <p id="profile-title" class="text-sm font-bold text-sky-500 uppercase tracking-wide mono mb-3 copiar-text-sub">Security Researcher</p>
-                        
-                        <div class="grid grid-cols-2 gap-3 mt-4">
-                            <div class="flex flex-col bg-black/40 p-3 rounded-lg border border-sky-500/10 shadow-inner group">
-                                <span class="text-[8px] mono text-slate-400 group-hover:text-emerald-500 transition">Clearance</span>
-                                <span class="text-xl font-bold text-emerald-500 text-shadow-emerald blink">LVL_MAX</span>
-                            </div>
-                            <div class="flex flex-col bg-black/40 p-3 rounded-lg border border-sky-500/10 shadow-inner group">
-                                <span class="text-[8px] mono text-slate-400 group-hover:text-sky-500 transition">Node</span>
-                                <span class="text-xl font-bold text-sky-500 text-shadow-sky">Cyber_AI</span>
-                            </div>
+                        <div class="absolute bottom-3 left-3">
+                            <p class="text-[6px] mono text-slate-400 font-bold tracking-widest">COORD: 23.8103° N, 90.4125° E</p>
                         </div>
-                        
+                    </div>
+
+                    <div class="flex justify-between items-end mb-6">
+                        <div>
+                            <h3 id="profile-name" class="text-2xl font-black text-white leading-tight">Mahmudul Hasan</h3>
+                            <p id="profile-title" class="text-[10px] font-bold text-sky-500 uppercase tracking-widest mono mt-1">SECURITY RESEARCHER</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[7px] text-slate-400 mono">CLEARANCE</p>
+                            <p class="text-[12px] font-bold text-emerald-500 mono">LVL_01</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-[#111827] p-3 rounded-xl border border-white/5">
+                            <p class="text-[8px] text-slate-500 mono mb-1">CORE_NODE</p>
+                            <p class="text-xs font-bold text-white mono">CYBER_AI</p>
+                        </div>
+                        <div class="bg-[#111827] p-3 rounded-xl border border-white/5">
+                            <p class="text-[8px] text-slate-500 mono mb-1">PROTOCOL</p>
+                            <p class="text-xs font-bold text-white mono">ADVERSARIAL</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -299,10 +250,7 @@
                 <h2 class="text-3xl font-black mb-2 text-white">Academic <span class="text-emerald-500">Records</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Database_Query: Education_Node</p>
             </div>
-            
-            <div id="educationContainer" class="grid md:grid-cols-2 gap-8">
-                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading academic nodes...</p>
-            </div>
+            <div id="educationContainer" class="grid md:grid-cols-2 gap-8"></div>
         </section>
 
         <section id="project" class="mb-32 reveal pt-10">
@@ -313,10 +261,7 @@
                 <h2 class="text-3xl font-black mb-2 text-white">Active <span class="text-purple-500">Deployments</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Executing_Operations</p>
             </div>
-            
-            <div id="projectContainer" class="grid md:grid-cols-2 gap-8">
-                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading active protocols...</p>
-            </div>
+            <div id="projectContainer" class="grid md:grid-cols-2 gap-8"></div>
         </section>
 
         <section id="achievements" class="mb-32 reveal pt-10">
@@ -327,10 +272,7 @@
                 <h2 class="text-3xl font-black mb-2 text-white">Achievements & <span class="text-amber-500">Certifications</span></h2>
                 <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Verified_Credentials</p>
             </div>
-            
-            <div class="grid md:grid-cols-3 gap-6" id="certContainer">
-                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading verified credentials...</p>
-            </div>
+            <div class="grid md:grid-cols-3 gap-6" id="certContainer"></div>
         </section>
 
         <section id="archive" class="mb-32 reveal pt-10">
@@ -421,162 +363,6 @@
     <script>
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
-
-        // Fetch Dynamic Data from Admin Panel
-        async function fetchAllDynamicData() {
-            try {
-                // 1. Profile
-                const profRes = await fetch(`${API_BASE}/profile`);
-                const profData = await profRes.json();
-                if(profData.full_name) {
-                    document.getElementById('profile-name').innerText = profData.full_name;
-                    document.getElementById('profile-title').innerText = profData.job_title;
-                    document.getElementById('profile-bio').innerText = profData.bio;
-                    document.getElementById('footer-text').innerText = `© 2026 ${profData.full_name}. Design: Hyper-Security OS v2`;
-                }
-
-                // 2. Education
-                const eduRes = await fetch(`${API_BASE}/education`);
-                const eduData = await eduRes.json();
-                const eduContainer = document.getElementById('educationContainer');
-                if(eduData.length > 0) {
-                    eduContainer.innerHTML = '';
-                    eduData.forEach(item => {
-                        eduContainer.innerHTML += `
-                            <div class="sci-fi-card p-8 rounded-xl group">
-                                <div class="cyber-line"></div>
-                                <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-3 flex items-center gap-2">
-                                    <i data-lucide="cpu" class="w-4 h-4"></i> Data_Node: ${item.institution}
-                                </span>
-                                <h3 class="text-2xl font-black mb-3 text-white group-hover:text-emerald-500 transition">${item.degree}</h3>
-                                <div class="inline-block bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded mb-4">
-                                    <p class="text-[10px] text-emerald-500 font-mono">Timestamp: ${item.pass_year}</p>
-                                0.0px,transparent 1.0px,transparent 20.0px);
-                <h2 class="text-3xl font-black mb-2 text-white">Academic <span class="text-emerald-500">Records</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Database_Query: Education_Node</p>
-            </div>
-            
-            <div id="educationContainer" class="grid md:grid-cols-2 gap-8">
-                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading academic nodes...</p>
-            </div>
-        </section>
-
-        <section id="project" class="mb-32 reveal pt-10">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center p-3 bg-purple-500/10 rounded-full border border-purple-500/30 mb-4 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-                    <i data-lucide="terminal-square" class="w-6 h-6 text-purple-500"></i>
-                </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Active <span class="text-purple-500">Deployments</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Executing_Operations</p>
-            </div>
-            
-            <div id="projectContainer" class="grid md:grid-cols-2 gap-8">
-                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading active protocols...</p>
-            </div>
-        </section>
-
-        <section id="achievements" class="mb-32 reveal pt-10">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center p-3 bg-amber-500/10 rounded-full border border-amber-500/30 mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-                    <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
-                </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Achievements & <span class="text-amber-500">Certifications</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Verified_Credentials</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-6" id="certContainer">
-                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading verified credentials...</p>
-            </div>
-        </section>
-
-        <section id="archive" class="mb-32 reveal pt-10">
-            <div class="text-center mb-16">
-                <div class="inline-flex items-center justify-center p-3 bg-sky-500/10 rounded-full border border-emerald-500/30 mb-4 shadow-[0_0_15px_rgba(14,165,233,0.2)]">
-                    <i data-lucide="database" class="w-6 h-6 text-sky-500"></i>
-                </div>
-                <h2 class="text-3xl font-black mb-2 text-white">Visual <span class="text-sky-500">Archives</span></h2>
-                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Secure_Gallery_Access</p>
-            </div>
-            <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-            <div class="text-center mt-12">
-                <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/20 transition mono shadow-[0_0_15px_rgba(14,165,233,0.2)] hover:shadow-[0_0_25px_rgba(14,165,233,0.4)] bg-black/20">LOAD_MORE_ARCHIVES //...</button>
-            </div>
-        </section>
-
-        <section id="communication" class="reveal mb-10 pt-10">
-            <div class="sci-fi-card p-6 md:p-16 border-t-2 border-sky-500/80 relative overflow-hidden rounded-[2rem]">
-                <div class="cyber-line"></div>
-                <div class="relative z-10 max-w-2xl mx-auto">
-                    <div class="text-center mb-12">
-                        <i data-lucide="radio-tower" class="w-10 h-10 text-sky-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_10px_rgba(14,165,233,0.8)]"></i>
-                        <h2 class="text-4xl font-black mb-4 text-white">Initialize <span class="text-sky-500">Uplink</span></h2>
-                        <p class="text-slate-400 text-sm leading-relaxed">Secure protocol established for recruitment and research collaboration.</p>
-                    </div>
-                    <form id="commForm" class="space-y-6">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="group">
-                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Identity_Name</label>
-                                <div class="relative">
-                                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-                                    <input type="text" id="i-name" required placeholder="GUEST_USER" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
-                                </div>
-                            </div>
-                            <div class="group">
-                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Contact_Vector</label>
-                                <div class="relative">
-                                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
-                                    <input type="email" id="i-email" required placeholder="USER@DOMAIN.COM" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="group">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Data_Payload</label>
-                            <div class="relative">
-                                <i data-lucide="message-square" class="absolute left-4 top-6 w-4 h-4 text-slate-500"></i>
-                                <textarea id="i-msg" required rows="4" placeholder="ENTER_MESSAGE_HERE..." class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-6 text-xs outline-none transition mono text-white"></textarea>
-                            </div>
-                        </div>
-                        <button type="submit" id="submitBtn" class="w-full py-5 bg-sky-600 hover:bg-sky-500 text-white rounded-2xl font-bold text-[10px] uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] flex items-center justify-center gap-3 transition">
-                            <i data-lucide="send" class="w-4 h-4"></i> Transmit Packet
-                        </button>
-                    </form>
-                    <p id="formSuccess" class="hidden text-emerald-500 text-xs font-bold mono text-center mt-4 bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">✓ Payload Transmitted Securely.</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="pb-10 pt-10 text-center relative z-50 transition-colors duration-500">
-        <div class="flex justify-center gap-6 mb-8">
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-sky-500/20 hover:text-sky-500 hover:border-sky-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-emerald-500/20 hover:text-emerald-500 hover:border-emerald-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-blue-600/20 hover:text-blue-600 hover:border-blue-600/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-pink-500/20 hover:text-pink-500 hover:border-pink-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-        </div>
-        <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Mahmudul Hasan. Design: Hyper-Security OS v2</p>
-    </footer>
-
-    <div id="galleryModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
-        <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="galleryModal-content">
-            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
-                <div><h2 class="text-2xl font-black text-white">Complete <span class="text-sky-500">Archives</span></h2></div>
-                <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
-            </div>
-            <div id="all-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar"></div>
-        </div>
-    </div>
-    
-    <div id="singleLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="glass-panel max-w-3xl w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-sky-500/50 shadow-[0_0_30px_rgba(14,165,233,0.15)]" id="singleLightbox-content">
-            <button onclick="closeSingleLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-10 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
-            <div id="modal-body" class="mt-2 text-white text-center"></div>
-        </div>
-    </div>
-
-    <script>
-        lucide.createIcons();
-        const API_BASE = '/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
         // Fetch Dynamic Data from Admin Panel
         async function fetchAllDynamicData() {
