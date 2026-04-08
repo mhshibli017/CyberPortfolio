@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahmudul Hasan | Cybersecurity Researcher</title>
+    <title>Mahmudul Hasan | Cybersecurity</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -88,7 +88,7 @@
 
         .glow-text { text-shadow: 0 0 8px rgba(255, 255, 255, 0.4); }
 
-        /* ================= AGGRESSIVE PROFILE SCANNER ================= */
+        /* ================= PROFIL SCANNER ================= */
         .profile-container {
             position: relative; padding: 4px; border-radius: 1.5rem;
             background: linear-gradient(45deg, #0ea5e9, #8b5cf6, #10b981);
@@ -99,15 +99,15 @@
         
         .scanner-container { position: relative; overflow: hidden; border-radius: 1.25rem; background: #000; height: 320px; width: 100%; }
         
-        /* Slowed Down Heavy Red/Blue Glitch Scanline */
+        /* Slow Scanline from image */
         .scanner-line { 
             position: absolute; top: 0; left: 0; width: 100%; height: 5px; 
             background: rgba(239, 68, 68, 0.9); 
             box-shadow: 0 -5px 15px rgba(239, 68, 68, 0.8), 0 5px 20px rgba(14, 165, 233, 0.6); 
-            animation: aggressiveScan 3.5s cubic-bezier(0.1, 0.9, 0.2, 1) infinite alternate; 
+            animation: slowScan 3.5s cubic-bezier(0.1, 0.9, 0.2, 1) infinite alternate; 
             z-index: 10; mix-blend-mode: screen;
         }
-        @keyframes aggressiveScan { 
+        @keyframes slowScan { 
             0% { top: -10%; height: 2px; background: #0ea5e9; } 
             40% { height: 10px; background: #ef4444; }
             50% { opacity: 0.5; }
@@ -126,6 +126,10 @@
             position: absolute; inset: 0; background-image: linear-gradient(rgba(14, 165, 233, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 165, 233, 0.1) 1px, transparent 1px);
             background-size: 20px 20px; pointer-events: none; z-index: 5;
         }
+        
+        /* Blinking corner icon from image */
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
 
         /* ================= REFINED LIGHT MODE (DAY MODE) ================= */
         body.light-mode { background-color: #f1f5f9; color: #0f172a; }
@@ -240,25 +244,48 @@
                 <p id="profile-bio" class="text-slate-400 text-lg font-medium max-w-xl leading-relaxed mx-auto md:mx-0">Loading biography...</p>
             </div>
             
-            <div class="w-72 md:w-80 mx-auto md:mx-0">
-                <div class="profile-container p-1 rounded-3xl">
-                    <div class="glass-panel backdrop-blur-xl rounded-[1.3rem] p-4 w-full h-full relative">
-                        <div class="scanner-container w-full h-80 mb-4 bg-black border border-sky-500/30 rounded-xl relative">
+            <div class="w-72 md:w-80 mx-auto md:mx-0 copiar-estilo-foto">
+                <div class="profile-container copiar-padding-redondo p-1 rounded-3xl">
+                    <div class="glass-panel dynamic-card backdrop-blur-xl rounded-[1.3rem] p-4 w-full h-full relative">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex gap-1.5 copiar-puntos-tres">
+                                <div class="w-2.5 h-2.5 rounded-full bg-[#0ea5e9]"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-[#0ea5e9]"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-[#0ea5e9]"></div>
+                            </div>
+                            <span class="text-[9px] mono text-[#0ea5e9]/70 font-bold uppercase">IDENTITY.V2.0_SECURE</span>
+                        </div>
+                        
+                        <div class="scanner-container relative w-full h-80 mb-4 bg-black/50 border border-sky-500/30 rounded-xl">
                             <img src="./profile.jpg" class="w-full h-full object-cover rounded-xl" onerror="this.src='https://via.placeholder.com/300x400/020617/0ea5e9?text=Profile+Image'">
                             <div class="scanner-overlay"></div>
-                            <div class="scanner-line"></div>
-                            <div class="scanner-data">> TARGET_LOCKED
-> EXTRACTING_BIO...
-> VERIFYING_HASH
-> STATUS: ACTIVE
-> ENCRYPTION: AES-256</div>
+                            <div class="scanner-line"></div> <div class="absolute top-4 left-4 bg-black/60 p-2 rounded border border-white/10 copiar-texto-neural">
+                                <span class="text-[7px] mono text-white/70 block uppercase">NEURAL PROFILE</span>
+                                <span class="text-[9px] mono text-[#0ea5e9] font-bold block uppercase tracking-wide">ACTIVE_SYNC</span>
+                            </div>
+                            <div class="absolute top-4 right-4 text-emerald-500/80 p-2 rounded border border-emerald-500/20 blink">
+                                <i data-lucide="qr-code" class="w-5 h-5 copiar-icon-qr"></i>
+                            </div>
+                            
+                            <div class="absolute bottom-4 left-4 text-[7px] mono text-white/50 bg-black/40 px-2 py-1 rounded">
+                                COORDINATE // [23.8103° N, 90.4125° E]
+                            </div>
                         </div>
-                        <h3 id="profile-name" class="text-xl font-bold text-white mb-1">Loading...</h3>
-                        <p id="profile-title" class="text-[9px] font-bold text-sky-500 uppercase tracking-[0.2em] mono mb-3">Loading...</p>
-                        <div class="flex justify-between bg-black/40 p-2 rounded-xl border border-sky-500/20">
-                            <span class="text-[8px] mono text-slate-400">Clearance: <span class="text-emerald-500">LVL_MAX</span></span>
-                            <span class="text-[8px] mono text-slate-400">Node: <span class="text-sky-500">Cyber_AI</span></span>
+                        
+                        <h3 id="profile-name" class="text-3xl font-extrabold text-white mb-1 tracking-tight copiar-text-principal">Mahmudul Hasan</h3>
+                        <p id="profile-title" class="text-sm font-bold text-sky-500 uppercase tracking-wide mono mb-3 copiar-text-sub">Security Researcher</p>
+                        
+                        <div class="grid grid-cols-2 gap-3 mt-4">
+                            <div class="flex flex-col bg-black/40 p-3 rounded-lg border border-sky-500/10 shadow-inner group">
+                                <span class="text-[8px] mono text-slate-400 group-hover:text-emerald-500 transition">Clearance</span>
+                                <span class="text-xl font-bold text-emerald-500 text-shadow-emerald blink">LVL_MAX</span>
+                            </div>
+                            <div class="flex flex-col bg-black/40 p-3 rounded-lg border border-sky-500/10 shadow-inner group">
+                                <span class="text-[8px] mono text-slate-400 group-hover:text-sky-500 transition">Node</span>
+                                <span class="text-xl font-bold text-sky-500 text-shadow-sky">Cyber_AI</span>
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -394,6 +421,162 @@
     <script>
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
+
+        // Fetch Dynamic Data from Admin Panel
+        async function fetchAllDynamicData() {
+            try {
+                // 1. Profile
+                const profRes = await fetch(`${API_BASE}/profile`);
+                const profData = await profRes.json();
+                if(profData.full_name) {
+                    document.getElementById('profile-name').innerText = profData.full_name;
+                    document.getElementById('profile-title').innerText = profData.job_title;
+                    document.getElementById('profile-bio').innerText = profData.bio;
+                    document.getElementById('footer-text').innerText = `© 2026 ${profData.full_name}. Design: Hyper-Security OS v2`;
+                }
+
+                // 2. Education
+                const eduRes = await fetch(`${API_BASE}/education`);
+                const eduData = await eduRes.json();
+                const eduContainer = document.getElementById('educationContainer');
+                if(eduData.length > 0) {
+                    eduContainer.innerHTML = '';
+                    eduData.forEach(item => {
+                        eduContainer.innerHTML += `
+                            <div class="sci-fi-card p-8 rounded-xl group">
+                                <div class="cyber-line"></div>
+                                <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-3 flex items-center gap-2">
+                                    <i data-lucide="cpu" class="w-4 h-4"></i> Data_Node: ${item.institution}
+                                </span>
+                                <h3 class="text-2xl font-black mb-3 text-white group-hover:text-emerald-500 transition">${item.degree}</h3>
+                                <div class="inline-block bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded mb-4">
+                                    <p class="text-[10px] text-emerald-500 font-mono">Timestamp: ${item.pass_year}</p>
+                                0.0px,transparent 1.0px,transparent 20.0px);
+                <h2 class="text-3xl font-black mb-2 text-white">Academic <span class="text-emerald-500">Records</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Database_Query: Education_Node</p>
+            </div>
+            
+            <div id="educationContainer" class="grid md:grid-cols-2 gap-8">
+                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading academic nodes...</p>
+            </div>
+        </section>
+
+        <section id="project" class="mb-32 reveal pt-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center p-3 bg-purple-500/10 rounded-full border border-purple-500/30 mb-4 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+                    <i data-lucide="terminal-square" class="w-6 h-6 text-purple-500"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 text-white">Active <span class="text-purple-500">Deployments</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Executing_Operations</p>
+            </div>
+            
+            <div id="projectContainer" class="grid md:grid-cols-2 gap-8">
+                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading active protocols...</p>
+            </div>
+        </section>
+
+        <section id="achievements" class="mb-32 reveal pt-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center p-3 bg-amber-500/10 rounded-full border border-amber-500/30 mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                    <i data-lucide="award" class="w-6 h-6 text-amber-500"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 text-white">Achievements & <span class="text-amber-500">Certifications</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Verified_Credentials</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6" id="certContainer">
+                <p class="text-xs text-slate-500 col-span-full text-center mono">Loading verified credentials...</p>
+            </div>
+        </section>
+
+        <section id="archive" class="mb-32 reveal pt-10">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center p-3 bg-sky-500/10 rounded-full border border-emerald-500/30 mb-4 shadow-[0_0_15px_rgba(14,165,233,0.2)]">
+                    <i data-lucide="database" class="w-6 h-6 text-sky-500"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 text-white">Visual <span class="text-sky-500">Archives</span></h2>
+                <p class="text-slate-500 text-[10px] mono uppercase tracking-widest">Secure_Gallery_Access</p>
+            </div>
+            <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            <div class="text-center mt-12">
+                <button id="loadMoreBtn" class="hidden px-8 py-3 border border-sky-500/30 rounded-full text-sky-500 text-xs font-bold hover:bg-sky-500/20 transition mono shadow-[0_0_15px_rgba(14,165,233,0.2)] hover:shadow-[0_0_25px_rgba(14,165,233,0.4)] bg-black/20">LOAD_MORE_ARCHIVES //...</button>
+            </div>
+        </section>
+
+        <section id="communication" class="reveal mb-10 pt-10">
+            <div class="sci-fi-card p-6 md:p-16 border-t-2 border-sky-500/80 relative overflow-hidden rounded-[2rem]">
+                <div class="cyber-line"></div>
+                <div class="relative z-10 max-w-2xl mx-auto">
+                    <div class="text-center mb-12">
+                        <i data-lucide="radio-tower" class="w-10 h-10 text-sky-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_10px_rgba(14,165,233,0.8)]"></i>
+                        <h2 class="text-4xl font-black mb-4 text-white">Initialize <span class="text-sky-500">Uplink</span></h2>
+                        <p class="text-slate-400 text-sm leading-relaxed">Secure protocol established for recruitment and research collaboration.</p>
+                    </div>
+                    <form id="commForm" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="group">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Identity_Name</label>
+                                <div class="relative">
+                                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                                    <input type="text" id="i-name" required placeholder="GUEST_USER" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
+                                </div>
+                            </div>
+                            <div class="group">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Contact_Vector</label>
+                                <div class="relative">
+                                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                                    <input type="email" id="i-email" required placeholder="USER@DOMAIN.COM" class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-4 text-xs outline-none transition mono text-white">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block mono">Data_Payload</label>
+                            <div class="relative">
+                                <i data-lucide="message-square" class="absolute left-4 top-6 w-4 h-4 text-slate-500"></i>
+                                <textarea id="i-msg" required rows="4" placeholder="ENTER_MESSAGE_HERE..." class="w-full bg-black/40 border border-white/10 focus:border-sky-500/80 rounded-2xl pl-12 pr-4 py-6 text-xs outline-none transition mono text-white"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" id="submitBtn" class="w-full py-5 bg-sky-600 hover:bg-sky-500 text-white rounded-2xl font-bold text-[10px] uppercase tracking-[0.3em] shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] flex items-center justify-center gap-3 transition">
+                            <i data-lucide="send" class="w-4 h-4"></i> Transmit Packet
+                        </button>
+                    </form>
+                    <p id="formSuccess" class="hidden text-emerald-500 text-xs font-bold mono text-center mt-4 bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/20">✓ Payload Transmitted Securely.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="pb-10 pt-10 text-center relative z-50 transition-colors duration-500">
+        <div class="flex justify-center gap-6 mb-8">
+            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-sky-500/20 hover:text-sky-500 hover:border-sky-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-emerald-500/20 hover:text-emerald-500 hover:border-emerald-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
+            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-blue-600/20 hover:text-blue-600 hover:border-blue-600/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+            <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-pink-500/20 hover:text-pink-500 hover:border-pink-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+        </div>
+        <p id="footer-text" class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">© 2026 Mahmudul Hasan. Design: Hyper-Security OS v2</p>
+    </footer>
+
+    <div id="galleryModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
+        <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300" id="galleryModal-content">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
+                <div><h2 class="text-2xl font-black text-white">Complete <span class="text-sky-500">Archives</span></h2></div>
+                <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <div id="all-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar"></div>
+        </div>
+    </div>
+    
+    <div id="singleLightbox" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="glass-panel max-w-3xl w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-sky-500/50 shadow-[0_0_30px_rgba(14,165,233,0.15)]" id="singleLightbox-content">
+            <button onclick="closeSingleLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-10 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div id="modal-body" class="mt-2 text-white text-center"></div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        const API_BASE = '/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
         // Fetch Dynamic Data from Admin Panel
         async function fetchAllDynamicData() {
