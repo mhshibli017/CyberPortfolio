@@ -89,6 +89,26 @@ app.delete('/api/education/:id', async (req, res) => {
     res.json({ success: !error });
 });
 
+// Arsenal Data
+app.get('/api/arsenal', async (req, res) => {
+    const { data } = await supabase.from('arsenal_data').select('*').order('created_at', { ascending: false });
+    res.json(data);
+});
+app.post('/api/arsenal', async (req, res) => {
+    const { title, category, details } = req.body;
+    const { error } = await supabase.from('arsenal_data').insert([{ title, category, details }]);
+    res.json({ success: !error });
+});
+app.put('/api/arsenal/:id', async (req, res) => {
+    const { title, category, details } = req.body;
+    const { error } = await supabase.from('arsenal_data').update({ title, category, details }).eq('id', req.params.id);
+    res.json({ success: !error });
+});
+app.delete('/api/arsenal/:id', async (req, res) => {
+    const { error } = await supabase.from('arsenal_data').delete().eq('id', req.params.id);
+    res.json({ success: !error });
+});
+
 // Projects Data
 app.get('/api/projects', async (req, res) => {
     const { data } = await supabase.from('projects_data').select('*').order('created_at', { ascending: false });
@@ -150,15 +170,12 @@ app.put('/api/gallery/:id', upload.single('image'), async (req, res) => {
     try {
         const { title, subtitle, details } = req.body;
         let updateData = { title, subtitle, details };
-
-        // If new image is uploaded, update storage URL
         if (req.file) {
             const fileName = `${Date.now()}_${req.file.originalname.replace(/\s+/g, '_')}`;
             await supabase.storage.from('portfolio_images').upload(fileName, req.file.buffer, { contentType: req.file.mimetype });
             const { data: urlData } = supabase.storage.from('portfolio_images').getPublicUrl(fileName);
             updateData.image_url = urlData.publicUrl;
         }
-
         const { error } = await supabase.from('gallery').update(updateData).eq('id', req.params.id);
         if (error) throw error;
         res.json({ success: true });
