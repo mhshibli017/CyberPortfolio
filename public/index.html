@@ -13,20 +13,18 @@
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; transition: background-color 0.5s, color 0.5s; margin: 0; }
         .mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* ================= TERMINAL BOOT SEQUENCE ================= */
+        /* ================= SCARY BOOT SEQUENCE (FAKE EXPLOIT) ================= */
         #boot-screen {
-            position: fixed; inset: 0; z-index: 9999; background: #020617; 
+            position: fixed; inset: 0; z-index: 9999; background: #050000; 
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        .boot-ascii {
-            font-family: 'JetBrains Mono', monospace; white-space: pre; line-height: 1.1;
-            font-size: clamp(5px, 1.5vw, 16px); color: #0ea5e9; text-shadow: 0 0 10px rgba(14,165,233,0.5);
-            margin-bottom: 2rem;
-        }
-        .boot-text {
-            font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #10b981;
-            width: 100%; max-width: 600px; text-align: left; padding: 0 20px;
+        .boot-text-container {
+            width: 100%; max-width: 800px; padding: 20px;
+            font-family: 'JetBrains Mono', monospace; font-size: clamp(12px, 2vw, 16px); 
+            color: #ef4444; /* Red color for warning */
+            text-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+            text-align: left;
         }
         .typing-cursor::after { content: '█'; animation: blink 1s step-start infinite; }
         @keyframes blink { 50% { opacity: 0; } }
@@ -36,7 +34,7 @@
         .bg-cyber::before { content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); pointer-events: none; }
         .bg-cyber::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 3px); z-index: 1; pointer-events: none; opacity: 0.5; }
         
-        /* Hacker Decals - Safe HTML Version */
+        /* Hacker Decals */
         .hacker-decals { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8; animation: backgroundGlitch 4s infinite; }
         
         @keyframes backgroundGlitch {
@@ -89,6 +87,10 @@
         body.light-mode { background-color: #f1f5f9; color: #0f172a; }
         body.light-mode .bg-cyber { background-color: #f1f5f9; }
         body.light-mode .bg-cyber::after { background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03) 1px, transparent 1px, transparent 3px); opacity: 0.3; }
+        body.light-mode .decal-1::before { color: rgba(14, 165, 233, 0.3); }
+        body.light-mode .decal-2::before { color: rgba(16, 185, 129, 0.3); }
+        body.light-mode .decal-3::before { color: rgba(0, 0, 0, 0.03); }
+        
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
         body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
         body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
@@ -127,15 +129,7 @@
 <body>
 
     <div id="boot-screen">
-        <pre class="boot-ascii text-center">
-   _____ __  __ ____  ______ _____   _____ ______ _____ 
-  / ____|\ \/ /|  _ \|  ____|  __ \ / ____|  ____|  __ \
- | |      \  / | |_) | |__  | |__) | (___ | |__  | |  | |
- | |       \/  |  _ &lt;|  __| |  _  / \___ \|  __| | |  | |
- | |____   ||  | |_) | |____| | \ \ ____) | |____| |__| |
-  \_____|  ||  |____/|______|_|  \_\_____/|______|_____/ 
-        </pre>
-        <div class="boot-text" id="terminal-text"></div>
+        <div class="boot-text-container" id="terminal-text"></div>
     </div>
 
     <div id="main-content">
@@ -430,15 +424,17 @@
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
-        // ================= BOOT SEQUENCE LOGIC =================
+        // ================= SCARY BOOT SEQUENCE LOGIC =================
         const bootLines = [
-            "INITIALIZING KERNEL MODULES...",
-            "LOADING SECURE_BOOT PROFILES [OK]",
-            "ESTABLISHING SECURE UPLINK TO NODE 0x99A3...",
-            "BYPASSING FIREWALL PROTOCOLS [OK]",
-            "MOUNTING ENCRYPTED VOLUMES...",
-            "DECRYPTING PROFILE DATA...",
-            "ACCESS GRANTED."
+            "<span class='text-red-500'>[!] WARNING: UNAUTHORIZED ACCESS DETECTED FROM IP.</span>",
+            "[SYSTEM] INITIATING REVERSE TRACE...",
+            "[SYSTEM] TARGET LOCKED.",
+            "<span class='text-red-500'>[!] FIREWALL BREACHED. DOWNLOADING LOCAL DATA...</span>",
+            "EXTRACTING BROWSER COOKIES...",
+            "EXTRACTING SAVED PASSWORDS... <span class='text-emerald-500'>[100%]</span>",
+            "<span class='text-red-500'>[!] INITIATING SYSTEM LOCKDOWN PROTOCOL IN 3... 2... 1...</span>",
+            "<br><span class='text-sky-500 font-bold'>SYSTEM SECURED.</span>",
+            "<span class='text-sky-500'>JUST KIDDING! WELCOME TO MAHMUDUL'S SECURE NODE.</span>"
         ];
         
         const terminalText = document.getElementById('terminal-text');
@@ -447,11 +443,16 @@
         function typeLine() {
             if (lineIndex < bootLines.length) {
                 const p = document.createElement('p');
-                p.className = 'mb-1 text-slate-300';
+                p.className = 'mb-2';
                 p.innerHTML = `<span class="text-emerald-500">></span> ${bootLines[lineIndex]}`;
                 terminalText.appendChild(p);
                 lineIndex++;
-                setTimeout(typeLine, Math.random() * 200 + 100);
+                
+                // Random delays for realism
+                let delay = Math.random() * 300 + 100;
+                if (lineIndex === 4 || lineIndex === 6) delay = 800; // Pause longer on scary lines
+                
+                setTimeout(typeLine, delay);
             } else {
                 const cursor = document.createElement('span');
                 cursor.className = 'typing-cursor text-emerald-500';
@@ -463,7 +464,7 @@
                     document.getElementById('boot-screen').style.transform = 'scale(1.1)';
                     document.getElementById('main-content').style.opacity = '1';
                     setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; }, 800);
-                }, 800);
+                }, 1500); // Wait 1.5s after finishing text before hiding
             }
         }
         
