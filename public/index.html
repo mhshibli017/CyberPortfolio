@@ -50,6 +50,10 @@
         .reveal.active { opacity: 1; transform: translateY(0); }
         .modal-overlay { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
 
+        /* ================= METRICS CARDS ================= */
+        .metric-card { background-color: #080d1a; transition: all 0.3s; }
+        .metric-card:hover { transform: translateY(-5px); }
+
         /* ================= SCI-FI CARDS ================= */
         .sci-fi-card {
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0.95) 100%);
@@ -70,7 +74,8 @@
 
         .glow-text { text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); }
 
-        /* ================= PROFILE SCANNER (NEW EXACT REPLICA) ================= */
+        /* ================= PROFILE SCANNER ================= */
+        .profile-box { background: #0A101F; border: 1px solid rgba(14, 165, 233, 0.2); }
         .scanner-container { position: relative; overflow: hidden; }
         
         .scanner-line { 
@@ -84,7 +89,6 @@
         
         .scanner-overlay { position: absolute; inset: 0; background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.25) 50%); background-size: 100% 4px; pointer-events: none; z-index: 5; opacity: 0.5; }
 
-        /* Security Shield Blinking */
         .blink-shield { animation: shieldPulse 1.5s ease-in-out infinite alternate; }
         @keyframes shieldPulse {
             0% { opacity: 0.3; transform: scale(0.95); box-shadow: 0 0 0 rgba(14, 165, 233, 0); }
@@ -101,13 +105,12 @@
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
         body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
         
-        /* Light mode explicit background fixes for the new profile card */
-        body.light-mode .bg-\[\#080d1a\] { background-color: #ffffff; border: 1px solid rgba(14, 165, 233, 0.3); }
-        body.light-mode .bg-\[\#050b14\] { background-color: #f1f5f9; border-color: rgba(14, 165, 233, 0.2); }
-        body.light-mode .bg-\[\#080d1a\]\/90 { background-color: rgba(255, 255, 255, 0.9); border-color: rgba(14, 165, 233, 0.2); }
-        body.light-mode .bg-\[\#080d1a\]\/80 { background-color: rgba(255, 255, 255, 0.8); }
-        body.light-mode .bg-\[\#0f172a\]\/60 { background-color: rgba(241, 245, 249, 0.8); border-color: rgba(0,0,0,0.05); }
-        body.light-mode .border-\[\#0ea5e9\]\/40 { border-color: rgba(14, 165, 233, 0.6); }
+        body.light-mode .metric-card { background-color: #ffffff; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        
+        body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
+        body.light-mode .bg-\[\#111827\] { background: #f8fafc !important; border: 1px solid rgba(0,0,0,0.1) !important; }
+        body.light-mode .scanner-container { background: #e2e8f0 !important; }
+        body.light-mode .scanner-overlay { opacity: 0.1; }
 
         body.light-mode .text-white { color: #0f172a !important; }
         body.light-mode .text-slate-300, body.light-mode .text-slate-400 { color: #475569 !important; }
@@ -118,6 +121,7 @@
         body.light-mode .text-emerald-400, body.light-mode .text-emerald-500 { color: #059669 !important; }
         body.light-mode .text-purple-400, body.light-mode .text-purple-500 { color: #7e22ce !important; }
         body.light-mode .text-amber-400, body.light-mode .text-amber-500 { color: #b45309 !important; }
+        body.light-mode .text-orange-400, body.light-mode .text-orange-500 { color: #c2410c !important; }
         body.light-mode .glow-text { text-shadow: none !important; }
 
         body.light-mode .glass-nav { background: rgba(255, 255, 255, 0.98); color: #0f172a; border-bottom: 1px solid rgba(0,0,0,0.1); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
@@ -156,6 +160,7 @@
             </div>
             <div class="hidden md:flex items-center space-x-8 text-[10px] font-bold uppercase tracking-widest">
                 <a href="#about" class="nav-link text-slate-300 hover:text-sky-400 transition">Profile</a>
+                <a href="#metrics" class="nav-link text-slate-300 hover:text-sky-400 transition">Metrics</a>
                 <a href="#education" class="nav-link text-slate-300 hover:text-sky-400 transition">Education</a>
                 <a href="#project" class="nav-link text-slate-300 hover:text-sky-400 transition">Project</a>
                 <a href="#achievements" class="nav-link text-slate-300 hover:text-sky-400 transition">Achievements</a>
@@ -170,6 +175,7 @@
         </div>
         <div id="mobileMenu" class="hidden absolute top-16 left-0 w-full glass-nav flex flex-col items-center py-6 space-y-6 text-[10px] font-bold uppercase tracking-widest shadow-2xl md:hidden">
             <a href="#about" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Profile</a>
+            <a href="#metrics" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Metrics</a>
             <a href="#education" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Education</a>
             <a href="#project" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Project</a>
             <a href="#achievements" class="nav-link mobile-link text-slate-400 hover:text-sky-500 transition">Achievements</a>
@@ -181,7 +187,7 @@
 
     <main class="max-w-5xl mx-auto px-6 pt-24 pb-20">
         
-        <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-32 gap-10 reveal pt-10">
+        <section id="about" class="flex flex-col md:flex-row items-center justify-between mb-24 gap-10 reveal pt-10">
             <div class="flex-1 space-y-6 text-center md:text-left">
                 <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-sky-500/5 border border-sky-500/20 text-sky-500">
                     <i data-lucide="shield-alert" class="w-4 h-4"></i>
@@ -203,8 +209,7 @@
                     <i data-lucide="shield-check" class="w-8 h-8 text-[#0ea5e9]"></i>
                 </div>
 
-                <div class="bg-[#080d1a] border border-white/5 rounded-[2rem] p-6 relative z-10 shadow-2xl">
-                    
+                <div class="profile-box border border-white/5 rounded-[2rem] p-6 relative z-10 shadow-2xl">
                     <div class="flex items-center justify-between mb-5 pl-1 pr-6">
                         <div class="flex gap-1.5">
                             <div class="w-2 h-2 rounded-full bg-[#0ea5e9]"></div>
@@ -255,6 +260,27 @@
                             <p class="text-[11px] font-bold text-white mono uppercase">ADVERSARIAL</p>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="metrics" class="mb-32 reveal">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div class="glass-panel metric-card p-8 rounded-3xl border border-sky-500/20 hover:border-sky-500/50 flex flex-col items-center justify-center text-center group shadow-lg">
+                    <h3 class="text-4xl md:text-5xl font-black text-sky-500 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">05+</h3>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mono">CTF Wins</p>
+                </div>
+                <div class="glass-panel metric-card p-8 rounded-3xl border border-emerald-500/20 hover:border-emerald-500/50 flex flex-col items-center justify-center text-center group shadow-lg">
+                    <h3 class="text-4xl md:text-5xl font-black text-emerald-500 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">97.2%</h3>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mono">ML Accuracy</p>
+                </div>
+                <div class="glass-panel metric-card p-8 rounded-3xl border border-purple-500/20 hover:border-purple-500/50 flex flex-col items-center justify-center text-center group shadow-lg">
+                    <h3 class="text-4xl md:text-5xl font-black text-purple-500 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">12k+</h3>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mono">Lines Secure Code</p>
+                </div>
+                <div class="glass-panel metric-card p-8 rounded-3xl border border-orange-500/20 hover:border-orange-500/50 flex flex-col items-center justify-center text-center group shadow-lg">
+                    <h3 class="text-4xl md:text-5xl font-black text-orange-500 mb-2 tracking-tighter group-hover:scale-110 transition-transform duration-300">04</h3>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mono">Research Papers</p>
                 </div>
             </div>
         </section>
@@ -391,7 +417,6 @@
                     document.getElementById('profile-name').innerText = profData.full_name;
                     document.getElementById('profile-title').innerText = profData.job_title;
                     document.getElementById('profile-bio').innerText = profData.bio;
-                    // Footer is hardcoded with name to avoid loading flash
                 }
 
                 // 2. Education
