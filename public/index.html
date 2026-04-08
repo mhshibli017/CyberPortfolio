@@ -12,7 +12,34 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow-x: hidden; transition: background-color 0.5s, color 0.5s; }
         .mono { font-family: 'JetBrains Mono', monospace; }
-        .bg-cyber { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.1), transparent 80%), linear-gradient(to bottom, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 1)), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='1'/%3E%3C/svg%3E"); }
+        
+        /* ================= CYBER BACKGROUND ART ================= */
+        .bg-cyber { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.08), transparent 50%), 
+                radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.05), transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 V 0 H 100' fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1'/%3E%3Cpath d='M0 50 H 100 M 50 0 V 100' fill='none' stroke='rgba(255,255,255,0.02)' stroke-width='1' stroke-dasharray='4,4'/%3E%3Ccircle cx='50' cy='50' r='2' fill='rgba(14,165,233,0.2)'/%3E%3C/svg%3E");
+            background-size: 100px 100px;
+        }
+        /* Cyber Art Decals (Corners & Edges) */
+        .bg-cyber::before {
+            content: 'SYS.CORE // ONLINE \A DEF_PROTOCOL // SECURE \A NODE_ID // 0x99A3';
+            position: absolute; bottom: 5%; left: 2%;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold;
+            color: rgba(16, 185, 129, 0.12); line-height: 1.8; white-space: pre; letter-spacing: 0.1em;
+            pointer-events: none;
+        }
+        .bg-cyber::after {
+            content: '1011 0100 1101 \A 0010 1011 0110 \A 1101 0010 1011 \A 0110 1101 0100';
+            position: absolute; top: 30%; right: -3%;
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: bold;
+            color: rgba(14, 165, 233, 0.08); line-height: 1.5; white-space: pre;
+            transform: rotate(90deg); letter-spacing: 0.2em;
+            pointer-events: none;
+        }
+
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
         .glass-nav { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); z-index: 100; transition: all 0.5s; }
         
@@ -47,11 +74,17 @@
 
         /* ================= REFINED LIGHT MODE (DAY MODE) ================= */
         body.light-mode { background-color: #f8fafc; color: #0f172a; }
+        
         body.light-mode .bg-cyber { 
-            background: radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.05), transparent 80%), 
-                        linear-gradient(to bottom, rgba(241, 245, 249, 0.9), #f8fafc), 
-                        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30' fill='none' stroke='rgba(0,0,0,0.04)' stroke-width='1'/%3E%3C/svg%3E"); 
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.05), transparent 50%), 
+                radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.03), transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 V 0 H 100' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1'/%3E%3Cpath d='M0 50 H 100 M 50 0 V 100' fill='none' stroke='rgba(0,0,0,0.03)' stroke-width='1' stroke-dasharray='4,4'/%3E%3Ccircle cx='50' cy='50' r='2' fill='rgba(14,165,233,0.15)'/%3E%3C/svg%3E");
+            background-size: 100px 100px;
         }
+        body.light-mode .bg-cyber::before { color: rgba(16, 185, 129, 0.20); }
+        body.light-mode .bg-cyber::after { color: rgba(14, 165, 233, 0.12); }
         
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { 
             background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 4px 20px rgba(0,0,0,0.04); color: #1e293b; 
@@ -69,7 +102,7 @@
         body.light-mode .text-emerald-400 { color: #059669 !important; }
         body.light-mode .text-purple-400 { color: #7e22ce !important; }
         body.light-mode .text-amber-400 { color: #d97706 !important; }
-        body.light-mode .glow-text { text-shadow: none !important; } /* Remove blurry glow in light mode */
+        body.light-mode .glow-text { text-shadow: none !important; }
 
         /* Navigation Fix */
         body.light-mode .glass-nav { background: rgba(255, 255, 255, 0.9); color: #0f172a; border-bottom: 1px solid rgba(0,0,0,0.05); }
