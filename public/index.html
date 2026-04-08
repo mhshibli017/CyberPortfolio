@@ -35,6 +35,8 @@
         .bg-cyber { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #020617; overflow: hidden; }
         .bg-cyber::before { content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); pointer-events: none; }
         .bg-cyber::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 3px); z-index: 1; pointer-events: none; opacity: 0.5; }
+        
+        /* Hacker Decals - Safe HTML Version */
         .hacker-decals { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8; animation: backgroundGlitch 4s infinite; }
         
         @keyframes backgroundGlitch {
@@ -44,13 +46,11 @@
             96% { transform: translate(-1px, 1px); opacity: 0.9; filter: none; }
         }
 
-        .decal-1 { position: absolute; top: 15%; left: 2%; white-space: pre; line-height: 1.6; letter-spacing: 0.1em; color: rgba(14, 165, 233, 0.15); }
-        .decal-1::before { content: "> INIT SECURE_BOOT...\000A> LOAD KERNEL_MODULE_0x8F\000A> BYPASSING FIREWALL... [OK]\000A> MEM_ALLOC: 0x7FFE4000\000A> THREAD_SYNC: IN_PROGRESS"; }
-        .decal-2 { position: absolute; bottom: 20%; right: 2%; white-space: pre; line-height: 1.6; text-align: right; letter-spacing: 0.1em; color: rgba(16, 185, 129, 0.15); }
-        .decal-2::before { content: "SYS_OVERRIDE_ENABLED\000A--------------------\000A ROOT ACCESS GRANTED\000A UPLINK ESTABLISHED\000A PORT_8080 // LISTENING"; }
+        .decal-1 { position: absolute; top: 15%; left: 2%; line-height: 1.6; letter-spacing: 0.1em; color: rgba(14, 165, 233, 0.15); }
+        .decal-2 { position: absolute; bottom: 20%; right: 2%; line-height: 1.6; text-align: right; letter-spacing: 0.1em; color: rgba(16, 185, 129, 0.15); }
         .decal-3 { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255, 255, 255, 0.02); font-size: clamp(80px, 15vw, 200px); font-weight: 900; letter-spacing: -15px; user-select: none; }
-        .decal-3::before { content: "0xMH"; }
 
+        /* General UI Elements */
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
         .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; transition: all 0.5s; transform: translateY(-100%); animation: slideDown 0.5s forwards 3.8s; }
         @keyframes slideDown { to { transform: translateY(0); } }
@@ -64,6 +64,7 @@
         .sci-fi-card::before { content: '['; position: absolute; top: 10px; left: 10px; color: rgba(14, 165, 233, 0.5); font-family: monospace; font-size: 20px; transition: all 0.3s; }
         .sci-fi-card::after { content: ']'; position: absolute; bottom: 10px; right: 10px; color: rgba(14, 165, 233, 0.5); font-family: monospace; font-size: 20px; transition: all 0.3s; }
         .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.8); box-shadow: inset 0 0 20px rgba(14, 165, 233, 0.2), 0 0 20px rgba(14, 165, 233, 0.3); transform: translateY(-5px); }
+        
         .cyber-line { position: absolute; top: 0; left: -100%; width: 150%; height: 2px; background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.8), #fff, rgba(14, 165, 233, 0.8), transparent); animation: glitchScan 2.5s infinite; z-index: 5; opacity: 0.7; mix-blend-mode: overlay; }
         .cyber-line.purple { background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.8), #fff, transparent); animation-duration: 3s; }
         .cyber-line.amber { background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.8), #fff, transparent); animation-duration: 2s; }
@@ -88,9 +89,6 @@
         body.light-mode { background-color: #f1f5f9; color: #0f172a; }
         body.light-mode .bg-cyber { background-color: #f1f5f9; }
         body.light-mode .bg-cyber::after { background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03) 1px, transparent 1px, transparent 3px); opacity: 0.3; }
-        body.light-mode .decal-1::before { color: rgba(14, 165, 233, 0.3); }
-        body.light-mode .decal-2::before { color: rgba(16, 185, 129, 0.3); }
-        body.light-mode .decal-3::before { color: rgba(0, 0, 0, 0.03); }
         body.light-mode .glass-panel, body.light-mode .sci-fi-card { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(14, 165, 233, 0.3); box-shadow: 0 5px 15px rgba(0,0,0,0.05); color: #1e293b; }
         body.light-mode .sci-fi-card:hover { border-color: rgba(14, 165, 233, 0.6); box-shadow: 0 10px 25px rgba(14, 165, 233, 0.15); }
         body.light-mode .profile-box { background: #ffffff !important; border: 1px solid rgba(14, 165, 233, 0.3) !important; }
@@ -129,23 +127,35 @@
 <body>
 
     <div id="boot-screen">
-        <div class="boot-ascii text-center">
+        <pre class="boot-ascii text-center">
    _____ __  __ ____  ______ _____   _____ ______ _____ 
   / ____|\ \/ /|  _ \|  ____|  __ \ / ____|  ____|  __ \
  | |      \  / | |_) | |__  | |__) | (___ | |__  | |  | |
- | |       \/  |  _ <|  __| |  _  / \___ \|  __| | |  | |
+ | |       \/  |  _ &lt;|  __| |  _  / \___ \|  __| | |  | |
  | |____   ||  | |_) | |____| | \ \ ____) | |____| |__| |
   \_____|  ||  |____/|______|_|  \_\_____/|______|_____/ 
-        </div>
+        </pre>
         <div class="boot-text" id="terminal-text"></div>
     </div>
 
     <div id="main-content">
         <div class="bg-cyber">
             <div class="hacker-decals">
-                <div class="decal-1"></div>
-                <div class="decal-2"></div>
-                <div class="decal-3"></div>
+                <div class="decal-1">
+                    &gt; INIT SECURE_BOOT...<br>
+                    &gt; LOAD KERNEL_MODULE_0x8F<br>
+                    &gt; BYPASSING FIREWALL... [OK]<br>
+                    &gt; MEM_ALLOC: 0x7FFE4000<br>
+                    &gt; THREAD_SYNC: IN_PROGRESS
+                </div>
+                <div class="decal-2">
+                    SYS_OVERRIDE_ENABLED<br>
+                    --------------------<br>
+                    ROOT ACCESS GRANTED<br>
+                    UPLINK ESTABLISHED<br>
+                    PORT_8080 // LISTENING
+                </div>
+                <div class="decal-3">0xMH</div>
             </div>
         </div>
 
