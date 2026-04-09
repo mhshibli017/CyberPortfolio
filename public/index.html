@@ -486,7 +486,6 @@
                 <button onclick="closeEduModal()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-20 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
                 
                 <div class="flex flex-col lg:flex-row gap-6 relative z-10">
-                    
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="bg-emerald-500/20 p-2 rounded-full border border-emerald-500/30">
@@ -509,7 +508,6 @@
                     </div>
 
                     <div id="modal-edu-right-side" class="w-full lg:w-72 shrink-0 flex flex-col gap-4 justify-center">
-                        
                         <div id="modal-thesis-card" class="bg-black/20 border border-white/5 p-5 rounded-xl hover:border-emerald-500/40 transition duration-300 shadow-lg light-edu-inner hidden">
                             <div class="flex items-center gap-2 mb-3">
                                 <div class="bg-emerald-500/20 p-1.5 rounded-full border border-emerald-500/20">
@@ -529,7 +527,6 @@
                             </div>
                             <p id="modal-focus-desc" class="text-xs text-sky-400 font-bold leading-relaxed"></p>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -595,10 +592,12 @@
         // Fetch Dynamic Data from Admin Panel
         async function fetchAllDynamicData() {
             try {
-                // 1. Profile
+                // 1. Profile (FIXED: Handling Array Return safely)
                 const profRes = await fetch(`${API_BASE}/profile`);
-                const profData = await profRes.json();
-                if(profData.full_name) {
+                const rawProfData = await profRes.json();
+                const profData = Array.isArray(rawProfData) ? rawProfData[0] : rawProfData;
+                
+                if(profData && profData.full_name) {
                     document.getElementById('profile-name').innerText = profData.full_name;
                     document.getElementById('profile-title').innerText = profData.job_title;
                     document.getElementById('profile-bio').innerText = profData.bio;
@@ -830,7 +829,6 @@
             } catch(e){}
         }
 
-        // Original Gallery Modals
         const galleryModal = document.getElementById('galleryModal');
         const galleryContent = document.getElementById('galleryModal-content');
         function openGalleryModal() {
@@ -855,7 +853,7 @@
         }
         function closeSingleLightbox() { singleLightbox.classList.add('opacity-0'); singleContent.classList.add('scale-95'); setTimeout(() => singleLightbox.classList.add('hidden'), 300); }
 
-        // ================= NEW: Education Modal Logic (With Thesis/Focus) =================
+        // ================= EDUCATION MODAL LOGIC =================
         const eduModal = document.getElementById('eduModal');
         const eduModalContent = document.getElementById('eduModal-content');
         
@@ -869,40 +867,27 @@
             const focusCard = document.getElementById('modal-focus-card');
             const rightSide = document.getElementById('modal-edu-right-side');
             
-            // Handle optional thesis
             if (thesis && thesis !== 'null' && thesis.trim() !== '') {
                 document.getElementById('modal-thesis-desc').innerText = thesis;
                 thesisCard.classList.remove('hidden');
-            } else {
-                thesisCard.classList.add('hidden');
-            }
+            } else { thesisCard.classList.add('hidden'); }
 
-            // Handle optional focus
             if (focus && focus !== 'null' && focus.trim() !== '') {
                 document.getElementById('modal-focus-desc').innerText = focus;
                 focusCard.classList.remove('hidden');
-            } else {
-                focusCard.classList.add('hidden');
-            }
+            } else { focusCard.classList.add('hidden'); }
 
-            // Hide the entire right panel if both are empty
             if ((!thesis || thesis === 'null' || thesis.trim() === '') && 
                 (!focus || focus === 'null' || focus.trim() === '')) {
                 rightSide.classList.add('hidden');
-            } else {
-                rightSide.classList.remove('hidden');
-            }
+            } else { rightSide.classList.remove('hidden'); }
 
             eduModal.classList.remove('hidden'); 
-            setTimeout(() => { 
-                eduModal.classList.remove('opacity-0'); 
-                eduModalContent.classList.remove('scale-95'); 
-            }, 10);
+            setTimeout(() => { eduModal.classList.remove('opacity-0'); eduModalContent.classList.remove('scale-95'); }, 10);
         }
         
         function closeEduModal() { 
-            eduModal.classList.add('opacity-0'); 
-            eduModalContent.classList.add('scale-95'); 
+            eduModal.classList.add('opacity-0'); eduModalContent.classList.add('scale-95'); 
             setTimeout(() => eduModal.classList.add('hidden'), 300); 
         }
 
