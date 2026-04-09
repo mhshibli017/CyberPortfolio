@@ -306,28 +306,30 @@
                             </div>
                         </div>
 
-                        <div class="w-full lg:w-80 shrink-0 flex flex-col gap-4 md:gap-6 justify-center">
-                            <div class="bg-black/20 border border-white/5 p-5 md:p-6 rounded-2xl hover:border-emerald-500/40 transition duration-300 group shadow-lg light-edu-inner">
+                        <div id="edu-right-side" class="w-full lg:w-80 shrink-0 flex flex-col gap-4 md:gap-6 justify-center">
+                            
+                            <div id="thesis-card" class="bg-black/20 border border-white/5 p-5 md:p-6 rounded-2xl hover:border-emerald-500/40 transition duration-300 group shadow-lg light-edu-inner hidden">
                                 <div class="flex items-center gap-3 mb-4">
-                                    <i data-lucide="microscope" class="w-5 h-5 text-emerald-500"></i>
+                                    <div class="bg-emerald-500/20 p-2 rounded-full border border-emerald-500/20">
+                                        <i data-lucide="microscope" class="w-5 h-5 text-emerald-500"></i>
+                                    </div>
                                     <span class="text-[10px] font-bold text-white uppercase tracking-widest mono">ACTIVE THESIS</span>
                                 </div>
-                                <h4 class="text-white text-sm md:text-base font-bold italic mb-2 leading-tight group-hover:text-emerald-400 transition">"Explainable Generative Adversarial Networks for Intrusion Detection"</h4>
-                                <p class="text-[10px] md:text-xs text-slate-400 leading-relaxed">
-                                    A Synthetic Data–Based Learning Framework. Utilizing GANs and SHAP for generating explained network anomalies on the CSE-CIC-IDS2018 dataset.
-                                </p>
+                                <h4 id="thesis-desc" class="text-white font-bold italic mb-3 leading-tight group-hover:text-emerald-400 transition">
+                                    </h4>
                             </div>
 
-                            <div class="bg-black/20 border border-white/5 p-5 md:p-6 rounded-2xl hover:border-sky-500/40 transition duration-300 group shadow-lg light-edu-inner">
+                            <div id="core-focus-card" class="bg-black/20 border border-white/5 p-5 md:p-6 rounded-2xl hover:border-sky-500/40 transition duration-300 group shadow-lg light-edu-inner hidden">
                                 <div class="flex items-center gap-3 mb-4">
-                                    <i data-lucide="book-open" class="w-5 h-5 text-sky-500"></i>
+                                    <div class="bg-sky-500/20 p-2 rounded-full border border-sky-500/20">
+                                        <i data-lucide="book-open" class="w-5 h-5 text-sky-500"></i>
+                                    </div>
                                     <span class="text-[10px] font-bold text-white uppercase tracking-widest mono">CORE FOCUS</span>
                                 </div>
-                                <h4 class="text-white text-sm md:text-base font-bold mb-2 leading-tight group-hover:text-sky-400 transition">Cybersecurity & Analytics</h4>
-                                <p class="text-[10px] md:text-xs text-slate-400 leading-relaxed">
-                                    Advanced study of network security vulnerabilities, cryptography, and securing IT infrastructures against modern threat landscapes.
-                                </p>
+                                <h4 id="focus-desc" class="text-white font-bold mb-3 leading-tight group-hover:text-sky-400 transition">
+                                    </h4>
                             </div>
+
                         </div>
                     </div>
                     
@@ -506,7 +508,7 @@
 
     </div> <script>
         lucide.createIcons();
-        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
+        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api';
 
         // ================= SCARY BOOT SEQUENCE LOGIC =================
         const bootLines = [
@@ -534,9 +536,8 @@
                 terminalText.appendChild(p);
                 lineIndex++;
                 
-                // Dynamic delay for extreme realism
                 let delay = Math.random() * 150 + 50; 
-                if (lineIndex === 4 || lineIndex === 9) delay = 800; // Suspanse pause
+                if (lineIndex === 4 || lineIndex === 9) delay = 800; 
                 
                 setTimeout(typeLine, delay);
             } else {
@@ -550,7 +551,7 @@
                     document.getElementById('boot-screen').style.transform = 'scale(1.1)';
                     document.getElementById('main-content').style.opacity = '1';
                     setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; }, 800);
-                }, 1500); // Gives time to read the "Just kidding" part
+                }, 1500); 
             }
         }
         
@@ -575,26 +576,48 @@
                     document.getElementById('footer-text').innerText = `© 2026 ${profData.full_name.toUpperCase()}. DESIGN: HYPER-SECURITY OS V2`;
                 }
 
-                // 2. Education (NEW FIX APPLIED HERE)
+                // 2. Education (Dynamic Thesis and Focus Fix)
                 const eduRes = await fetch(`${API_BASE}/education`);
                 const eduData = await eduRes.json();
-                globalEduData = eduData; // Store globally for modal access
+                globalEduData = eduData; 
 
                 if(eduData.length > 0) {
-                    const latestEdu = eduData[0]; // Assuming latest is first
+                    const latestEdu = eduData[0]; 
                     document.getElementById('edu-degree').innerText = latestEdu.degree;
                     document.getElementById('edu-inst').innerText = latestEdu.institution;
                     document.getElementById('edu-desc').innerText = latestEdu.details;
                     document.getElementById('edu-year').innerText = latestEdu.pass_year;
                     
-                    // Show older records if more than 1 exists
+                    const thesisCard = document.getElementById('thesis-card');
+                    const focusCard = document.getElementById('core-focus-card');
+                    const rightSideContainer = document.getElementById('edu-right-side');
+                    
+                    if (latestEdu.active_thesis) {
+                        document.getElementById('thesis-desc').innerText = latestEdu.active_thesis;
+                        thesisCard.classList.remove('hidden');
+                    } else {
+                        thesisCard.classList.add('hidden');
+                    }
+
+                    if (latestEdu.core_focus) {
+                        document.getElementById('focus-desc').innerText = latestEdu.core_focus;
+                        focusCard.classList.remove('hidden');
+                    } else {
+                        focusCard.classList.add('hidden');
+                    }
+
+                    if (!latestEdu.active_thesis && !latestEdu.core_focus) {
+                        rightSideContainer.classList.add('hidden');
+                    } else {
+                        rightSideContainer.classList.remove('hidden');
+                    }
+
                     const olderContainer = document.getElementById('olderEducationContainer');
                     if (eduData.length > 1) {
                         olderContainer.classList.remove('hidden');
                         olderContainer.innerHTML = '';
                         for(let i = 1; i < eduData.length; i++) {
                             const item = eduData[i];
-                            // Clean up details for JS string pass
                             const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                             const safeInst = (item.institution || '').replace(/'/g, "\\'");
                             const safeDegree = (item.degree || '').replace(/'/g, "\\'");
