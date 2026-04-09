@@ -56,7 +56,7 @@
                     <input type="text" id="f-user" placeholder="Your Username" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 mb-4 text-sm mono">
                     
                     <label class="block text-[10px] text-emerald-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Security Key</label>
-                    <input type="text" id="f-key" placeholder="e.g. MH-ROOT-2026" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 mb-4 text-sm mono">
+                    <input type="text" id="f-key" placeholder="e.g. 12345" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 mb-4 text-sm mono">
                     
                     <label class="block text-[10px] text-emerald-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">New Password</label>
                     <input type="password" id="f-newpass" placeholder="Create New Password" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 mb-6 text-sm mono">
@@ -90,53 +90,63 @@
             </div>
         </header>
 
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-            <div class="glass p-4 rounded-2xl border-emerald-500/20 flex flex-col items-center justify-center relative overflow-hidden group">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <div class="glass p-4 rounded-2xl border-emerald-500/20 flex flex-col items-center justify-center relative overflow-hidden group min-h-[100px]">
                 <div class="absolute -top-4 -right-4 w-12 h-12 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition duration-500"></div>
-                <i data-lucide="cpu" class="w-5 h-5 text-emerald-500 mb-2"></i>
-                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono mb-1">CPU Usage</p>
-                <h3 class="text-xl font-black text-white mono tracking-tighter"><span id="stat-cpu">--</span><span class="text-emerald-500 text-sm">%</span></h3>
+                <div class="flex items-center gap-2 mb-1 z-10">
+                    <i data-lucide="cpu" class="w-4 h-4 text-emerald-500"></i>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono">CPU Usage</p>
+                </div>
+                <h3 class="text-xl font-black text-white mono tracking-tighter z-10"><span id="stat-cpu">--</span><span class="text-emerald-500 text-sm ml-1">%</span></h3>
             </div>
             
-            <div class="glass p-4 rounded-2xl border-purple-500/20 flex flex-col items-center justify-center relative overflow-hidden group">
+            <div class="glass p-4 rounded-2xl border-purple-500/20 flex flex-col items-center justify-center relative overflow-hidden group min-h-[100px]">
                 <div class="absolute -top-4 -right-4 w-12 h-12 bg-purple-500/10 rounded-full blur-xl group-hover:bg-purple-500/20 transition duration-500"></div>
-                <i data-lucide="memory-stick" class="w-5 h-5 text-purple-500 mb-2"></i>
-                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono mb-1">RAM Usage</p>
-                <h3 class="text-xl font-black text-white mono tracking-tighter"><span id="stat-ram">--</span><span class="text-purple-500 text-sm">%</span></h3>
+                <div class="flex items-center gap-2 mb-1 z-10">
+                    <i data-lucide="memory-stick" class="w-4 h-4 text-purple-500"></i>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono">RAM Usage</p>
+                </div>
+                <h3 class="text-xl font-black text-white mono tracking-tighter z-10"><span id="stat-ram">--</span><span class="text-purple-500 text-sm ml-1">%</span></h3>
             </div>
 
-            <div class="glass p-4 rounded-2xl border-rose-500/20 flex flex-col items-center justify-center relative overflow-hidden group">
+            <div class="glass p-4 rounded-2xl border-rose-500/20 flex flex-col items-center justify-center relative overflow-hidden group min-h-[100px]">
                 <div class="absolute -top-4 -right-4 w-12 h-12 bg-rose-500/10 rounded-full blur-xl group-hover:bg-rose-500/20 transition duration-500"></div>
-                <i data-lucide="activity" class="w-5 h-5 text-rose-500 mb-2"></i>
-                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono mb-1">Server Load</p>
-                <h3 class="text-xl font-black text-white mono tracking-tighter" id="stat-load">--</h3>
+                <div class="flex items-center gap-2 mb-1 z-10">
+                    <i data-lucide="activity" class="w-4 h-4 text-rose-500"></i>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono">Server Load</p>
+                </div>
+                <h3 class="text-xl font-black text-white mono tracking-tighter z-10" id="stat-load">--</h3>
             </div>
 
-            <div class="glass p-4 rounded-2xl border-sky-500/20 flex flex-col items-center justify-center relative overflow-hidden group">
+            <div class="glass p-4 rounded-2xl border-sky-500/20 flex flex-col items-center justify-center relative overflow-hidden group min-h-[100px]">
                 <div class="absolute -top-4 -right-4 w-12 h-12 bg-sky-500/10 rounded-full blur-xl group-hover:bg-sky-500/20 transition duration-500"></div>
-                <i data-lucide="users" class="w-5 h-5 text-sky-500 mb-2"></i>
-                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono mb-1">Total Visits</p>
-                <h3 class="text-xl font-black text-white mono tracking-tighter" id="stat-total">--</h3>
+                <div class="flex items-center gap-2 mb-1 z-10">
+                    <i data-lucide="users" class="w-4 h-4 text-sky-500"></i>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono">Total Visits</p>
+                </div>
+                <h3 class="text-xl font-black text-white mono tracking-tighter z-10" id="stat-total">--</h3>
             </div>
 
-            <div class="glass p-4 rounded-2xl border-amber-500/20 flex flex-col items-center justify-center relative overflow-hidden group col-span-2 md:col-span-1">
+            <div class="glass p-4 rounded-2xl border-amber-500/20 flex flex-col items-center justify-center relative overflow-hidden group col-span-2 md:col-span-1 lg:col-span-1 min-h-[100px]">
                 <div class="absolute -top-4 -right-4 w-12 h-12 bg-amber-500/10 rounded-full blur-xl group-hover:bg-amber-500/20 transition duration-500"></div>
-                <i data-lucide="user-check" class="w-5 h-5 text-amber-500 mb-2"></i>
-                <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono mb-1">Visits Today</p>
-                <h3 class="text-xl font-black text-white mono tracking-tighter" id="stat-today">--</h3>
+                <div class="flex items-center gap-2 mb-1 z-10">
+                    <i data-lucide="user-check" class="w-4 h-4 text-amber-500"></i>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mono">Visits Today</p>
+                </div>
+                <h3 class="text-xl font-black text-white mono tracking-tighter z-10" id="stat-today">--</h3>
             </div>
         </div>
 
-        <div class="grid md:grid-cols-4 gap-8">
-            <nav class="md:col-span-1 space-y-4">
-                <div class="glass p-3 rounded-3xl space-y-1">
-                    <button onclick="switchTab('profile')" id="btn-profile" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="user" class="w-5 h-5"></i> Profile</button>
-                    <button onclick="switchTab('education')" id="btn-education" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="book-open" class="w-5 h-5"></i> Education</button>
-                    <button onclick="switchTab('arsenal')" id="btn-arsenal" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="crosshair" class="w-5 h-5"></i> Arsenal</button>
-                    <button onclick="switchTab('projects')" id="btn-projects" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="terminal" class="w-5 h-5"></i> Projects</button>
-                    <button onclick="switchTab('achievements')" id="btn-achievements" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="award" class="w-5 h-5"></i> Achievement</button>
-                    <button onclick="switchTab('gallery')" id="btn-gallery" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="image" class="w-5 h-5"></i> Archive</button>
-                    <button onclick="switchTab('messages')" id="btn-messages" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="message-square" class="w-5 h-5"></i> Messages</button>
+        <div class="grid lg:grid-cols-4 gap-8">
+            <nav class="lg:col-span-1 space-y-4">
+                <div class="glass p-3 rounded-3xl space-y-1 flex flex-col sm:flex-row lg:flex-col overflow-x-auto custom-scrollbar">
+                    <button onclick="switchTab('profile')" id="btn-profile" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition whitespace-nowrap"><i data-lucide="user" class="w-5 h-5 shrink-0"></i> Profile</button>
+                    <button onclick="switchTab('education')" id="btn-education" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition whitespace-nowrap"><i data-lucide="book-open" class="w-5 h-5 shrink-0"></i> Education</button>
+                    <button onclick="switchTab('arsenal')" id="btn-arsenal" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition whitespace-nowrap"><i data-lucide="crosshair" class="w-5 h-5 shrink-0"></i> Arsenal</button>
+                    <button onclick="switchTab('projects')" id="btn-projects" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition whitespace-nowrap"><i data-lucide="terminal" class="w-5 h-5 shrink-0"></i> Projects</button>
+                    <button onclick="switchTab('achievements')" id="btn-achievements" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition whitespace-nowrap"><i data-lucide="award" class="w-5 h-5 shrink-0"></i> Achievement</button>
+                    <button onclick="switchTab('gallery')" id="btn-gallery" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition whitespace-nowrap"><i data-lucide="image" class="w-5 h-5 shrink-0"></i> Archive</button>
+                    <button onclick="switchTab('messages')" id="btn-messages" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition whitespace-nowrap"><i data-lucide="message-square" class="w-5 h-5 shrink-0"></i> Messages</button>
                 </div>
                 
                 <div class="glass p-6 rounded-3xl border-amber-500/10">
@@ -149,7 +159,7 @@
                 </div>
             </nav>
 
-            <main class="md:col-span-3">
+            <main class="lg:col-span-3">
                 
                 <div id="tab-profile" class="tab-content glass p-8 rounded-3xl active">
                     <h2 class="text-xl font-bold mb-6 flex items-center gap-3 border-b border-white/10 pb-4"><i data-lucide="user" class="text-sky-500"></i> Profile Management</h2>
@@ -177,7 +187,7 @@
                     </h2>
                     <form id="form-education" onsubmit="saveData(event, 'education')" class="space-y-4 mb-8 bg-black/20 p-6 rounded-2xl border border-white/5">
                         <input type="hidden" id="edu-id">
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[10px] text-emerald-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Degree Name</label>
                                 <input type="text" id="edu-degree" placeholder="e.g. BSc Computer Science" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-emerald-500">
@@ -187,7 +197,7 @@
                                 <input type="text" id="edu-institution" placeholder="e.g. Feni University" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-emerald-500">
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[10px] text-emerald-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Passing Year</label>
                                 <input type="text" id="edu-pass_year" placeholder="e.g. 2026" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-emerald-500">
@@ -220,7 +230,7 @@
                     </h2>
                     <form id="form-arsenal" onsubmit="saveData(event, 'arsenal')" class="space-y-4 mb-8 bg-black/20 p-6 rounded-2xl border border-white/5">
                         <input type="hidden" id="ars-id">
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[10px] text-rose-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Category Name</label>
                                 <input type="text" id="ars-category" placeholder="e.g. Exploitation Frameworks" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-rose-500">
@@ -257,7 +267,7 @@
                             <label class="block text-[10px] text-purple-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Project Description</label>
                             <textarea id="proj-description" placeholder="What does this project do?" rows="3" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-purple-500"></textarea>
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-[10px] text-purple-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Tags (Languages/Tools)</label>
                                 <input type="text" id="proj-tags" placeholder="e.g. Python, React, AI" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-purple-500">
@@ -282,8 +292,8 @@
                     </h2>
                     <form id="form-achievements" onsubmit="saveData(event, 'achievements')" class="space-y-4 mb-8 bg-black/20 p-6 rounded-2xl border border-white/5">
                         <input type="hidden" id="ach-id">
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="col-span-2">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="md:col-span-2">
                                 <label class="block text-[10px] text-amber-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Achievement Title</label>
                                 <input type="text" id="ach-title" placeholder="e.g. Certified Ethical Hacker" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-amber-500">
                             </div>
@@ -331,7 +341,7 @@
                             </label>
                         </div>
                         <div class="space-y-4">
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-[10px] text-sky-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Image Title</label>
                                     <input type="text" id="gal-title" placeholder="e.g. CTF Winner" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-sky-500">
@@ -345,13 +355,13 @@
                                 <label class="block text-[10px] text-sky-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Full Details (Shown in Lightbox)</label>
                                 <textarea id="gal-details" placeholder="Write full description here..." rows="2" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-sky-500"></textarea>
                             </div>
-                            <div class="flex items-center gap-4 pt-2">
-                                <button onclick="uploadAndSaveGallery()" id="gal-btn" class="flex-1 bg-sky-600 p-4 rounded-xl font-bold text-sm hover:bg-sky-500 transition shadow-[0_0_15px_rgba(14,165,233,0.3)] text-white">Upload & Save Archive</button>
-                                <button onclick="resetGalForm()" class="px-6 py-4 text-slate-400 text-xs hover:text-white transition">Cancel</button>
+                            <div class="flex flex-col md:flex-row items-center gap-4 pt-2">
+                                <button onclick="uploadAndSaveGallery()" id="gal-btn" class="w-full md:w-auto flex-1 bg-sky-600 p-4 rounded-xl font-bold text-sm hover:bg-sky-500 transition shadow-[0_0_15px_rgba(14,165,233,0.3)] text-white">Upload & Save New Archive</button>
+                                <button onclick="resetGalForm()" class="px-6 py-4 text-slate-400 text-xs hover:text-white transition">Cancel Form</button>
                             </div>
                         </div>
                     </div>
-                    <div id="list-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-[500px] overflow-y-auto pr-2 content-start auto-rows-max"></div>
+                    <div id="list-gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[500px] overflow-y-auto pr-2 content-start auto-rows-max"></div>
                 </div>
 
                 <div id="tab-messages" class="tab-content glass p-8 rounded-3xl">
@@ -394,7 +404,7 @@
 
     <script>
         lucide.createIcons();
-        const API_BASE = 'https://cyberportfolio-ax05.onrender.com//api';
+        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api';
         let currentAdmin = "";
         let globalData = {}; 
 
