@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -8,165 +9,73 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-// ================= PROFILE API =================
-app.get('/api/profile', async (req, res) => {
-    const { data, error } = await supabase.from('profile').select('*').maybeSingle();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data || {});
+// Multer Setup for Image Upload
+const upload = multer({ storage: multer.memoryStorage() });
+
+// ================= AUTH API =================
+app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+    const { data, error } = await supabase.from('admin_auth').select('*').eq('username', username).eq('password', password).single();
+    if (error || !data) return res.status(401).json({ error: 'Invalid Credentials' });
+    res.json({ success: true, message: 'Access Granted' });
 });
 
-app.post('/api/profile', async (req, res) => {
-    const { full_name, job_title, bio } = req.body;
-    const { data: existing } = await supabase.from('profile').select('id').maybeSingle();
+app.post('/api/forgot-password', async (req, res) => {
+    const { username, security_key, new_password } = req.body;
+    const { data, error } = await supabase.from('admin_auth').update({ password: new_password }).eq('username', username).eq('security_key', security_key);
+    if (error) return res.status(400).json({ error: 'Validation Failed' });
+    res.json({ success: true });
+});
+
+app.post('/api/update-auth', async (req, res) => {
+    const { old_user, new_user, new_pass } = req.body;
+    const { error } = await supabase.from('admin_auth').update({ username: new_user, password: new_pass }).eq('username', old_user);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ success: true });
+});
+
+// ================= IMAGE UPLOAD API =================
+app.post('/api/upload', upload.single('image'), async (req, res) => {
+    if (!req.file) return res.status(400).send('No file uploaded.');
+    const fileName = `${Date.now()}-${req.file.originalname}`;
     
-    let result;
-    if (existing) {
-        result = await supabase.from('profile').update({ full_name, job_title, bio }).eq('id', existing.id);
-    } else {
-        result = await supabase.from('profile').insert([{ full_name, job_title, bio }]);
-    }
-    
-    if (result.error) return res.status(500).json({ error: result.error.message });
-    res.json({ message: 'Profile updated successfully' });
-});
+    const { data, error } = await supabase.storage.from('portfolio_images').upload(fileName, req.file.buffer, {
+        contentType: req.file.mimetype
+    });
 
-// ================= EDUCATION API =================
-app.get('/api/education', async (req, res) => {
-    const { data, error } = await supabase.from('education').select('*').order('pass_year', { ascending: false });
     if (error) return res.status(500).json({ error: error.message });
-    res.json(data || []);
+    const { data: publicUrl } = supabase.storage.from('portfolio_images').getPublicUrl(fileName);
+    res.json({ url: publicUrl.publicUrl });
 });
 
-app.post('/api/education', async (req, res) => {
-    const { institution, degree, pass_year, details, active_thesis, core_focus } = req.body;
-    const { data, error } = await supabase.from('education').insert([
-        { institution, degree, pass_year, details, active_thesis, core_focus }
-    ]);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+// ================= CRUD FOR ALL SECTIONS =================
+const tables = ['profile', 'education', 'arsenal', 'projects', 'achievements', 'gallery', 'messages'];
+
+tables.forEach(table => {
+    app.get(`/api/${table}`, async (req, res) => {
+        let query = supabase.from(table).select('*');
+        if (table === 'education') query = query.order('pass_year', { ascending: false });
+        const { data, error } = await query;
+        res.json(data || []);
+    });
+
+    app.post(`/api/${table}`, async (req, res) => {
+        const { data, error } = await supabase.from(table).insert([req.body]);
+        res.json(data);
+    });
+
+    app.put(`/api/${table}/:id`, async (req, res) => {
+        const { data, error } = await supabase.from(table).update(req.body).eq('id', req.params.id);
+        res.json(data);
+    });
+
+    app.delete(`/api/${table}/:id`, async (req, res) => {
+        await supabase.from(table).delete().eq('id', req.params.id);
+        res.json({ success: true });
+    });
 });
 
-app.put('/api/education/:id', async (req, res) => {
-    const { institution, degree, pass_year, details, active_thesis, core_focus } = req.body;
-    const { data, error } = await supabase.from('education').update(
-        { institution, degree, pass_year, details, active_thesis, core_focus }
-    ).eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
-});
-
-app.delete('/api/education/:id', async (req, res) => {
-    const { error } = await supabase.from('education').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Deleted successfully' });
-});
-
-// ================= ARSENAL API =================
-app.get('/api/arsenal', async (req, res) => {
-    const { data, error } = await supabase.from('arsenal').select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data || []);
-});
-
-app.post('/api/arsenal', async (req, res) => {
-    const { title, category, details } = req.body;
-    const { data, error } = await supabase.from('arsenal').insert([{ title, category, details }]);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
-});
-
-app.delete('/api/arsenal/:id', async (req, res) => {
-    const { error } = await supabase.from('arsenal').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Deleted successfully' });
-});
-
-// ================= PROJECTS API =================
-app.get('/api/projects', async (req, res) => {
-    const { data, error } = await supabase.from('projects').select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data || []);
-});
-
-app.post('/api/projects', async (req, res) => {
-    const { title, description, tags, link } = req.body;
-    const { data, error } = await supabase.from('projects').insert([{ title, description, tags, link }]);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
-});
-
-app.delete('/api/projects/:id', async (req, res) => {
-    const { error } = await supabase.from('projects').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Deleted successfully' });
-});
-
-// ================= ACHIEVEMENTS API =================
-app.get('/api/achievements', async (req, res) => {
-    const { data, error } = await supabase.from('achievements').select('*').order('year', { ascending: false });
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data || []);
-});
-
-app.post('/api/achievements', async (req, res) => {
-    const { title, organization, year, details } = req.body;
-    const { data, error } = await supabase.from('achievements').insert([{ title, organization, year, details }]);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
-});
-
-app.delete('/api/achievements/:id', async (req, res) => {
-    const { error } = await supabase.from('achievements').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Deleted successfully' });
-});
-
-// ================= GALLERY API =================
-app.get('/api/gallery', async (req, res) => {
-    const { data, error } = await supabase.from('gallery').select('*').order('created_at', { ascending: false });
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data || []);
-});
-
-app.post('/api/gallery', async (req, res) => {
-    const { title, subtitle, image_url, details } = req.body;
-    const { data, error } = await supabase.from('gallery').insert([{ title, subtitle, image_url, details }]);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
-});
-
-app.delete('/api/gallery/:id', async (req, res) => {
-    const { error } = await supabase.from('gallery').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Deleted successfully' });
-});
-
-// ================= MESSAGES API =================
-app.get('/api/messages', async (req, res) => {
-    const { data, error } = await supabase.from('messages').select('*').order('created_at', { ascending: false });
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data || []);
-});
-
-app.post('/api/messages', async (req, res) => {
-    const { identity_name, contact_vector, data_payload } = req.body;
-    const { data, error } = await supabase.from('messages').insert([{ identity_name, contact_vector, data_payload }]);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
-});
-
-app.delete('/api/messages/:id', async (req, res) => {
-    const { error } = await supabase.from('messages').delete().eq('id', req.params.id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Deleted successfully' });
-});
-
-// Start Server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`System Online: Port ${PORT}`);
-});
+app.listen(PORT, '0.0.0.0', () => console.log(`Server Online on ${PORT}`));
