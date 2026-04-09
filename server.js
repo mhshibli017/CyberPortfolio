@@ -11,21 +11,21 @@ app.use(express.static('public'));
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-// Multer Setup for Image Upload
+// Multer Config (Memory storage for PC uploads)
 const upload = multer({ storage: multer.memoryStorage() });
 
 // ================= AUTH API =================
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
-    const { data, error } = await supabase.from('admin_auth').select('*').eq('username', username).eq('password', password).single();
-    if (error || !data) return res.status(401).json({ error: 'Invalid Credentials' });
-    res.json({ success: true, message: 'Access Granted' });
+    const { data, error } = await supabase.from('admin_auth').select('*').eq('username', username).eq('password', password).maybeSingle();
+    if (error || !data) return res.status(401).json({ error: 'Unauthorized Access!' });
+    res.json({ success: true });
 });
 
-app.post('/api/forgot-password', async (req, res) => {
+app.post('/api/forgot-creds', async (req, res) => {
     const { username, security_key, new_password } = req.body;
-    const { data, error } = await supabase.from('admin_auth').update({ password: new_password }).eq('username', username).eq('security_key', security_key);
-    if (error) return res.status(400).json({ error: 'Validation Failed' });
+    const { data, error } = await supabase.from('admin_auth').update({ password: new_password }).eq('username', username).eq('security_key', security_key).select();
+    if (error || data.length === 0) return res.status(400).json({ error: 'Invalid Username or Key' });
     res.json({ success: true });
 });
 
@@ -36,38 +36,37 @@ app.post('/api/update-auth', async (req, res) => {
     res.json({ success: true });
 });
 
-// ================= IMAGE UPLOAD API =================
+// ================= UPLOAD API =================
 app.post('/api/upload', upload.single('image'), async (req, res) => {
-    if (!req.file) return res.status(400).send('No file uploaded.');
+    if (!req.file) return res.status(400).send('No file.');
     const fileName = `${Date.now()}-${req.file.originalname}`;
-    
-    const { data, error } = await supabase.storage.from('portfolio_images').upload(fileName, req.file.buffer, {
-        contentType: req.file.mimetype
-    });
-
+    const { data, error } = await supabase.storage.from('portfolio_images').upload(fileName, req.file.buffer, { contentType: req.file.mimetype });
     if (error) return res.status(500).json({ error: error.message });
-    const { data: publicUrl } = supabase.storage.from('portfolio_images').getPublicUrl(fileName);
-    res.json({ url: publicUrl.publicUrl });
+    const { data: pubUrl } = supabase.storage.from('portfolio_images').getPublicUrl(fileName);
+    res.json({ url: pubUrl.publicUrl });
 });
 
-// ================= CRUD FOR ALL SECTIONS =================
+// ================= UNIVERSAL CRUD API =================
 const tables = ['profile', 'education', 'arsenal', 'projects', 'achievements', 'gallery', 'messages'];
 
 tables.forEach(table => {
     app.get(`/api/${table}`, async (req, res) => {
         let query = supabase.from(table).select('*');
         if (table === 'education') query = query.order('pass_year', { ascending: false });
+        if (table === 'messages' || table === 'gallery') query = query.order('created_at', { ascending: false });
         const { data, error } = await query;
         res.json(data || []);
     });
 
     app.post(`/api/${table}`, async (req, res) => {
         const { data, error } = await supabase.from(table).insert([req.body]);
+        if (error) return res.status(500).json({ error: error.message });
         res.json(data);
     });
 
     app.put(`/api/${table}/:id`, async (req, res) => {
         const { data, error } = await supabase.from(table).update(req.body).eq('id', req.params.id);
+        if (error) return res.status(500).json({ error: error.message });
         res.json(data);
     });
 
@@ -78,4 +77,4 @@ tables.forEach(table => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => console.log(`Server Online on ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`System Online on ${PORT}`));
