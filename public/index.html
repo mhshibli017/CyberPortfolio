@@ -646,15 +646,9 @@
                         olderContainer.innerHTML = '';
                         for(let i = 1; i < eduData.length; i++) {
                             const item = eduData[i];
-                            // Encode quotes to prevent HTML breaking
-                            const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                            const safeInst = (item.institution || '').replace(/'/g, "\\'");
-                            const safeDegree = (item.degree || '').replace(/'/g, "\\'");
-                            const safeThesis = (item.active_thesis || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                            const safeFocus = (item.core_focus || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                            
+                            // Using ID to prevent quoting issues
                             olderContainer.innerHTML += `
-                                <div onclick="openEduModal('${safeDegree}', '${safeInst}', '${item.pass_year}', '${safeDetails}', '${safeThesis}', '${safeFocus}')" class="bg-black/20 border border-white/5 p-4 rounded-xl flex items-center justify-between shadow-inner light-edu-inner cursor-pointer hover:border-emerald-500/50 hover:bg-emerald-500/5 transition duration-300 group">
+                                <div onclick="openEduModal(${item.id})" class="bg-black/20 border border-white/5 p-4 rounded-xl flex items-center justify-between shadow-inner light-edu-inner cursor-pointer hover:border-emerald-500/50 hover:bg-emerald-500/5 transition duration-300 group">
                                     <div>
                                         <h5 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">${item.degree}</h5>
                                         <p class="text-[10px] text-slate-500 mono uppercase tracking-wider">${item.institution}</p>
@@ -853,32 +847,35 @@
         }
         function closeSingleLightbox() { singleLightbox.classList.add('opacity-0'); singleContent.classList.add('scale-95'); setTimeout(() => singleLightbox.classList.add('hidden'), 300); }
 
-        // ================= EDUCATION MODAL LOGIC =================
+        // ================= EDUCATION MODAL LOGIC (FIXED: ID BASED) =================
         const eduModal = document.getElementById('eduModal');
         const eduModalContent = document.getElementById('eduModal-content');
         
-        function openEduModal(degree, inst, year, details, thesis, focus) {
-            document.getElementById('modal-edu-degree').innerText = degree;
-            document.getElementById('modal-edu-inst').innerText = inst;
-            document.getElementById('modal-edu-year').innerText = year;
-            document.getElementById('modal-edu-desc').innerText = details;
+        function openEduModal(id) {
+            const edu = globalEduData.find(e => e.id === id);
+            if(!edu) return;
+
+            document.getElementById('modal-edu-degree').innerText = edu.degree;
+            document.getElementById('modal-edu-inst').innerText = edu.institution;
+            document.getElementById('modal-edu-year').innerText = edu.pass_year;
+            document.getElementById('modal-edu-desc').innerText = edu.details;
             
             const thesisCard = document.getElementById('modal-thesis-card');
             const focusCard = document.getElementById('modal-focus-card');
             const rightSide = document.getElementById('modal-edu-right-side');
             
-            if (thesis && thesis !== 'null' && thesis.trim() !== '') {
-                document.getElementById('modal-thesis-desc').innerText = thesis;
+            if (edu.active_thesis && edu.active_thesis.trim() !== '') {
+                document.getElementById('modal-thesis-desc').innerText = edu.active_thesis;
                 thesisCard.classList.remove('hidden');
             } else { thesisCard.classList.add('hidden'); }
 
-            if (focus && focus !== 'null' && focus.trim() !== '') {
-                document.getElementById('modal-focus-desc').innerText = focus;
+            if (edu.core_focus && edu.core_focus.trim() !== '') {
+                document.getElementById('modal-focus-desc').innerText = edu.core_focus;
                 focusCard.classList.remove('hidden');
             } else { focusCard.classList.add('hidden'); }
 
-            if ((!thesis || thesis === 'null' || thesis.trim() === '') && 
-                (!focus || focus === 'null' || focus.trim() === '')) {
+            if ((!edu.active_thesis || edu.active_thesis.trim() === '') && 
+                (!edu.core_focus || edu.core_focus.trim() === '')) {
                 rightSide.classList.add('hidden');
             } else { rightSide.classList.remove('hidden'); }
 
