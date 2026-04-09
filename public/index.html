@@ -470,7 +470,7 @@
                     <div><h2 class="text-2xl font-black text-white">Complete <span class="text-sky-500">Archives</span></h2></div>
                     <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
                 </div>
-                <div id="all-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar"></div>
+                <div id="all-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar content-start auto-rows-max"></div>
             </div>
         </div>
         
@@ -592,7 +592,7 @@
         // Fetch Dynamic Data from Admin Panel
         async function fetchAllDynamicData() {
             try {
-                // 1. Profile (FIXED: Handling Array Return safely)
+                // 1. Profile 
                 const profRes = await fetch(`${API_BASE}/profile`);
                 const rawProfData = await profRes.json();
                 const profData = Array.isArray(rawProfData) ? rawProfData[0] : rawProfData;
@@ -823,16 +823,18 @@
             } catch(e){}
         }
 
+        // Original Gallery Modals
         const galleryModal = document.getElementById('galleryModal');
         const galleryContent = document.getElementById('galleryModal-content');
         function openGalleryModal() {
             const grid = document.getElementById('all-gallery-grid'); grid.innerHTML = '';
             allGalleryItems.forEach(item => {
                 const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                // FIXED: Changed classes to prevent shrinking (h-40 md:h-48)
                 grid.innerHTML += `
-                    <div class="glass-panel p-2 rounded-xl overflow-hidden cursor-pointer hover:border-sky-500/80 transition group bg-black/20 hover:shadow-[0_0_15px_rgba(14,165,233,0.2)]" onclick="openSingleLightbox('${item.image_url}', '${item.title}', '${safeDetails}')">
-                        <div class="relative h-32 md:h-40 w-full mb-2 rounded-lg overflow-hidden border border-white/5 group-hover:border-sky-500/50 transition"><img src="${item.image_url}" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"></div>
-                        <p class="text-[10px] font-bold text-sky-500 mb-1 mono px-1 truncate">${item.title}</p>
+                    <div class="glass-panel p-3 rounded-xl overflow-hidden cursor-pointer hover:border-sky-500/80 transition group bg-black/20 hover:shadow-[0_0_15px_rgba(14,165,233,0.2)]" onclick="openSingleLightbox('${item.image_url}', '${item.title}', '${safeDetails}')">
+                        <div class="relative h-40 md:h-48 w-full mb-3 rounded-lg overflow-hidden border border-white/5 group-hover:border-sky-500/50 transition"><img src="${item.image_url}" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"></div>
+                        <p class="text-xs font-bold text-sky-500 mb-1 mono px-1 truncate">${item.title}</p>
                     </div>`;
             });
             galleryModal.classList.remove('hidden'); setTimeout(() => { galleryModal.classList.remove('opacity-0'); galleryContent.classList.remove('scale-95'); }, 10);
