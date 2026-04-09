@@ -1,19 +1,64 @@
+// server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
+const os = require('os'); // To get REAL 100% original CPU/RAM data
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const upload = multer({ storage: multer.memoryStorage() });
+
+// ================= REAL VISITOR TRACKING MIDDLEWARE =================
+// This tracks visitors when they hit the main page
+app.use((req, res, next) => {
+    if (req.path === '/' || req.path === '/index.html') {
+        const today = new Date().toISOString().split('T')[0];
+        supabase.from('page_views').insert([{ view_date: today }]).then();
+    }
+    next();
+});
+
+// Serve static files AFTER tracking middleware
+app.use(express.static('public'));
+
+// ================= REAL-TIME SYSTEM STATS API =================
+app.get('/api/system-stats', async (req, res) => {
+    try {
+        // 100% Original RAM Usage
+        const totalMem = os.totalmem();
+        const freeMem = os.freemem();
+        const usedMem = totalMem - freeMem;
+        const ramUsagePercent = ((usedMem / totalMem) * 100).toFixed(1);
+
+        // 100% Original CPU Load
+        const cpus = os.cpus();
+        const loadAvg = os.loadavg()[0]; // 1 min average
+        const cpuUsagePercent = ((loadAvg / cpus.length) * 100).toFixed(1);
+
+        // Real Visitor Counts from DB
+        const today = new Date().toISOString().split('T')[0];
+        const { count: totalVis } = await supabase.from('page_views').select('*', { count: 'exact', head: true });
+        const { count: todayVis } = await supabase.from('page_views').select('*', { count: 'exact', head: true }).eq('view_date', today);
+
+        res.json({
+            cpu: cpuUsagePercent,
+            ram: ramUsagePercent,
+            load: loadAvg.toFixed(2),
+            totalVisitors: totalVis || 0,
+            todayVisitors: todayVis || 0
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 // ================= AUTH API =================
 app.post('/api/login', async (req, res) => {
@@ -37,7 +82,7 @@ app.post('/api/update-auth', async (req, res) => {
     res.json({ success: true });
 });
 
-// ================= PROFILE API (100% FIXED) =================
+// ================= PROFILE API =================
 app.get('/api/profile', async (req, res) => {
     const { data, error } = await supabase.from('profile').select('*').order('id', { ascending: true }).limit(1);
     if (error) return res.status(500).json({ error: error.message });
@@ -46,19 +91,13 @@ app.get('/api/profile', async (req, res) => {
 
 app.post('/api/profile', async (req, res) => {
     const { full_name, job_title, bio } = req.body;
-    
-    // Check existing profile
     const { data: existing } = await supabase.from('profile').select('id').order('id', { ascending: true }).limit(1);
-    
     let result;
     if (existing && existing.length > 0) {
-        // Update exact ID
         result = await supabase.from('profile').update({ full_name, job_title, bio }).eq('id', existing[0].id);
     } else {
-        // Insert new
         result = await supabase.from('profile').insert([{ full_name, job_title, bio }]);
     }
-    
     if (result.error) return res.status(500).json({ error: result.error.message });
     res.json({ message: 'Profile updated successfully' });
 });
