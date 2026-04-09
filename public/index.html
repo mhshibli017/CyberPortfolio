@@ -34,7 +34,7 @@
         .bg-cyber::before { content: ''; position: absolute; top: -20%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%); border-radius: 50%; filter: blur(60px); pointer-events: none; }
         .bg-cyber::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 3px); z-index: 1; pointer-events: none; opacity: 0.5; }
         
-        /* Hacker Decals - Safe HTML Version */
+        /* Hacker Decals */
         .hacker-decals { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold; opacity: 0.8; animation: backgroundGlitch 4s infinite; }
         
         @keyframes backgroundGlitch {
@@ -50,7 +50,6 @@
 
         /* General UI Elements */
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.5s; }
-        
         .glass-nav { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; transition: all 0.3s; }
         #navbar { transform: translateY(-100%); animation: slideDown 0.5s forwards 4s; }
         @keyframes slideDown { to { transform: translateY(0); } }
@@ -285,7 +284,6 @@
                     <div class="absolute -bottom-32 -right-32 w-64 h-64 bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
                     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 relative z-10">
-                        
                         <div class="flex-1 flex flex-col justify-center">
                             <p id="edu-inst" class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-4">MAJOR_OPERATION.EDU</p>
                             <h3 id="edu-degree" class="text-3xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight">Loading...</h3>
@@ -304,7 +302,6 @@
                         </div>
 
                         <div id="edu-right-side" class="w-full lg:w-80 shrink-0 flex flex-col gap-4 md:gap-6 justify-center">
-                            
                             <div id="thesis-card" class="bg-black/20 border border-white/5 p-5 md:p-6 rounded-2xl hover:border-emerald-500/40 transition duration-300 group shadow-lg light-edu-inner hidden">
                                 <div class="flex items-center gap-3 mb-4">
                                     <div class="bg-emerald-500/20 p-2 rounded-full border border-emerald-500/20">
@@ -312,8 +309,7 @@
                                     </div>
                                     <span class="text-[10px] font-bold text-white uppercase tracking-widest mono">ACTIVE THESIS</span>
                                 </div>
-                                <h4 id="thesis-desc" class="text-white font-bold italic mb-3 leading-tight group-hover:text-emerald-400 transition">
-                                    </h4>
+                                <h4 id="thesis-desc" class="text-white font-bold italic mb-3 leading-tight group-hover:text-emerald-400 transition"></h4>
                             </div>
 
                             <div id="core-focus-card" class="bg-black/20 border border-white/5 p-5 md:p-6 rounded-2xl hover:border-sky-500/40 transition duration-300 group shadow-lg light-edu-inner hidden">
@@ -323,10 +319,8 @@
                                     </div>
                                     <span class="text-[10px] font-bold text-white uppercase tracking-widest mono">CORE FOCUS</span>
                                 </div>
-                                <h4 id="focus-desc" class="text-white font-bold mb-3 leading-tight group-hover:text-sky-400 transition">
-                                    </h4>
+                                <h4 id="focus-desc" class="text-white font-bold mb-3 leading-tight group-hover:text-sky-400 transition"></h4>
                             </div>
-
                         </div>
                     </div>
                     
@@ -350,7 +344,11 @@
                     <div class="absolute -top-32 -left-32 w-64 h-64 bg-rose-500/5 rounded-full blur-3xl pointer-events-none"></div>
                     <div class="absolute -bottom-32 -right-32 w-64 h-64 bg-rose-500/5 rounded-full blur-3xl pointer-events-none"></div>
                     
-                    <div id="arsenalContainer" class="grid md:grid-cols-3 gap-6 relative z-10"></div>
+                    <div id="arsenalContainer" class="grid md:grid-cols-2 gap-6 relative z-10"></div>
+                    
+                    <div class="text-center mt-10 relative z-10">
+                        <button id="loadMoreArsBtn" class="hidden px-8 py-3 border border-rose-500/30 rounded-full text-rose-500 text-xs font-bold hover:bg-rose-500/20 transition mono shadow-[0_0_15px_rgba(244,63,94,0.2)] hover:shadow-[0_0_25px_rgba(244,63,94,0.4)] bg-black/20">LOAD_MORE_ARSENAL //...</button>
+                    </div>
                 </div>
             </section>
 
@@ -371,6 +369,10 @@
                     <div class="absolute -bottom-32 -right-32 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
                     
                     <div id="projectContainer" class="grid md:grid-cols-2 gap-8 relative z-10"></div>
+
+                    <div class="text-center mt-10 relative z-10">
+                        <button id="loadMoreProjBtn" class="hidden px-8 py-3 border border-purple-500/30 rounded-full text-purple-500 text-xs font-bold hover:bg-purple-500/20 transition mono shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] bg-black/20">LOAD_MORE_PROJECTS //...</button>
+                    </div>
                 </div>
             </section>
 
@@ -390,7 +392,11 @@
                     <div class="absolute -top-32 -left-32 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
                     <div class="absolute -bottom-32 -right-32 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
                     
-                    <div id="certContainer" class="grid md:grid-cols-3 gap-6 relative z-10"></div>
+                    <div id="certContainer" class="grid md:grid-cols-2 gap-6 relative z-10"></div>
+
+                    <div class="text-center mt-10 relative z-10">
+                        <button id="loadMoreAchBtn" class="hidden px-8 py-3 border border-amber-500/30 rounded-full text-amber-500 text-xs font-bold hover:bg-amber-500/20 transition mono shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_25px_rgba(245,158,11,0.4)] bg-black/20">LOAD_MORE_RECORDS //...</button>
+                    </div>
                 </div>
             </section>
 
@@ -499,7 +505,6 @@
         <div id="eduModal" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
             <div class="glass-panel max-w-4xl w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.15)]" id="eduModal-content">
                 <button onclick="closeEduModal()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-20 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
-                
                 <div class="flex flex-col lg:flex-row gap-6 relative z-10">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-4">
@@ -518,7 +523,6 @@
                             <span class="text-xs text-emerald-500 font-mono font-bold" id="modal-edu-year">Year</span>
                         </div>
                     </div>
-
                     <div id="modal-edu-right-side" class="w-full lg:w-72 shrink-0 flex flex-col gap-4 justify-center">
                         <div id="modal-thesis-card" class="bg-black/20 border border-white/5 p-5 rounded-xl hover:border-emerald-500/40 transition duration-300 shadow-lg light-edu-inner hidden">
                             <div class="flex items-center gap-2 mb-3">
@@ -529,7 +533,6 @@
                             </div>
                             <p id="modal-thesis-desc" class="text-xs text-emerald-400 font-bold italic leading-relaxed"></p>
                         </div>
-
                         <div id="modal-focus-card" class="bg-black/20 border border-white/5 p-5 rounded-xl hover:border-sky-500/40 transition duration-300 shadow-lg light-edu-inner hidden">
                             <div class="flex items-center gap-2 mb-3">
                                 <div class="bg-sky-500/20 p-1.5 rounded-full border border-sky-500/20">
@@ -541,6 +544,36 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="arsenalModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
+            <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-rose-500/30" id="arsenalModal-content">
+                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
+                    <div><h2 class="text-2xl font-black text-white">Complete <span class="text-rose-500">Arsenal</span></h2></div>
+                    <button onclick="closeArsenalModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+                </div>
+                <div id="all-arsenal-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar content-start auto-rows-max"></div>
+            </div>
+        </div>
+
+        <div id="projectModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
+            <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-purple-500/30" id="projectModal-content">
+                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
+                    <div><h2 class="text-2xl font-black text-white">All <span class="text-purple-500">Deployments</span></h2></div>
+                    <button onclick="closeProjectModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+                </div>
+                <div id="all-project-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar content-start auto-rows-max"></div>
+            </div>
+        </div>
+
+        <div id="achModal" class="fixed inset-0 modal-overlay z-[150] hidden flex items-center justify-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
+            <div class="glass-panel w-full h-full max-h-[85vh] flex flex-col p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-amber-500/30" id="achModal-content">
+                <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4 shrink-0">
+                    <div><h2 class="text-2xl font-black text-white">All <span class="text-amber-500">Achievements</span></h2></div>
+                    <button onclick="closeAchModal()" class="text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+                </div>
+                <div id="all-ach-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-y-auto pr-2 pb-4 flex-1 custom-scrollbar content-start auto-rows-max"></div>
             </div>
         </div>
 
@@ -598,10 +631,14 @@
             fetchAllDynamicData(); 
         });
 
-        // Global variable to store education data for the modal
+        // Global variables to store data for modals
         let globalEduData = [];
+        let allArsenalItems = [];
+        let allProjectItems = [];
+        let allAchItems = [];
+        let allGalleryItems = [];
 
-        // Fetch Dynamic Data from Admin Panel
+        // Fetch Dynamic Data from Backend
         async function fetchAllDynamicData() {
             try {
                 // 1. Profile 
@@ -635,22 +672,16 @@
                     if (latestEdu.active_thesis) {
                         document.getElementById('thesis-desc').innerText = latestEdu.active_thesis;
                         thesisCard.classList.remove('hidden');
-                    } else {
-                        thesisCard.classList.add('hidden');
-                    }
+                    } else { thesisCard.classList.add('hidden'); }
 
                     if (latestEdu.core_focus) {
                         document.getElementById('focus-desc').innerText = latestEdu.core_focus;
                         focusCard.classList.remove('hidden');
-                    } else {
-                        focusCard.classList.add('hidden');
-                    }
+                    } else { focusCard.classList.add('hidden'); }
 
                     if (!latestEdu.active_thesis && !latestEdu.core_focus) {
                         rightSideContainer.classList.add('hidden');
-                    } else {
-                        rightSideContainer.classList.remove('hidden');
-                    }
+                    } else { rightSideContainer.classList.remove('hidden'); }
 
                     const olderContainer = document.getElementById('olderEducationContainer');
                     if (eduData.length > 1) {
@@ -676,13 +707,15 @@
                     document.getElementById('edu-desc').innerText = 'No academic records found.';
                 }
 
-                // 3. Arsenal (Modern UI)
+                // 3. Arsenal (Limit 2)
                 const arsRes = await fetch(`${API_BASE}/arsenal`);
                 const arsData = await arsRes.json();
+                allArsenalItems = arsData;
                 const arsContainer = document.getElementById('arsenalContainer');
+                arsContainer.innerHTML = '';
+                
                 if(arsData.length > 0) {
-                    arsContainer.innerHTML = '';
-                    arsData.forEach((item) => {
+                    arsData.slice(0, 2).forEach((item) => {
                         arsContainer.innerHTML += `
                             <div class="bg-black/20 border border-white/5 p-6 rounded-2xl hover:border-rose-500/40 hover:bg-rose-500/5 transition duration-300 group shadow-lg light-edu-inner relative z-10 flex flex-col h-full">
                                 <div class="flex justify-between items-start mb-4">
@@ -696,17 +729,21 @@
                             </div>
                         `;
                     });
-                } else {
-                    arsContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No arsenal inventory found.</p>';
-                }
+                } else { arsContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No arsenal inventory found.</p>'; }
+                
+                const arsBtn = document.getElementById('loadMoreArsBtn');
+                if (arsData.length > 2) { arsBtn.classList.remove('hidden'); arsBtn.onclick = () => openArsenalModal(); } 
+                else { arsBtn.classList.add('hidden'); }
 
-                // 4. Projects (Modern UI)
+                // 4. Projects (Limit 2)
                 const projRes = await fetch(`${API_BASE}/projects`);
                 const projData = await projRes.json();
+                allProjectItems = projData;
                 const projContainer = document.getElementById('projectContainer');
+                projContainer.innerHTML = '';
+
                 if(projData.length > 0) {
-                    projContainer.innerHTML = '';
-                    projData.forEach(item => {
+                    projData.slice(0, 2).forEach(item => {
                         const tagsHtml = item.tags.split(',').map(tag => `<span class="text-[9px] font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 uppercase tracking-wider mono">${tag.trim()}</span>`).join('');
                         const linkHtml = item.link && item.link.trim() !== '' ? `<a href="${item.link}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-bold text-purple-500 hover:text-purple-400 mono tracking-widest mt-auto group/link bg-purple-500/10 hover:bg-purple-500/20 px-4 py-2 rounded-lg border border-purple-500/20 transition w-fit"><i data-lucide="external-link" class="w-4 h-4 group-hover/link:scale-110 transition"></i> VIEW_DEPLOYMENT</a>` : '';
                         
@@ -724,17 +761,21 @@
                             </div>
                         `;
                     });
-                } else {
-                    projContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No active projects found.</p>';
-                }
+                } else { projContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No active projects found.</p>'; }
 
-                // 5. Achievements (Modern UI)
+                const projBtn = document.getElementById('loadMoreProjBtn');
+                if (projData.length > 2) { projBtn.classList.remove('hidden'); projBtn.onclick = () => openProjectModal(); } 
+                else { projBtn.classList.add('hidden'); }
+
+                // 5. Achievements (Limit 2)
                 const achRes = await fetch(`${API_BASE}/achievements`);
                 const achData = await achRes.json();
+                allAchItems = achData;
                 const certContainer = document.getElementById('certContainer');
+                certContainer.innerHTML = '';
+
                 if(achData.length > 0) {
-                    certContainer.innerHTML = '';
-                    achData.forEach((item) => {
+                    achData.slice(0, 2).forEach((item) => {
                         certContainer.innerHTML += `
                             <div class="bg-black/20 border border-white/5 p-6 rounded-2xl hover:border-amber-500/40 hover:bg-amber-500/5 transition duration-300 group shadow-lg light-edu-inner relative z-10 flex flex-col h-full">
                                 <div class="flex justify-between items-start mb-5">
@@ -749,9 +790,11 @@
                             </div>
                         `;
                     });
-                } else {
-                    certContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No achievements found.</p>';
-                }
+                } else { certContainer.innerHTML = '<p class="text-xs text-slate-500 col-span-full text-center mono">No achievements found.</p>'; }
+
+                const achBtn = document.getElementById('loadMoreAchBtn');
+                if (achData.length > 2) { achBtn.classList.remove('hidden'); achBtn.onclick = () => openAchModal(); } 
+                else { achBtn.classList.add('hidden'); }
                 
                 lucide.createIcons();
                 
@@ -770,22 +813,15 @@
             let current = "";
             document.querySelectorAll("section").forEach((section) => {
                 const sectionTop = section.offsetTop;
-                if (window.scrollY >= sectionTop - 200) {
-                    current = section.getAttribute("id");
-                }
+                if (window.scrollY >= sectionTop - 200) { current = section.getAttribute("id"); }
             });
             
             document.querySelectorAll(".nav-link").forEach((link) => {
                 link.classList.remove("text-sky-500", "text-slate-300", "text-slate-400");
-                
-                if (current && link.getAttribute("href") === `#${current}`) {
-                    link.classList.add("text-sky-500");
-                } else {
-                    if (link.classList.contains("mobile-link")) {
-                        link.classList.add("text-slate-400");
-                    } else if (link.classList.contains("desktop-link")) {
-                        link.classList.add("text-slate-300");
-                    }
+                if (current && link.getAttribute("href") === `#${current}`) { link.classList.add("text-sky-500"); } 
+                else {
+                    if (link.classList.contains("mobile-link")) { link.classList.add("text-slate-400"); } 
+                    else if (link.classList.contains("desktop-link")) { link.classList.add("text-slate-300"); }
                 }
             });
         });
@@ -810,7 +846,6 @@
         document.getElementById('mobileMenuBtn').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('hidden'));
 
         // ================= GALLERY LOGIC =================
-        let allGalleryItems = [];
         async function loadMainGallery() {
             try {
                 const res = await fetch(`${API_BASE}/gallery`);
@@ -834,6 +869,9 @@
             } catch(e){}
         }
 
+        // ================= ALL LIGHTBOX/MODAL LOGIC =================
+        
+        // 1. Gallery Modal
         const galleryModal = document.getElementById('galleryModal');
         const galleryContent = document.getElementById('galleryModal-content');
         function openGalleryModal() {
@@ -858,14 +896,12 @@
         }
         function closeSingleLightbox() { singleLightbox.classList.add('opacity-0'); singleContent.classList.add('scale-95'); setTimeout(() => singleLightbox.classList.add('hidden'), 300); }
 
-        // ================= EDUCATION MODAL LOGIC =================
+        // 2. Education Modal
         const eduModal = document.getElementById('eduModal');
         const eduModalContent = document.getElementById('eduModal-content');
-        
         function openEduModal(id) {
             const edu = globalEduData.find(e => e.id === id);
             if(!edu) return;
-
             document.getElementById('modal-edu-degree').innerText = edu.degree;
             document.getElementById('modal-edu-inst').innerText = edu.institution;
             document.getElementById('modal-edu-year').innerText = edu.pass_year;
@@ -875,29 +911,77 @@
             const focusCard = document.getElementById('modal-focus-card');
             const rightSide = document.getElementById('modal-edu-right-side');
             
-            if (edu.active_thesis && edu.active_thesis.trim() !== '') {
-                document.getElementById('modal-thesis-desc').innerText = edu.active_thesis;
-                thesisCard.classList.remove('hidden');
-            } else { thesisCard.classList.add('hidden'); }
+            if (edu.active_thesis && edu.active_thesis.trim() !== '') { document.getElementById('modal-thesis-desc').innerText = edu.active_thesis; thesisCard.classList.remove('hidden'); } else { thesisCard.classList.add('hidden'); }
+            if (edu.core_focus && edu.core_focus.trim() !== '') { document.getElementById('modal-focus-desc').innerText = edu.core_focus; focusCard.classList.remove('hidden'); } else { focusCard.classList.add('hidden'); }
+            if ((!edu.active_thesis || edu.active_thesis.trim() === '') && (!edu.core_focus || edu.core_focus.trim() === '')) { rightSide.classList.add('hidden'); } else { rightSide.classList.remove('hidden'); }
 
-            if (edu.core_focus && edu.core_focus.trim() !== '') {
-                document.getElementById('modal-focus-desc').innerText = edu.core_focus;
-                focusCard.classList.remove('hidden');
-            } else { focusCard.classList.add('hidden'); }
-
-            if ((!edu.active_thesis || edu.active_thesis.trim() === '') && 
-                (!edu.core_focus || edu.core_focus.trim() === '')) {
-                rightSide.classList.add('hidden');
-            } else { rightSide.classList.remove('hidden'); }
-
-            eduModal.classList.remove('hidden'); 
-            setTimeout(() => { eduModal.classList.remove('opacity-0'); eduModalContent.classList.remove('scale-95'); }, 10);
+            eduModal.classList.remove('hidden'); setTimeout(() => { eduModal.classList.remove('opacity-0'); eduModalContent.classList.remove('scale-95'); }, 10);
         }
-        
-        function closeEduModal() { 
-            eduModal.classList.add('opacity-0'); eduModalContent.classList.add('scale-95'); 
-            setTimeout(() => eduModal.classList.add('hidden'), 300); 
+        function closeEduModal() { eduModal.classList.add('opacity-0'); eduModalContent.classList.add('scale-95'); setTimeout(() => eduModal.classList.add('hidden'), 300); }
+
+        // 3. Arsenal Modal
+        const arsenalModal = document.getElementById('arsenalModal');
+        const arsenalModalContent = document.getElementById('arsenalModal-content');
+        function openArsenalModal() {
+            const grid = document.getElementById('all-arsenal-grid'); grid.innerHTML = '';
+            allArsenalItems.forEach(item => {
+                grid.innerHTML += `
+                    <div class="bg-black/20 border border-white/5 p-6 rounded-2xl hover:border-rose-500/40 hover:bg-rose-500/5 transition duration-300 group shadow-lg light-edu-inner relative z-10 flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="bg-rose-500/20 p-2.5 rounded-full border border-rose-500/20"><i data-lucide="crosshair" class="w-5 h-5 text-rose-500"></i></div>
+                            <span class="text-[9px] mono text-rose-500 uppercase font-bold tracking-widest bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">${item.category}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-rose-400 transition">${item.title}</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed flex-1">${item.details}</p>
+                    </div>`;
+            });
+            arsenalModal.classList.remove('hidden'); setTimeout(() => { arsenalModal.classList.remove('opacity-0'); arsenalModalContent.classList.remove('scale-95'); lucide.createIcons(); }, 10);
         }
+        function closeArsenalModal() { arsenalModal.classList.add('opacity-0'); arsenalModalContent.classList.add('scale-95'); setTimeout(() => arsenalModal.classList.add('hidden'), 300); }
+
+        // 4. Project Modal
+        const projectModal = document.getElementById('projectModal');
+        const projectModalContent = document.getElementById('projectModal-content');
+        function openProjectModal() {
+            const grid = document.getElementById('all-project-grid'); grid.innerHTML = '';
+            allProjectItems.forEach(item => {
+                const tagsHtml = item.tags.split(',').map(tag => `<span class="text-[9px] font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20 uppercase tracking-wider mono">${tag.trim()}</span>`).join('');
+                const linkHtml = item.link && item.link.trim() !== '' ? `<a href="${item.link}" target="_blank" class="inline-flex items-center gap-2 text-[10px] font-bold text-purple-500 hover:text-purple-400 mono tracking-widest mt-auto group/link bg-purple-500/10 hover:bg-purple-500/20 px-4 py-2 rounded-lg border border-purple-500/20 transition w-fit"><i data-lucide="external-link" class="w-4 h-4 group-hover/link:scale-110 transition"></i> VIEW_DEPLOYMENT</a>` : '';
+                grid.innerHTML += `
+                    <div class="bg-black/20 border border-white/5 p-6 md:p-8 rounded-2xl hover:border-purple-500/40 hover:bg-purple-500/5 transition duration-300 group shadow-lg light-edu-inner relative z-10 flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-6">
+                            <h3 class="text-2xl font-black text-white group-hover:text-purple-400 transition tracking-tight">${item.title}</h3>
+                            <div class="bg-purple-500/20 p-3 rounded-full border border-purple-500/20 shrink-0 ml-4"><i data-lucide="terminal-square" class="w-5 h-5 text-purple-500"></i></div>
+                        </div>
+                        <p class="text-sm text-slate-400 leading-relaxed mb-6 flex-1">${item.description}</p>
+                        <div class="flex flex-wrap gap-2 mb-6">${tagsHtml}</div>
+                        ${linkHtml}
+                    </div>`;
+            });
+            projectModal.classList.remove('hidden'); setTimeout(() => { projectModal.classList.remove('opacity-0'); projectModalContent.classList.remove('scale-95'); lucide.createIcons(); }, 10);
+        }
+        function closeProjectModal() { projectModal.classList.add('opacity-0'); projectModalContent.classList.add('scale-95'); setTimeout(() => projectModal.classList.add('hidden'), 300); }
+
+        // 5. Achievements Modal
+        const achModal = document.getElementById('achModal');
+        const achModalContent = document.getElementById('achModal-content');
+        function openAchModal() {
+            const grid = document.getElementById('all-ach-grid'); grid.innerHTML = '';
+            allAchItems.forEach(item => {
+                grid.innerHTML += `
+                    <div class="bg-black/20 border border-white/5 p-6 rounded-2xl hover:border-amber-500/40 hover:bg-amber-500/5 transition duration-300 group shadow-lg light-edu-inner relative z-10 flex flex-col h-full">
+                        <div class="flex justify-between items-start mb-5">
+                            <div class="bg-amber-500/20 p-2.5 rounded-full border border-amber-500/20"><i data-lucide="award" class="w-5 h-5 text-amber-500"></i></div>
+                            <span class="text-[9px] mono text-amber-500 uppercase font-bold tracking-widest bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">YEAR: ${item.year}</span>
+                        </div>
+                        <h3 class="text-lg font-black text-white mb-2 group-hover:text-amber-400 transition leading-tight">${item.title}</h3>
+                        <p class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase mb-4">${item.organization}</p>
+                        <p class="text-xs text-slate-400 leading-relaxed flex-1">${item.details}</p>
+                    </div>`;
+            });
+            achModal.classList.remove('hidden'); setTimeout(() => { achModal.classList.remove('opacity-0'); achModalContent.classList.remove('scale-95'); lucide.createIcons(); }, 10);
+        }
+        function closeAchModal() { achModal.classList.add('opacity-0'); achModalContent.classList.add('scale-95'); setTimeout(() => achModal.classList.add('hidden'), 300); }
 
         // Form Submit
         document.getElementById('commForm').addEventListener('submit', async (e) => {
