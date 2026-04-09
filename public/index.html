@@ -482,33 +482,62 @@
         </div>
 
         <div id="eduModal" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-            <div class="glass-panel max-w-2xl w-full p-8 md:p-10 relative transform scale-95 transition-transform duration-300 border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.15)]" id="eduModal-content">
-                <button onclick="closeEduModal()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-10 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="glass-panel max-w-4xl w-full p-6 md:p-8 relative transform scale-95 transition-transform duration-300 border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.15)]" id="eduModal-content">
+                <button onclick="closeEduModal()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-20 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
                 
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-emerald-500/20 p-3 rounded-full border border-emerald-500/30">
-                        <i data-lucide="cpu" class="w-6 h-6 text-emerald-500"></i>
+                <div class="flex flex-col lg:flex-row gap-6 relative z-10">
+                    
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="bg-emerald-500/20 p-2 rounded-full border border-emerald-500/30">
+                                <i data-lucide="cpu" class="w-5 h-5 text-emerald-500"></i>
+                            </div>
+                            <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.3em] mono">DATA_NODE_EXPANDED</span>
+                        </div>
+                        
+                        <h3 id="modal-edu-degree" class="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">Degree Name</h3>
+                        <p id="modal-edu-inst" class="text-emerald-500 font-mono text-sm mb-4 border-b border-white/10 pb-4">Institution Name</p>
+                        
+                        <div class="bg-black/30 border border-white/5 p-5 rounded-xl mb-4 shadow-inner">
+                            <p id="modal-edu-desc" class="text-slate-300 text-sm leading-relaxed">Description goes here.</p>
+                        </div>
+                        
+                        <div class="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-lg">
+                            <i data-lucide="calendar" class="w-4 h-4 text-emerald-500"></i>
+                            <span class="text-xs text-emerald-500 font-mono font-bold" id="modal-edu-year">Year</span>
+                        </div>
                     </div>
-                    <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.3em] mono">DATA_NODE_EXPANDED</span>
-                </div>
-                
-                <h3 id="modal-edu-degree" class="text-3xl font-black text-white mb-2 leading-tight">Degree Name</h3>
-                <p id="modal-edu-inst" class="text-emerald-500 font-mono text-sm mb-6 border-b border-white/10 pb-4">Institution Name</p>
-                
-                <div class="bg-black/30 border border-white/5 p-6 rounded-xl mb-6 shadow-inner">
-                    <p id="modal-edu-desc" class="text-slate-300 text-sm leading-relaxed">Description goes here.</p>
-                </div>
-                
-                <div class="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded">
-                    <i data-lucide="calendar" class="w-4 h-4 text-emerald-500"></i>
-                    <span class="text-xs text-emerald-500 font-mono font-bold" id="modal-edu-year">Year</span>
+
+                    <div id="modal-edu-right-side" class="w-full lg:w-72 shrink-0 flex flex-col gap-4 justify-center">
+                        
+                        <div id="modal-thesis-card" class="bg-black/20 border border-white/5 p-5 rounded-xl hover:border-emerald-500/40 transition duration-300 shadow-lg light-edu-inner hidden">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="bg-emerald-500/20 p-1.5 rounded-full border border-emerald-500/20">
+                                    <i data-lucide="microscope" class="w-4 h-4 text-emerald-500"></i>
+                                </div>
+                                <span class="text-[9px] font-bold text-white uppercase tracking-widest mono">ACTIVE THESIS</span>
+                            </div>
+                            <p id="modal-thesis-desc" class="text-xs text-emerald-400 font-bold italic leading-relaxed"></p>
+                        </div>
+
+                        <div id="modal-focus-card" class="bg-black/20 border border-white/5 p-5 rounded-xl hover:border-sky-500/40 transition duration-300 shadow-lg light-edu-inner hidden">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="bg-sky-500/20 p-1.5 rounded-full border border-sky-500/20">
+                                    <i data-lucide="book-open" class="w-4 h-4 text-sky-500"></i>
+                                </div>
+                                <span class="text-[9px] font-bold text-white uppercase tracking-widest mono">CORE FOCUS</span>
+                            </div>
+                            <p id="modal-focus-desc" class="text-xs text-sky-400 font-bold leading-relaxed"></p>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
 
     </div> <script>
         lucide.createIcons();
-        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api';
+        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
         // ================= SCARY BOOT SEQUENCE LOGIC =================
         const bootLines = [
@@ -576,7 +605,7 @@
                     document.getElementById('footer-text').innerText = `© 2026 ${profData.full_name.toUpperCase()}. DESIGN: HYPER-SECURITY OS V2`;
                 }
 
-                // 2. Education (Dynamic Thesis and Focus Fix)
+                // 2. Education
                 const eduRes = await fetch(`${API_BASE}/education`);
                 const eduData = await eduRes.json();
                 globalEduData = eduData; 
@@ -618,12 +647,15 @@
                         olderContainer.innerHTML = '';
                         for(let i = 1; i < eduData.length; i++) {
                             const item = eduData[i];
+                            // Encode quotes to prevent HTML breaking
                             const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                             const safeInst = (item.institution || '').replace(/'/g, "\\'");
                             const safeDegree = (item.degree || '').replace(/'/g, "\\'");
+                            const safeThesis = (item.active_thesis || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                            const safeFocus = (item.core_focus || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
                             
                             olderContainer.innerHTML += `
-                                <div onclick="openEduModal('${safeDegree}', '${safeInst}', '${item.pass_year}', '${safeDetails}')" class="bg-black/20 border border-white/5 p-4 rounded-xl flex items-center justify-between shadow-inner light-edu-inner cursor-pointer hover:border-emerald-500/50 hover:bg-emerald-500/5 transition duration-300 group">
+                                <div onclick="openEduModal('${safeDegree}', '${safeInst}', '${item.pass_year}', '${safeDetails}', '${safeThesis}', '${safeFocus}')" class="bg-black/20 border border-white/5 p-4 rounded-xl flex items-center justify-between shadow-inner light-edu-inner cursor-pointer hover:border-emerald-500/50 hover:bg-emerald-500/5 transition duration-300 group">
                                     <div>
                                         <h5 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">${item.degree}</h5>
                                         <p class="text-[10px] text-slate-500 mono uppercase tracking-wider">${item.institution}</p>
@@ -823,16 +855,44 @@
         }
         function closeSingleLightbox() { singleLightbox.classList.add('opacity-0'); singleContent.classList.add('scale-95'); setTimeout(() => singleLightbox.classList.add('hidden'), 300); }
 
-        // NEW: Education Modal Logic
+        // ================= NEW: Education Modal Logic (With Thesis/Focus) =================
         const eduModal = document.getElementById('eduModal');
         const eduModalContent = document.getElementById('eduModal-content');
         
-        function openEduModal(degree, inst, year, details) {
+        function openEduModal(degree, inst, year, details, thesis, focus) {
             document.getElementById('modal-edu-degree').innerText = degree;
             document.getElementById('modal-edu-inst').innerText = inst;
             document.getElementById('modal-edu-year').innerText = year;
             document.getElementById('modal-edu-desc').innerText = details;
             
+            const thesisCard = document.getElementById('modal-thesis-card');
+            const focusCard = document.getElementById('modal-focus-card');
+            const rightSide = document.getElementById('modal-edu-right-side');
+            
+            // Handle optional thesis
+            if (thesis && thesis !== 'null' && thesis.trim() !== '') {
+                document.getElementById('modal-thesis-desc').innerText = thesis;
+                thesisCard.classList.remove('hidden');
+            } else {
+                thesisCard.classList.add('hidden');
+            }
+
+            // Handle optional focus
+            if (focus && focus !== 'null' && focus.trim() !== '') {
+                document.getElementById('modal-focus-desc').innerText = focus;
+                focusCard.classList.remove('hidden');
+            } else {
+                focusCard.classList.add('hidden');
+            }
+
+            // Hide the entire right panel if both are empty
+            if ((!thesis || thesis === 'null' || thesis.trim() === '') && 
+                (!focus || focus === 'null' || focus.trim() === '')) {
+                rightSide.classList.add('hidden');
+            } else {
+                rightSide.classList.remove('hidden');
+            }
+
             eduModal.classList.remove('hidden'); 
             setTimeout(() => { 
                 eduModal.classList.remove('opacity-0'); 
