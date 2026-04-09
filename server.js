@@ -9,7 +9,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 const upload = multer({ storage: multer.memoryStorage() });
 
 // ================= AUTH API =================
@@ -34,9 +37,9 @@ app.post('/api/update-auth', async (req, res) => {
     res.json({ success: true });
 });
 
-// ================= PROFILE API (FIXED) =================
+// ================= PROFILE API (100% FIXED) =================
 app.get('/api/profile', async (req, res) => {
-    const { data, error } = await supabase.from('profile').select('*').limit(1);
+    const { data, error } = await supabase.from('profile').select('*').order('id', { ascending: true }).limit(1);
     if (error) return res.status(500).json({ error: error.message });
     res.json(data && data.length > 0 ? data[0] : {});
 });
@@ -44,15 +47,15 @@ app.get('/api/profile', async (req, res) => {
 app.post('/api/profile', async (req, res) => {
     const { full_name, job_title, bio } = req.body;
     
-    // Check if any profile exists (using limit 1 to avoid multiple row errors)
-    const { data: existing } = await supabase.from('profile').select('id').limit(1);
+    // Check existing profile
+    const { data: existing } = await supabase.from('profile').select('id').order('id', { ascending: true }).limit(1);
     
     let result;
     if (existing && existing.length > 0) {
-        // Update the first found profile
+        // Update exact ID
         result = await supabase.from('profile').update({ full_name, job_title, bio }).eq('id', existing[0].id);
     } else {
-        // Insert new if completely empty
+        // Insert new
         result = await supabase.from('profile').insert([{ full_name, job_title, bio }]);
     }
     
