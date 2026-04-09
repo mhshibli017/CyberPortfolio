@@ -10,15 +10,13 @@ app.use(express.json());
 app.use(express.static('public'));
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-
-// Multer Config (Memory storage for PC uploads)
 const upload = multer({ storage: multer.memoryStorage() });
 
 // ================= AUTH API =================
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
-    const { data, error } = await supabase.from('admin_auth').select('*').eq('username', username).eq('password', password).maybeSingle();
-    if (error || !data) return res.status(401).json({ error: 'Unauthorized Access!' });
+    const { data, error } = await supabase.from('admin_auth').select('*').eq('username', username).eq('password', password).limit(1);
+    if (error || !data || data.length === 0) return res.status(401).json({ error: 'Unauthorized Access!' });
     res.json({ success: true });
 });
 
@@ -36,6 +34,32 @@ app.post('/api/update-auth', async (req, res) => {
     res.json({ success: true });
 });
 
+// ================= PROFILE API (FIXED) =================
+app.get('/api/profile', async (req, res) => {
+    const { data, error } = await supabase.from('profile').select('*').limit(1);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data && data.length > 0 ? data[0] : {});
+});
+
+app.post('/api/profile', async (req, res) => {
+    const { full_name, job_title, bio } = req.body;
+    
+    // Check if any profile exists (using limit 1 to avoid multiple row errors)
+    const { data: existing } = await supabase.from('profile').select('id').limit(1);
+    
+    let result;
+    if (existing && existing.length > 0) {
+        // Update the first found profile
+        result = await supabase.from('profile').update({ full_name, job_title, bio }).eq('id', existing[0].id);
+    } else {
+        // Insert new if completely empty
+        result = await supabase.from('profile').insert([{ full_name, job_title, bio }]);
+    }
+    
+    if (result.error) return res.status(500).json({ error: result.error.message });
+    res.json({ message: 'Profile updated successfully' });
+});
+
 // ================= UPLOAD API =================
 app.post('/api/upload', upload.single('image'), async (req, res) => {
     if (!req.file) return res.status(400).send('No file.');
@@ -47,7 +71,7 @@ app.post('/api/upload', upload.single('image'), async (req, res) => {
 });
 
 // ================= UNIVERSAL CRUD API =================
-const tables = ['profile', 'education', 'arsenal', 'projects', 'achievements', 'gallery', 'messages'];
+const tables = ['education', 'arsenal', 'projects', 'achievements', 'gallery', 'messages'];
 
 tables.forEach(table => {
     app.get(`/api/${table}`, async (req, res) => {
