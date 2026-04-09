@@ -290,7 +290,7 @@
                     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 relative z-10">
                         
                         <div class="flex-1 flex flex-col justify-center">
-                            <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-4">MAJOR_OPERATION.EDU</p>
+                            <p id="edu-inst" class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-4">MAJOR_OPERATION.EDU</p>
                             <h3 id="edu-degree" class="text-3xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight">Loading...</h3>
                             
                             <p id="edu-desc" class="text-slate-400 text-sm md:text-base leading-relaxed border-l-2 border-emerald-500/30 pl-4 md:pl-5 mb-8 md:mb-10 max-w-2xl">
@@ -478,6 +478,32 @@
                 <div id="modal-body" class="mt-2 text-white text-center"></div>
             </div>
         </div>
+
+        <div id="eduModal" class="fixed inset-0 modal-overlay z-[200] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+            <div class="glass-panel max-w-2xl w-full p-8 md:p-10 relative transform scale-95 transition-transform duration-300 border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.15)]" id="eduModal-content">
+                <button onclick="closeEduModal()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 bg-black/40 p-2 rounded-full border border-white/5 z-10 transition"><i data-lucide="x" class="w-6 h-6"></i></button>
+                
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-emerald-500/20 p-3 rounded-full border border-emerald-500/30">
+                        <i data-lucide="cpu" class="w-6 h-6 text-emerald-500"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-[0.3em] mono">DATA_NODE_EXPANDED</span>
+                </div>
+                
+                <h3 id="modal-edu-degree" class="text-3xl font-black text-white mb-2 leading-tight">Degree Name</h3>
+                <p id="modal-edu-inst" class="text-emerald-500 font-mono text-sm mb-6 border-b border-white/10 pb-4">Institution Name</p>
+                
+                <div class="bg-black/30 border border-white/5 p-6 rounded-xl mb-6 shadow-inner">
+                    <p id="modal-edu-desc" class="text-slate-300 text-sm leading-relaxed">Description goes here.</p>
+                </div>
+                
+                <div class="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded">
+                    <i data-lucide="calendar" class="w-4 h-4 text-emerald-500"></i>
+                    <span class="text-xs text-emerald-500 font-mono font-bold" id="modal-edu-year">Year</span>
+                </div>
+            </div>
+        </div>
+
     </div> <script>
         lucide.createIcons();
         const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
@@ -493,7 +519,7 @@
             "ENCRYPTING LOCAL DRIVES (AES-256)... <span class='text-red-500'>[LOCKED]</span>",
             "ACTIVATING WEBCAM AND MICROPHONE... <span class='text-emerald-500'>[LIVE]</span>",
             "<span class='text-red-500 font-black text-xl'>[!] FULL SYSTEM COMPROMISED. YOUR PC IS NOW MINE.</span>",
-            "<br><span class='text-sky-500 font-bold text-lg'>..........</span>",
+            "<br><span class='text-sky-500 font-bold text-lg'>...JUST KIDDING! 😉</span>",
             "<span class='text-sky-400'>WELCOME TO MAHMUDUL'S SECURE NODE.</span>"
         ];
         
@@ -533,6 +559,9 @@
             fetchAllDynamicData(); 
         });
 
+        // Global variable to store education data for the modal
+        let globalEduData = [];
+
         // Fetch Dynamic Data from Admin Panel
         async function fetchAllDynamicData() {
             try {
@@ -549,9 +578,12 @@
                 // 2. Education (NEW FIX APPLIED HERE)
                 const eduRes = await fetch(`${API_BASE}/education`);
                 const eduData = await eduRes.json();
+                globalEduData = eduData; // Store globally for modal access
+
                 if(eduData.length > 0) {
                     const latestEdu = eduData[0]; // Assuming latest is first
                     document.getElementById('edu-degree').innerText = latestEdu.degree;
+                    document.getElementById('edu-inst').innerText = latestEdu.institution;
                     document.getElementById('edu-desc').innerText = latestEdu.details;
                     document.getElementById('edu-year').innerText = latestEdu.pass_year;
                     
@@ -562,13 +594,21 @@
                         olderContainer.innerHTML = '';
                         for(let i = 1; i < eduData.length; i++) {
                             const item = eduData[i];
+                            // Clean up details for JS string pass
+                            const safeDetails = (item.details || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                            const safeInst = (item.institution || '').replace(/'/g, "\\'");
+                            const safeDegree = (item.degree || '').replace(/'/g, "\\'");
+                            
                             olderContainer.innerHTML += `
-                                <div class="bg-black/20 border border-white/5 p-4 rounded-xl flex items-center justify-between shadow-inner light-edu-inner">
+                                <div onclick="openEduModal('${safeDegree}', '${safeInst}', '${item.pass_year}', '${safeDetails}')" class="bg-black/20 border border-white/5 p-4 rounded-xl flex items-center justify-between shadow-inner light-edu-inner cursor-pointer hover:border-emerald-500/50 hover:bg-emerald-500/5 transition duration-300 group">
                                     <div>
-                                        <h5 class="text-sm font-bold text-white">${item.degree}</h5>
+                                        <h5 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">${item.degree}</h5>
                                         <p class="text-[10px] text-slate-500 mono uppercase tracking-wider">${item.institution}</p>
                                     </div>
-                                    <span class="text-xs text-emerald-500 font-mono font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded">${item.pass_year}</span>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-xs text-emerald-500 font-mono font-bold bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded">${item.pass_year}</span>
+                                        <i data-lucide="external-link" class="w-4 h-4 text-emerald-500/50 group-hover:text-emerald-500 transition"></i>
+                                    </div>
                                 </div>
                             `;
                         }
@@ -676,15 +716,12 @@
                 }
             });
             
-            // Fixed nav link coloring logic for mobile/desktop
             document.querySelectorAll(".nav-link").forEach((link) => {
-                link.classList.remove("text-sky-500", "text-slate-300", "text-slate-400"); // Remove potential clash classes
+                link.classList.remove("text-sky-500", "text-slate-300", "text-slate-400");
                 
                 if (current && link.getAttribute("href") === `#${current}`) {
-                    // Active link
                     link.classList.add("text-sky-500");
                 } else {
-                    // Inactive link - apply appropriate default color based on class
                     if (link.classList.contains("mobile-link")) {
                         link.classList.add("text-slate-400");
                     } else if (link.classList.contains("desktop-link")) {
@@ -738,6 +775,7 @@
             } catch(e){}
         }
 
+        // Original Gallery Modals
         const galleryModal = document.getElementById('galleryModal');
         const galleryContent = document.getElementById('galleryModal-content');
         function openGalleryModal() {
@@ -761,6 +799,29 @@
             singleLightbox.classList.remove('hidden'); setTimeout(() => { singleLightbox.classList.remove('opacity-0'); singleContent.classList.remove('scale-95'); }, 10);
         }
         function closeSingleLightbox() { singleLightbox.classList.add('opacity-0'); singleContent.classList.add('scale-95'); setTimeout(() => singleLightbox.classList.add('hidden'), 300); }
+
+        // NEW: Education Modal Logic
+        const eduModal = document.getElementById('eduModal');
+        const eduModalContent = document.getElementById('eduModal-content');
+        
+        function openEduModal(degree, inst, year, details) {
+            document.getElementById('modal-edu-degree').innerText = degree;
+            document.getElementById('modal-edu-inst').innerText = inst;
+            document.getElementById('modal-edu-year').innerText = year;
+            document.getElementById('modal-edu-desc').innerText = details;
+            
+            eduModal.classList.remove('hidden'); 
+            setTimeout(() => { 
+                eduModal.classList.remove('opacity-0'); 
+                eduModalContent.classList.remove('scale-95'); 
+            }, 10);
+        }
+        
+        function closeEduModal() { 
+            eduModal.classList.add('opacity-0'); 
+            eduModalContent.classList.add('scale-95'); 
+            setTimeout(() => eduModal.classList.add('hidden'), 300); 
+        }
 
         // Form Submit
         document.getElementById('commForm').addEventListener('submit', async (e) => {
