@@ -77,7 +77,7 @@
                     <button onclick="switchTab('arsenal')" id="btn-arsenal" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="crosshair" class="w-5 h-5"></i> Arsenal</button>
                     <button onclick="switchTab('projects')" id="btn-projects" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="terminal" class="w-5 h-5"></i> Projects</button>
                     <button onclick="switchTab('achievements')" id="btn-achievements" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="award" class="w-5 h-5"></i> Achievement</button>
-                    <button onclick="switchTab('gallery')" id="btn-gallery" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="image" class="w-5 h-5"></i> Archive</button>
+                    <button onclick="switchTab('gallery')" id="btn-gallery" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="image" class="w-5 h-5"></i> Archive (Gallery)</button>
                     <button onclick="switchTab('messages')" id="btn-messages" class="nav-btn w-full text-left p-4 rounded-2xl flex items-center gap-4 text-sm font-bold mono transition"><i data-lucide="message-square" class="w-5 h-5"></i> Messages</button>
                 </div>
                 
@@ -152,7 +152,7 @@
                         </div>
                         <div class="flex items-center gap-4">
                             <button type="submit" class="bg-emerald-600 px-8 py-3 rounded-xl font-bold text-sm hover:bg-emerald-500 transition shadow-[0_0_15px_rgba(16,185,129,0.3)]">Save Record</button>
-                            <button type="button" onclick="resetForm('education')" class="text-slate-400 text-xs hover:text-white transition">Clear Form</button>
+                            <button type="button" onclick="resetForm('education')" class="text-slate-400 text-xs hover:text-white transition">Cancel / Clear Form</button>
                         </div>
                     </form>
                     <div id="list-education" class="space-y-3 max-h-[400px] overflow-y-auto pr-2"></div>
@@ -179,7 +179,10 @@
                             <label class="block text-[10px] text-rose-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Tool List (Details)</label>
                             <textarea id="ars-details" placeholder="e.g. Metasploit, Burp Suite, Nmap..." rows="2" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-rose-500"></textarea>
                         </div>
-                        <button type="submit" class="bg-rose-600 px-8 py-3 rounded-xl font-bold text-sm hover:bg-rose-500 transition shadow-[0_0_15px_rgba(244,63,94,0.3)]">Save to Arsenal</button>
+                        <div class="flex items-center gap-4">
+                            <button type="submit" class="bg-rose-600 px-8 py-3 rounded-xl font-bold text-sm hover:bg-rose-500 transition shadow-[0_0_15px_rgba(244,63,94,0.3)]">Save to Arsenal</button>
+                            <button type="button" onclick="resetForm('arsenal')" class="text-slate-400 text-xs hover:text-white transition">Cancel Edit</button>
+                        </div>
                     </form>
                     <div id="list-arsenal" class="space-y-3 max-h-[400px] overflow-y-auto pr-2"></div>
                 </div>
@@ -209,7 +212,10 @@
                                 <input type="text" id="proj-link" placeholder="GitHub or Live URL" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-purple-500">
                             </div>
                         </div>
-                        <button type="submit" class="bg-purple-600 px-8 py-3 rounded-xl font-bold text-sm hover:bg-purple-500 transition shadow-[0_0_15px_rgba(168,85,247,0.3)]">Save Project</button>
+                        <div class="flex items-center gap-4">
+                            <button type="submit" class="bg-purple-600 px-8 py-3 rounded-xl font-bold text-sm hover:bg-purple-500 transition shadow-[0_0_15px_rgba(168,85,247,0.3)]">Save Project</button>
+                            <button type="button" onclick="resetForm('projects')" class="text-slate-400 text-xs hover:text-white transition">Cancel Edit</button>
+                        </div>
                     </form>
                     <div id="list-projects" class="space-y-3 max-h-[400px] overflow-y-auto pr-2"></div>
                 </div>
@@ -239,7 +245,10 @@
                             <label class="block text-[10px] text-amber-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Details / Description</label>
                             <textarea id="ach-details" placeholder="Short description of the achievement..." rows="2" required class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-amber-500"></textarea>
                         </div>
-                        <button type="submit" class="bg-amber-600 px-8 py-3 rounded-xl font-bold text-sm hover:bg-amber-500 transition shadow-[0_0_15px_rgba(245,158,11,0.3)]">Save Achievement</button>
+                        <div class="flex items-center gap-4">
+                            <button type="submit" class="bg-amber-600 px-8 py-3 rounded-xl font-bold text-sm hover:bg-amber-500 transition shadow-[0_0_15px_rgba(245,158,11,0.3)]">Save Achievement</button>
+                            <button type="button" onclick="resetForm('achievements')" class="text-slate-400 text-xs hover:text-white transition">Cancel Edit</button>
+                        </div>
                     </form>
                     <div id="list-achievements" class="space-y-3 max-h-[400px] overflow-y-auto pr-2"></div>
                 </div>
@@ -247,14 +256,23 @@
                 <div id="tab-gallery" class="tab-content glass p-8 rounded-3xl">
                     <h2 class="text-xl font-bold mb-6 flex justify-between items-center border-b border-white/10 pb-4">
                         <span class="flex items-center gap-3"><i data-lucide="image" class="text-sky-500"></i> Visual Archives</span>
+                        <button onclick="resetGalForm()" class="text-xs bg-sky-500/10 text-sky-500 px-4 py-2 rounded-lg border border-sky-500/20 hover:bg-sky-500/20 transition">Add New Image</button>
                     </h2>
                     <div class="bg-black/20 p-6 rounded-3xl border border-white/5 mb-8">
+                        <input type="hidden" id="gal-id">
+                        <input type="hidden" id="gal-existing-url">
+                        
                         <div class="text-center mb-6">
                             <input type="file" id="gal-file" class="hidden" onchange="previewImg(event)">
-                            <label for="gal-file" class="cursor-pointer block border-2 border-dashed border-white/10 p-6 rounded-2xl hover:border-sky-500/50 transition bg-black/40">
-                                <i data-lucide="upload-cloud" class="w-8 h-8 text-sky-500 mx-auto mb-2"></i>
-                                <p class="text-xs text-slate-400 font-bold tracking-wider">CLICK TO UPLOAD IMAGE FROM PC</p>
-                                <img id="img-preview" class="mt-4 h-32 mx-auto hidden rounded-lg border border-white/20 object-cover">
+                            <label for="gal-file" class="cursor-pointer block border-2 border-dashed border-white/10 p-6 rounded-2xl hover:border-sky-500/50 transition bg-black/40 relative group overflow-hidden">
+                                <div id="img-placeholder">
+                                    <i data-lucide="upload-cloud" class="w-8 h-8 text-sky-500 mx-auto mb-2 group-hover:scale-110 transition"></i>
+                                    <p class="text-xs text-slate-400 font-bold tracking-wider">CLICK TO SELECT NEW IMAGE</p>
+                                </div>
+                                <img id="img-preview" class="h-40 w-full object-cover mx-auto hidden rounded-lg border border-white/20">
+                                <div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center opacity-0 group-hover:opacity-100 transition" id="img-overlay">
+                                    <p class="text-white font-bold text-sm bg-black/60 px-4 py-2 rounded-lg border border-white/20 backdrop-blur-sm"><i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i> Change Image</p>
+                                </div>
                             </label>
                         </div>
                         <div class="space-y-4">
@@ -272,10 +290,13 @@
                                 <label class="block text-[10px] text-sky-500 font-bold uppercase tracking-widest mb-2 ml-1 mono">Full Details (Shown in Lightbox)</label>
                                 <textarea id="gal-details" placeholder="Write full description here..." rows="2" class="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-sky-500"></textarea>
                             </div>
-                            <button onclick="uploadAndSaveGallery()" id="gal-btn" class="w-full bg-sky-600 p-4 rounded-xl font-bold text-sm hover:bg-sky-500 transition shadow-[0_0_15px_rgba(14,165,233,0.3)]">Upload & Save Image</button>
+                            <div class="flex items-center gap-4 pt-2">
+                                <button onclick="uploadAndSaveGallery()" id="gal-btn" class="flex-1 bg-sky-600 p-4 rounded-xl font-bold text-sm hover:bg-sky-500 transition shadow-[0_0_15px_rgba(14,165,233,0.3)]">Upload & Save New Archive</button>
+                                <button onclick="resetGalForm()" class="px-6 py-4 text-slate-400 text-xs hover:text-white transition">Cancel</button>
+                            </div>
                         </div>
                     </div>
-                    <div id="list-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-[400px] overflow-y-auto pr-2"></div>
+                    <div id="list-gallery" class="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-[500px] overflow-y-auto pr-2"></div>
                 </div>
 
                 <div id="tab-messages" class="tab-content glass p-8 rounded-3xl">
@@ -433,24 +454,32 @@
             if(!container) return;
             container.innerHTML = '';
             
-            if(data.length === 0) { container.innerHTML = `<p class="text-xs text-slate-500 mono bg-black/20 p-4 rounded-xl border border-white/5">No records found.</p>`; return; }
+            if(data.length === 0) { container.innerHTML = `<div class="col-span-full"><p class="text-xs text-slate-500 mono bg-black/20 p-4 rounded-xl border border-white/5 text-center">No records found in database.</p></div>`; return; }
 
             data.forEach(item => {
                 if(table === 'gallery') {
+                    // Modern Gallery List View with Overlay Buttons
                     container.innerHTML += `
-                        <div class="bg-black/40 border border-white/5 p-2 rounded-xl relative group">
-                            <img src="${item.image_url}" class="h-28 w-full object-cover rounded-lg mb-2 border border-white/10">
-                            <button onclick="deleteRecord('${table}', ${item.id})" class="absolute top-4 right-4 bg-red-500/90 text-white p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition shadow-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            <p class="text-[10px] font-bold text-sky-400 truncate px-1">${item.title}</p>
+                        <div class="bg-black/40 border border-white/5 p-2 rounded-xl relative group overflow-hidden">
+                            <img src="${item.image_url}" class="h-32 w-full object-cover rounded-lg mb-1 border border-white/10 transition group-hover:opacity-40 duration-300">
+                            
+                            <div class="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition duration-300 z-10 pointer-events-none">
+                                <button onclick="editGallery(${item.id})" class="pointer-events-auto bg-sky-500 text-white p-2.5 rounded-full hover:scale-110 hover:bg-sky-400 transition shadow-[0_0_15px_rgba(14,165,233,0.5)]" title="Edit"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                <button onclick="deleteRecord('${table}', ${item.id})" class="pointer-events-auto bg-red-500 text-white p-2.5 rounded-full hover:scale-110 hover:bg-red-400 transition shadow-[0_0_15px_rgba(239,68,68,0.5)]" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            </div>
+                            
+                            <p class="text-[10px] font-bold text-sky-400 truncate px-1 text-center mt-2">${item.title}</p>
                         </div>`;
                 } else if(table === 'messages') {
-                    // ID based fetching ensures NO string breaking bugs
+                    const safeName = (item.identity_name || '').replace(/'/g, "\\'");
+                    const safeContact = (item.contact_vector || '').replace(/'/g, "\\'");
+                    const safePayload = (item.data_payload || '').replace(/'/g, "\\'").replace(/\n/g, '\\n').replace(/"/g, '&quot;');
                     const dateObj = new Date(item.created_at);
                     const dateStr = dateObj.toLocaleDateString();
                     
                     container.innerHTML += `
                         <div onclick="openMsgModal(${item.id})" class="bg-black/30 border border-white/5 p-5 rounded-2xl relative group cursor-pointer hover:border-sky-500/30 hover:bg-sky-500/5 transition duration-300">
-                            <button onclick="event.stopPropagation(); deleteRecord('messages', ${item.id})" class="absolute top-4 right-4 p-2 text-red-500 bg-red-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            <button onclick="event.stopPropagation(); deleteRecord('messages', ${item.id})" class="absolute top-4 right-4 p-2 text-red-500 bg-red-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition hover:bg-red-500 hover:text-white"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                             <div class="flex items-center gap-3 mb-2">
                                 <i data-lucide="user" class="w-4 h-4 text-sky-500"></i>
                                 <p class="text-white font-bold text-sm">${item.identity_name}</p>
@@ -499,7 +528,7 @@
             try {
                 await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
                 resetForm(table); loadList(table);
-                btn.innerText = 'Saved!'; setTimeout(() => btn.innerText = orgText, 1500);
+                btn.innerText = 'Saved Successfully!'; setTimeout(() => btn.innerText = orgText, 1500);
             } catch(err) { alert("Server Error while saving."); btn.innerText = 'Error'; }
         }
 
@@ -534,57 +563,116 @@
                 document.getElementById('ach-details').value = item.details;
             }
             
-            document.querySelector(`#form-${table} button[type="submit"]`).innerText = 'Update Record';
+            document.querySelector(`#form-${table} button[type="submit"]`).innerText = 'Update Record Data';
+            // Scroll up to form
+            document.getElementById(`tab-${table}`).scrollIntoView({behavior: 'smooth'});
         }
 
         async function deleteRecord(table, id) {
-            if(!confirm("Permanently delete this record?")) return;
+            if(!confirm("Warning: Do you want to permanently delete this record?")) return;
             await fetch(`${API_BASE}/${table}/${id}`, { method: 'DELETE' });
             loadList(table);
         }
 
-        // ================= GALLERY UPLOAD =================
+        // ================= GALLERY CRUD LOGIC =================
+        function resetGalForm() {
+            document.getElementById('gal-title').value = '';
+            document.getElementById('gal-subtitle').value = '';
+            document.getElementById('gal-details').value = '';
+            document.getElementById('gal-id').value = '';
+            document.getElementById('gal-existing-url').value = '';
+            document.getElementById('gal-file').value = '';
+            document.getElementById('img-preview').classList.add('hidden');
+            document.getElementById('img-preview').src = '';
+            document.getElementById('img-placeholder').classList.remove('hidden');
+            document.getElementById('img-overlay').classList.add('hidden');
+            document.getElementById('gal-btn').innerText = 'Upload & Save New Archive';
+        }
+
         function previewImg(e) {
             const file = e.target.files[0];
             if(file) {
                 const img = document.getElementById('img-preview');
                 img.src = URL.createObjectURL(file);
                 img.classList.remove('hidden');
+                document.getElementById('img-placeholder').classList.add('hidden');
+                document.getElementById('img-overlay').classList.remove('hidden');
             }
+        }
+
+        function editGallery(id) {
+            const item = globalData['gallery'].find(x => x.id === id);
+            if(!item) return;
+            
+            document.getElementById('gal-id').value = item.id;
+            document.getElementById('gal-existing-url').value = item.image_url;
+            document.getElementById('gal-title').value = item.title;
+            document.getElementById('gal-subtitle').value = item.subtitle || '';
+            document.getElementById('gal-details').value = item.details || '';
+            
+            const imgPreview = document.getElementById('img-preview');
+            imgPreview.src = item.image_url;
+            imgPreview.classList.remove('hidden');
+            document.getElementById('img-placeholder').classList.add('hidden');
+            document.getElementById('img-overlay').classList.remove('hidden');
+            
+            document.getElementById('gal-btn').innerText = 'Update Archive Data';
+            document.getElementById('tab-gallery').scrollIntoView({behavior: 'smooth'});
         }
 
         async function uploadAndSaveGallery() {
             const btn = document.getElementById('gal-btn');
+            const id = document.getElementById('gal-id').value;
             const title = document.getElementById('gal-title').value;
             const subtitle = document.getElementById('gal-subtitle').value;
             const details = document.getElementById('gal-details').value;
+            const existingUrl = document.getElementById('gal-existing-url').value;
             const fileInput = document.getElementById('gal-file');
             
-            if(!fileInput.files[0] || !title) return alert("Image file and Title are required!");
+            if(!title) return alert("Image Title is required!");
+            if(!id && !fileInput.files[0]) return alert("Please select an image file to upload!"); 
             
-            btn.innerText = "UPLOADING TO SERVER..."; btn.classList.add('opacity-50');
+            btn.innerText = "PROCESSING DATA..."; btn.classList.add('opacity-50');
             
-            const formData = new FormData();
-            formData.append('image', fileInput.files[0]);
-            
-            try {
-                const uploadRes = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData });
-                const uploadData = await uploadRes.json();
-                if(!uploadRes.ok) throw new Error();
+            let finalImageUrl = existingUrl;
 
-                const payload = { title, subtitle, details, image_url: uploadData.url };
-                await fetch(`${API_BASE}/gallery`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            // Only upload to bucket if a NEW file was selected
+            if(fileInput.files[0]) {
+                btn.innerText = "UPLOADING TO STORAGE...";
+                const formData = new FormData();
+                formData.append('image', fileInput.files[0]);
                 
-                alert("Upload Successful!");
-                document.getElementById('gal-title').value = '';
-                document.getElementById('gal-subtitle').value = '';
-                document.getElementById('gal-details').value = '';
-                fileInput.value = '';
-                document.getElementById('img-preview').classList.add('hidden');
-                loadList('gallery');
-            } catch(e) { alert("Upload Failed!"); }
+                try {
+                    const uploadRes = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData });
+                    const uploadData = await uploadRes.json();
+                    if(!uploadRes.ok) throw new Error();
+                    finalImageUrl = uploadData.url;
+                } catch(e) { 
+                    alert("Image Upload Failed! Check Supabase Storage permissions."); 
+                    btn.innerText = id ? "Update Archive Data" : "Upload & Save New Archive"; 
+                    btn.classList.remove('opacity-50');
+                    return;
+                }
+            }
             
-            btn.innerText = "Upload & Save Image"; btn.classList.remove('opacity-50');
+            btn.innerText = "SYNCING WITH DATABASE...";
+            try {
+                const payload = { title, subtitle, details, image_url: finalImageUrl };
+                const method = id ? 'PUT' : 'POST';
+                const url = id ? `${API_BASE}/gallery/${id}` : `${API_BASE}/gallery`;
+
+                const res = await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+                if(!res.ok) throw new Error();
+                
+                resetGalForm();
+                loadList('gallery');
+                
+                btn.innerText = "SUCCESSFULLY SAVED!";
+                setTimeout(() => { btn.innerText = "Upload & Save New Archive"; btn.classList.remove('opacity-50'); }, 1500);
+            } catch(e) { 
+                alert("Database Update Failed!"); 
+                btn.innerText = "Error"; btn.classList.remove('opacity-50');
+            }
         }
 
         // ================= MESSAGE LIGHTBOX LOGIC =================
@@ -592,11 +680,10 @@
         const msgModalContent = document.getElementById('msgModal-content');
         
         function openMsgModal(id) {
-            // Find specific message by ID to prevent text breaking bugs
             const msg = globalData['messages'].find(m => m.id === id);
             if(!msg) return;
 
-            const dateStr = new Date(msg.created_at).toLocaleDateString();
+            const dateStr = new Date(msg.created_at).toLocaleString();
 
             document.getElementById('modal-msg-name').innerText = msg.identity_name;
             document.getElementById('modal-msg-vector').innerText = msg.contact_vector;
