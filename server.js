@@ -1,9 +1,8 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const os = require('os'); // To get REAL 100% original CPU/RAM data
+const os = require('os'); 
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -17,7 +16,6 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const upload = multer({ storage: multer.memoryStorage() });
 
 // ================= REAL VISITOR TRACKING MIDDLEWARE =================
-// This tracks visitors when they hit the main page
 app.use((req, res, next) => {
     if (req.path === '/' || req.path === '/index.html') {
         const today = new Date().toISOString().split('T')[0];
@@ -26,24 +24,20 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve static files AFTER tracking middleware
 app.use(express.static('public'));
 
 // ================= REAL-TIME SYSTEM STATS API =================
 app.get('/api/system-stats', async (req, res) => {
     try {
-        // 100% Original RAM Usage
         const totalMem = os.totalmem();
         const freeMem = os.freemem();
         const usedMem = totalMem - freeMem;
         const ramUsagePercent = ((usedMem / totalMem) * 100).toFixed(1);
 
-        // 100% Original CPU Load
         const cpus = os.cpus();
-        const loadAvg = os.loadavg()[0]; // 1 min average
+        const loadAvg = os.loadavg()[0];
         const cpuUsagePercent = ((loadAvg / cpus.length) * 100).toFixed(1);
 
-        // Real Visitor Counts from DB
         const today = new Date().toISOString().split('T')[0];
         const { count: totalVis } = await supabase.from('page_views').select('*', { count: 'exact', head: true });
         const { count: todayVis } = await supabase.from('page_views').select('*', { count: 'exact', head: true }).eq('view_date', today);
@@ -76,8 +70,15 @@ app.post('/api/forgot-creds', async (req, res) => {
 });
 
 app.post('/api/update-auth', async (req, res) => {
-    const { old_user, new_user, new_pass } = req.body;
-    const { error } = await supabase.from('admin_auth').update({ username: new_user, password: new_pass }).eq('username', old_user);
+    const { old_user, new_user, new_pass, new_key } = req.body;
+    
+    let updatePayload = { username: new_user, password: new_pass };
+    // যদি নতুন সিকিউরিটি কী দেওয়া হয়, তবে সেটিও আপডেট হবে
+    if (new_key && new_key.trim() !== '') {
+        updatePayload.security_key = new_key.trim();
+    }
+
+    const { error } = await supabase.from('admin_auth').update(updatePayload).eq('username', old_user);
     if (error) return res.status(500).json({ error: error.message });
     res.json({ success: true });
 });
