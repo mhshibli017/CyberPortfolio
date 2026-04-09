@@ -2,486 +2,168 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Admin | MH_ROOT</title>
+    <title>Admin Terminal | MH_ROOT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-        ::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.5); border-radius: 4px; }
-        
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #020617; color: #f8fafc; }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content.active { display: block; }
     </style>
 </head>
-<body class="p-6 md:p-10">
+<body class="p-4">
 
-    <div class="max-w-7xl mx-auto">
-        <header class="flex flex-col md:flex-row items-center justify-between mb-10 glass-panel p-6">
-            <div class="flex items-center gap-4 mb-4 md:mb-0">
-                <i data-lucide="terminal" class="w-8 h-8 text-sky-500"></i>
-                <div>
-                    <h1 class="text-2xl font-black text-white tracking-tight">MH_ROOT <span class="text-sky-500">SYSTEM</span></h1>
-                    <p class="text-[10px] text-emerald-500 mono uppercase tracking-widest">Secure Admin Terminal</p>
-                </div>
+    <div id="login-screen" class="fixed inset-0 z-[1000] bg-[#020617] flex items-center justify-center p-6">
+        <div class="glass max-w-md w-full p-8 rounded-2xl shadow-2xl">
+            <div class="text-center mb-8">
+                <i data-lucide="shield-lock" class="w-12 h-12 text-sky-500 mx-auto mb-4"></i>
+                <h2 class="text-2xl font-bold mono">SYSTEM_ACCESS</h2>
             </div>
-            <a href="/index.html" class="px-4 py-2 bg-sky-500/10 border border-sky-500/30 rounded-lg text-sky-500 text-xs font-bold mono hover:bg-sky-500/20 transition">EXIT_TERMINAL</a>
+            <div id="login-fields">
+                <input type="text" id="user" placeholder="Username" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 mb-4 outline-none focus:border-sky-500">
+                <input type="password" id="pass" placeholder="Password" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 mb-6 outline-none focus:border-sky-500">
+                <button onclick="attemptLogin()" class="w-full bg-sky-600 p-3 rounded-lg font-bold hover:bg-sky-500 transition">AUTHORIZE</button>
+                <button onclick="toggleForgot(true)" class="w-full text-slate-500 text-xs mt-4 hover:text-sky-400">Forgot Credentials?</button>
+            </div>
+            <div id="forgot-fields" class="hidden">
+                <input type="text" id="f-user" placeholder="Your Username" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 mb-4">
+                <input type="text" id="f-key" placeholder="Security Key (MH-SECURE-99)" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 mb-4">
+                <input type="password" id="f-newpass" placeholder="New Password" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 mb-6">
+                <button onclick="resetPassword()" class="w-full bg-emerald-600 p-3 rounded-lg font-bold">RESET PASSWORD</button>
+                <button onclick="toggleForgot(false)" class="w-full text-slate-500 text-xs mt-4">Back to Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-dashboard" class="hidden max-w-6xl mx-auto">
+        <header class="glass p-6 rounded-2xl flex justify-between items-center mb-8">
+            <h1 class="text-xl font-bold mono"><span class="text-sky-500">~/root/</span>admin_panel</h1>
+            <button onclick="logout()" class="text-red-400 text-xs font-bold border border-red-400/30 px-4 py-2 rounded-lg hover:bg-red-400/10">LOGOUT</button>
         </header>
 
-        <div class="grid md:grid-cols-4 gap-8">
-            <nav class="md:col-span-1 glass-panel p-4 h-fit sticky top-6">
-                <ul class="space-y-2 text-sm font-bold mono uppercase tracking-wider" id="tab-menu">
-                    <li><button onclick="switchTab('profile')" class="w-full text-left px-4 py-3 rounded-lg text-sky-500 bg-sky-500/10 transition flex items-center gap-3"><i data-lucide="user" class="w-4 h-4"></i> Profile</button></li>
-                    <li><button onclick="switchTab('education')" class="w-full text-left px-4 py-3 rounded-lg text-slate-400 hover:text-sky-500 hover:bg-sky-500/5 transition flex items-center gap-3"><i data-lucide="graduation-cap" class="w-4 h-4"></i> Education</button></li>
-                    <li><button onclick="switchTab('arsenal')" class="w-full text-left px-4 py-3 rounded-lg text-slate-400 hover:text-sky-500 hover:bg-sky-500/5 transition flex items-center gap-3"><i data-lucide="crosshair" class="w-4 h-4"></i> Arsenal</button></li>
-                    <li><button onclick="switchTab('projects')" class="w-full text-left px-4 py-3 rounded-lg text-slate-400 hover:text-sky-500 hover:bg-sky-500/5 transition flex items-center gap-3"><i data-lucide="terminal-square" class="w-4 h-4"></i> Projects</button></li>
-                    <li><button onclick="switchTab('achievements')" class="w-full text-left px-4 py-3 rounded-lg text-slate-400 hover:text-sky-500 hover:bg-sky-500/5 transition flex items-center gap-3"><i data-lucide="award" class="w-4 h-4"></i> Achievements</button></li>
-                    <li><button onclick="switchTab('gallery')" class="w-full text-left px-4 py-3 rounded-lg text-slate-400 hover:text-sky-500 hover:bg-sky-500/5 transition flex items-center gap-3"><i data-lucide="image" class="w-4 h-4"></i> Gallery</button></li>
-                    <li><button onclick="switchTab('messages')" class="w-full text-left px-4 py-3 rounded-lg text-slate-400 hover:text-sky-500 hover:bg-sky-500/5 transition flex items-center gap-3"><i data-lucide="message-square" class="w-4 h-4"></i> Messages</button></li>
-                </ul>
+        <div class="grid md:grid-cols-4 gap-6">
+            <nav class="glass p-4 rounded-xl h-fit">
+                <div class="space-y-2" id="menu">
+                    <button onclick="showTab('profile')" class="w-full text-left p-3 rounded-lg bg-sky-500/10 text-sky-500 font-bold flex items-center gap-3"><i data-lucide="user"></i> Profile</button>
+                    <button onclick="showTab('education')" class="w-full text-left p-3 rounded-lg text-slate-400 flex items-center gap-3"><i data-lucide="book"></i> Education</button>
+                    <button onclick="showTab('arsenal')" class="w-full text-left p-3 rounded-lg text-slate-400 flex items-center gap-3"><i data-lucide="crosshair"></i> Arsenal</button>
+                    <button onclick="showTab('projects')" class="w-full text-left p-3 rounded-lg text-slate-400 flex items-center gap-3"><i data-lucide="code"></i> Projects</button>
+                    <button onclick="showTab('gallery')" class="w-full text-left p-3 rounded-lg text-slate-400 flex items-center gap-3"><i data-lucide="image"></i> Gallery</button>
+                    <button onclick="showTab('settings')" class="w-full text-left p-3 rounded-lg text-amber-500 flex items-center gap-3 border-t border-white/10 pt-4 mt-4"><i data-lucide="settings"></i> Auth Settings</button>
+                </div>
             </nav>
 
-            <main class="md:col-span-3">
+            <main class="md:col-span-3 space-y-6">
+                <section id="gallery" class="tab-content glass p-6 rounded-xl">
+                    <h2 class="text-lg font-bold mb-4">Gallery & Archives</h2>
+                    <div class="bg-black/20 p-6 rounded-lg border border-white/5 mb-6">
+                        <label class="block text-xs font-bold text-slate-400 mb-2">Upload from PC</label>
+                        <input type="file" id="gal-file" class="mb-4 block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-sky-500/10 file:text-sky-500 hover:file:bg-sky-500/20">
+                        <input type="text" id="gal-title" placeholder="Image Title" class="w-full bg-black/40 border border-white/10 rounded p-2 mb-4 text-sm">
+                        <textarea id="gal-desc" placeholder="Details" class="w-full bg-black/40 border border-white/10 rounded p-2 mb-4 text-sm"></textarea>
+                        <button onclick="uploadAndSaveGallery()" class="bg-sky-600 px-6 py-2 rounded font-bold text-sm">Upload & Save</button>
+                    </div>
+                    <div id="gal-list" class="grid grid-cols-3 gap-4"></div>
+                </section>
+
+                <section id="settings" class="tab-content glass p-6 rounded-xl">
+                    <h2 class="text-lg font-bold mb-4 text-amber-500">Security & Credentials</h2>
+                    <div class="bg-black/20 p-6 rounded-lg border border-white/5">
+                        <input type="text" id="new-user" placeholder="New Username" class="w-full bg-black/40 border border-white/10 rounded p-3 mb-4">
+                        <input type="password" id="new-pass" placeholder="New Password" class="w-full bg-black/40 border border-white/10 rounded p-3 mb-6">
+                        <button onclick="updateCredentials()" class="bg-amber-600 px-8 py-3 rounded-lg font-bold hover:bg-amber-500 transition">Update Credentials</button>
+                    </div>
+                </section>
                 
-                <section id="profile" class="tab-content active glass-panel p-8">
-                    <h2 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">Update Profile Identity</h2>
-                    <form id="profileForm" onsubmit="saveProfile(event)">
-                        <div class="mb-4">
-                            <label class="block text-slate-400 text-xs font-bold mb-2 uppercase tracking-wider mono">Full Name</label>
-                            <input type="text" id="prof-name" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white focus:border-sky-500 outline-none" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-slate-400 text-xs font-bold mb-2 uppercase tracking-wider mono">Job Title / Designation</label>
-                            <input type="text" id="prof-title" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white focus:border-sky-500 outline-none" required>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-slate-400 text-xs font-bold mb-2 uppercase tracking-wider mono">Biography</label>
-                            <textarea id="prof-bio" rows="4" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white focus:border-sky-500 outline-none" required></textarea>
-                        </div>
-                        <button type="submit" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-2 rounded text-sm font-bold transition shadow-[0_0_10px_rgba(14,165,233,0.3)]">Save Profile Data</button>
-                    </form>
-                </section>
-
-                <section id="education" class="tab-content glass-panel p-8">
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                        <h2 class="text-xl font-bold text-white">Academic Records</h2>
-                        <button onclick="resetEduForm()" class="bg-emerald-600/20 text-emerald-500 border border-emerald-500/30 px-3 py-1 rounded text-xs font-bold hover:bg-emerald-600/40 transition">ADD NEW</button>
-                    </div>
-                    
-                    <form id="eduForm" onsubmit="saveEducation(event)" class="mb-10 bg-black/20 p-6 rounded-xl border border-white/5">
-                        <input type="hidden" id="edu-id">
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Degree Name</label>
-                                <input type="text" id="edu-degree" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Institution</label>
-                                <input type="text" id="edu-inst" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none">
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Passing Year / Expected</label>
-                            <input type="text" id="edu-year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Description / Details</label>
-                            <textarea id="edu-desc" required rows="3" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none"></textarea>
-                        </div>
-                        
-                        <div class="grid md:grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label class="block text-emerald-400 text-xs font-bold mb-2">Active Thesis <span class="text-slate-500 font-normal">(Optional)</span></label>
-                                <textarea id="edu-thesis" rows="2" placeholder="E.g. Explainable Generative Adversarial Networks..." class="w-full bg-emerald-900/10 border border-emerald-500/20 rounded px-3 py-2 text-white text-sm focus:border-emerald-500 outline-none"></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sky-400 text-xs font-bold mb-2">Core Focus <span class="text-slate-500 font-normal">(Optional)</span></label>
-                                <textarea id="edu-focus" rows="2" placeholder="E.g. Cybersecurity & Analytics..." class="w-full bg-sky-900/10 border border-sky-500/20 rounded px-3 py-2 text-white text-sm focus:border-sky-500 outline-none"></textarea>
-                            </div>
-                        </div>
-
-                        <button type="submit" id="edu-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded text-sm font-bold transition">Save Record</button>
-                    </form>
-
-                    <div id="eduList" class="space-y-3"></div>
-                </section>
-
-                <section id="arsenal" class="tab-content glass-panel p-8">
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                        <h2 class="text-xl font-bold text-white">Cyber Arsenal (Tools)</h2>
-                    </div>
-                    
-                    <form id="arsenalForm" onsubmit="saveArsenal(event)" class="mb-10 bg-black/20 p-6 rounded-xl border border-white/5">
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Tool/Skill Name</label>
-                                <input type="text" id="ars-title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-rose-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Category (e.g. Languages, Tools)</label>
-                                <input type="text" id="ars-cat" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-rose-500 outline-none">
-                            </div>
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Details (Comma separated recommended)</label>
-                            <textarea id="ars-desc" required rows="2" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-rose-500 outline-none"></textarea>
-                        </div>
-                        <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white px-6 py-2 rounded text-sm font-bold transition">Add to Arsenal</button>
-                    </form>
-                    <div id="arsenalList" class="grid sm:grid-cols-2 gap-4"></div>
-                </section>
-
-                <section id="projects" class="tab-content glass-panel p-8">
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                        <h2 class="text-xl font-bold text-white">Projects & Deployments</h2>
-                    </div>
-                    
-                    <form id="projectForm" onsubmit="saveProject(event)" class="mb-10 bg-black/20 p-6 rounded-xl border border-white/5">
-                        <div class="mb-4">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Project Title</label>
-                            <input type="text" id="proj-title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-purple-500 outline-none">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Description</label>
-                            <textarea id="proj-desc" required rows="3" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-purple-500 outline-none"></textarea>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Tags (Comma separated: React, Node, etc)</label>
-                                <input type="text" id="proj-tags" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-purple-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Link (Optional)</label>
-                                <input type="text" id="proj-link" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-purple-500 outline-none">
-                            </div>
-                        </div>
-                        <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded text-sm font-bold transition">Add Project</button>
-                    </form>
-                    <div id="projectList" class="space-y-3"></div>
-                </section>
-
-                <section id="achievements" class="tab-content glass-panel p-8">
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                        <h2 class="text-xl font-bold text-white">Achievements & Certs</h2>
-                    </div>
-                    
-                    <form id="certForm" onsubmit="saveAchievement(event)" class="mb-10 bg-black/20 p-6 rounded-xl border border-white/5">
-                        <div class="grid md:grid-cols-3 gap-4 mb-4">
-                            <div class="md:col-span-2">
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Achievement/Cert Title</label>
-                                <input type="text" id="cert-title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-amber-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Year</label>
-                                <input type="text" id="cert-year" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-amber-500 outline-none">
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Organization/Issuer</label>
-                            <input type="text" id="cert-org" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-amber-500 outline-none">
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Details/Description</label>
-                            <textarea id="cert-desc" required rows="2" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-amber-500 outline-none"></textarea>
-                        </div>
-                        <button type="submit" class="bg-amber-600 hover:bg-amber-500 text-white px-6 py-2 rounded text-sm font-bold transition">Add Achievement</button>
-                    </form>
-                    <div id="certList" class="space-y-3"></div>
-                </section>
-
-                <section id="gallery" class="tab-content glass-panel p-8">
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                        <h2 class="text-xl font-bold text-white">Visual Archives</h2>
-                    </div>
-                    
-                    <form id="galleryForm" onsubmit="saveGallery(event)" class="mb-10 bg-black/20 p-6 rounded-xl border border-white/5">
-                        <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Title</label>
-                                <input type="text" id="gal-title" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-sky-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-slate-400 text-xs font-bold mb-2">Subtitle / Date</label>
-                                <input type="text" id="gal-sub" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-sky-500 outline-none">
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Image URL (Direct link to image)</label>
-                            <input type="url" id="gal-url" required class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-sky-500 outline-none">
-                        </div>
-                        <div class="mb-6">
-                            <label class="block text-slate-400 text-xs font-bold mb-2">Details (For Lightbox)</label>
-                            <textarea id="gal-desc" required rows="2" class="w-full bg-black/40 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-sky-500 outline-none"></textarea>
-                        </div>
-                        <button type="submit" class="bg-sky-600 hover:bg-sky-500 text-white px-6 py-2 rounded text-sm font-bold transition">Add to Gallery</button>
-                    </form>
-                    <div id="galleryList" class="grid sm:grid-cols-3 gap-4"></div>
-                </section>
-
-                <section id="messages" class="tab-content glass-panel p-8">
-                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                        <h2 class="text-xl font-bold text-white">Incoming Transmissions</h2>
-                        <button onclick="loadMessages()" class="text-slate-400 hover:text-white transition"><i data-lucide="refresh-cw" class="w-5 h-5"></i></button>
-                    </div>
-                    <div id="messageList" class="space-y-4"></div>
-                </section>
-
-            </main>
+                </main>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        const API_BASE = '/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
+        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api';
+        let currentUser = "";
 
-        // Handle button UI states
-        function setBtnState(btn, state) {
-            if(state === 'loading') { btn.innerText = 'Saving...'; btn.classList.add('opacity-50'); }
-            if(state === 'success') { btn.innerText = 'Saved Successfully!'; btn.className = 'bg-emerald-600 text-white px-6 py-2 rounded text-sm font-bold transition'; }
-            if(state === 'error') { btn.innerText = 'Error! Check DB'; btn.className = 'bg-red-600 text-white px-6 py-2 rounded text-sm font-bold transition'; }
-            if(state === 'reset') { setTimeout(() => { btn.className = 'bg-sky-600 hover:bg-sky-500 text-white px-6 py-2 rounded text-sm font-bold transition'; btn.innerText = 'Save Data'; }, 3000); }
+        // AUTHENTICATION
+        async function attemptLogin() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            const res = await fetch(`${API_BASE}/login`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({username: u, password: p}) });
+            if(res.ok) {
+                currentUser = u;
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                showTab('profile');
+            } else { alert("ACCESS DENIED!"); }
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+        function logout() { location.reload(); }
+
+        function toggleForgot(show) {
+            document.getElementById('login-fields').classList.toggle('hidden', show);
+            document.getElementById('forgot-fields').classList.toggle('hidden', !show);
+        }
+
+        async function resetPassword() {
+            const payload = { username: document.getElementById('f-user').value, security_key: document.getElementById('f-key').value, new_password: document.getElementById('f-newpass').value };
+            const res = await fetch(`${API_BASE}/forgot-password`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            if(res.ok) { alert("Password Reset Success!"); toggleForgot(false); } else { alert("Failed! Check Security Key."); }
+        }
+
+        async function updateCredentials() {
+            const newUser = document.getElementById('new-user').value;
+            const newPass = document.getElementById('new-pass').value;
+            const res = await fetch(`${API_BASE}/update-auth`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({old_user: currentUser, new_user: newUser, new_pass: newPass}) });
+            if(res.ok) { alert("Credentials Updated! Please login again."); logout(); }
+        }
+
+        // IMAGE UPLOAD & GALLERY
+        async function uploadAndSaveGallery() {
+            const fileInput = document.getElementById('gal-file');
+            if(!fileInput.files[0]) return alert("Select a file first");
+
+            // 1. Upload to Supabase Bucket via Server
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
             
-            const buttons = document.querySelectorAll('#tab-menu button');
-            buttons.forEach(btn => {
-                btn.classList.remove('text-sky-500', 'bg-sky-500/10');
-                btn.classList.add('text-slate-400');
-            });
-            const activeBtn = document.querySelector(`button[onclick="switchTab('${tabId}')"]`);
-            activeBtn.classList.remove('text-slate-400');
-            activeBtn.classList.add('text-sky-500', 'bg-sky-500/10');
+            const uploadRes = await fetch(`${API_BASE}/upload`, { method: 'POST', body: formData });
+            const uploadData = await uploadRes.json();
 
-            if(tabId === 'profile') loadProfile();
-            if(tabId === 'education') loadEducation();
-            if(tabId === 'arsenal') loadArsenal();
-            if(tabId === 'projects') loadProjects();
-            if(tabId === 'achievements') loadAchievements();
-            if(tabId === 'gallery') loadGallery();
-            if(tabId === 'messages') loadMessages();
-        }
-
-        // ================= PROFILE =================
-        async function loadProfile() {
-            try {
-                const res = await fetch(`${API_BASE}/profile`);
-                const data = await res.json();
-                if(data && data.full_name) {
-                    document.getElementById('prof-name').value = data.full_name;
-                    document.getElementById('prof-title').value = data.job_title;
-                    document.getElementById('prof-bio').value = data.bio;
-                }
-            } catch (e) { console.error(e); }
-        }
-
-        async function saveProfile(e) {
-            e.preventDefault();
-            const btn = e.target.querySelector('button'); setBtnState(btn, 'loading');
-            const payload = { full_name: document.getElementById('prof-name').value, job_title: document.getElementById('prof-title').value, bio: document.getElementById('prof-bio').value };
-            try {
-                const res = await fetch(`${API_BASE}/profile`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-                if(!res.ok) throw new Error(); setBtnState(btn, 'success');
-            } catch(err) { setBtnState(btn, 'error'); }
-            setBtnState(btn, 'reset');
-        }
-
-        // ================= EDUCATION =================
-        let educationData = [];
-        async function loadEducation() {
-            try {
-                const res = await fetch(`${API_BASE}/education`);
-                educationData = await res.json();
-                const list = document.getElementById('eduList'); list.innerHTML = '';
-                educationData.forEach(item => {
-                    list.innerHTML += `
-                        <div class="bg-black/20 border border-white/5 p-4 rounded-lg flex justify-between items-center">
-                            <div>
-                                <p class="text-white font-bold text-sm">${item.degree}</p>
-                                <p class="text-slate-400 text-xs">${item.institution} (${item.pass_year})</p>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="editEdu(${item.id})" class="p-2 bg-blue-500/10 text-blue-500 rounded hover:bg-blue-500/20"><i data-lucide="edit" class="w-4 h-4"></i></button>
-                                <button onclick="deleteData('education', ${item.id}, loadEducation)" class="p-2 bg-red-500/10 text-red-500 rounded hover:bg-red-500/20"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </div>
-                        </div>`;
-                });
-                lucide.createIcons();
-            } catch(e) { console.error(e); }
-        }
-
-        function editEdu(id) {
-            const item = educationData.find(x => x.id === id);
-            document.getElementById('edu-id').value = item.id;
-            document.getElementById('edu-degree').value = item.degree;
-            document.getElementById('edu-inst').value = item.institution;
-            document.getElementById('edu-year').value = item.pass_year;
-            document.getElementById('edu-desc').value = item.details;
-            document.getElementById('edu-thesis').value = item.active_thesis || '';
-            document.getElementById('edu-focus').value = item.core_focus || '';
-            document.getElementById('edu-btn').innerText = 'Update Record';
-        }
-
-        function resetEduForm() {
-            document.getElementById('eduForm').reset();
-            document.getElementById('edu-id').value = '';
-            document.getElementById('edu-btn').innerText = 'Save Record';
-        }
-
-        async function saveEducation(e) {
-            e.preventDefault();
-            const btn = document.getElementById('edu-btn'); btn.innerText = 'Saving...';
-            const id = document.getElementById('edu-id').value;
-            const payload = { 
-                degree: document.getElementById('edu-degree').value, 
-                institution: document.getElementById('edu-inst').value, 
-                pass_year: document.getElementById('edu-year').value, 
-                details: document.getElementById('edu-desc').value,
-                active_thesis: document.getElementById('edu-thesis').value || null,
-                core_focus: document.getElementById('edu-focus').value || null
-            };
-            const method = id ? 'PUT' : 'POST';
-            const url = id ? `${API_BASE}/education/${id}` : `${API_BASE}/education`;
+            // 2. Save Metadata to DB
+            const payload = { title: document.getElementById('gal-title').value, image_url: uploadData.url, details: document.getElementById('gal-desc').value };
+            await fetch(`${API_BASE}/gallery`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
             
-            try {
-                const res = await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-                if(!res.ok) throw new Error();
-                resetEduForm(); loadEducation();
-            } catch(err) { alert("Error saving data! Check if RLS is disabled in Supabase."); btn.innerText = 'Error'; }
+            alert("Success!"); loadGalleryList();
         }
 
-        // ================= ARSENAL =================
-        async function loadArsenal() {
-            const res = await fetch(`${API_BASE}/arsenal`);
-            const data = await res.json();
-            const list = document.getElementById('arsenalList'); list.innerHTML = '';
-            data.forEach(item => {
-                list.innerHTML += `
-                    <div class="bg-black/20 border border-white/5 p-4 rounded-lg relative group">
-                        <button onclick="deleteData('arsenal', ${item.id}, loadArsenal)" class="absolute top-2 right-2 p-1 text-slate-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition"><i data-lucide="x" class="w-4 h-4"></i></button>
-                        <p class="text-[9px] text-rose-500 font-mono uppercase mb-1">${item.category}</p>
-                        <p class="text-white font-bold text-sm mb-1">${item.title}</p>
-                        <p class="text-slate-400 text-xs truncate">${item.details}</p>
-                    </div>`;
-            });
-            lucide.createIcons();
+        // TAB SWITCHING
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(id === 'gallery') loadGalleryList();
         }
 
-        async function saveArsenal(e) {
-            e.preventDefault();
-            const payload = { title: document.getElementById('ars-title').value, category: document.getElementById('ars-cat').value, details: document.getElementById('ars-desc').value };
-            await fetch(`${API_BASE}/arsenal`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            e.target.reset(); loadArsenal();
-        }
-
-        // ================= PROJECTS =================
-        async function loadProjects() {
-            const res = await fetch(`${API_BASE}/projects`);
-            const data = await res.json();
-            const list = document.getElementById('projectList'); list.innerHTML = '';
-            data.forEach(item => {
-                list.innerHTML += `
-                    <div class="bg-black/20 border border-white/5 p-4 rounded-lg flex justify-between items-center">
-                        <div><p class="text-white font-bold text-sm">${item.title}</p><p class="text-slate-400 text-xs">${item.tags}</p></div>
-                        <button onclick="deleteData('projects', ${item.id}, loadProjects)" class="p-2 bg-red-500/10 text-red-500 rounded hover:bg-red-500/20"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    </div>`;
-            });
-            lucide.createIcons();
-        }
-
-        async function saveProject(e) {
-            e.preventDefault();
-            const payload = { title: document.getElementById('proj-title').value, description: document.getElementById('proj-desc').value, tags: document.getElementById('proj-tags').value, link: document.getElementById('proj-link').value };
-            await fetch(`${API_BASE}/projects`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            e.target.reset(); loadProjects();
-        }
-
-        // ================= ACHIEVEMENTS =================
-        async function loadAchievements() {
-            const res = await fetch(`${API_BASE}/achievements`);
-            const data = await res.json();
-            const list = document.getElementById('certList'); list.innerHTML = '';
-            data.forEach(item => {
-                list.innerHTML += `
-                    <div class="bg-black/20 border border-white/5 p-4 rounded-lg flex justify-between items-center">
-                        <div><p class="text-white font-bold text-sm">${item.title}</p><p class="text-slate-400 text-xs">${item.organization} (${item.year})</p></div>
-                        <button onclick="deleteData('achievements', ${item.id}, loadAchievements)" class="p-2 bg-red-500/10 text-red-500 rounded hover:bg-red-500/20"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    </div>`;
-            });
-            lucide.createIcons();
-        }
-
-        async function saveAchievement(e) {
-            e.preventDefault();
-            const payload = { title: document.getElementById('cert-title').value, organization: document.getElementById('cert-org').value, year: document.getElementById('cert-year').value, details: document.getElementById('cert-desc').value };
-            await fetch(`${API_BASE}/achievements`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            e.target.reset(); loadAchievements();
-        }
-
-        // ================= GALLERY =================
-        async function loadGallery() {
+        async function loadGalleryList() {
             const res = await fetch(`${API_BASE}/gallery`);
             const data = await res.json();
-            const list = document.getElementById('galleryList'); list.innerHTML = '';
+            const list = document.getElementById('gal-list'); list.innerHTML = '';
             data.forEach(item => {
                 list.innerHTML += `
-                    <div class="bg-black/20 border border-white/5 p-2 rounded-lg relative group">
-                        <button onclick="deleteData('gallery', ${item.id}, loadGallery)" class="absolute top-4 right-4 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
-                        <div class="h-24 w-full rounded overflow-hidden mb-2"><img src="${item.image_url}" class="w-full h-full object-cover"></div>
-                        <p class="text-white font-bold text-[10px] truncate px-1">${item.title}</p>
+                    <div class="bg-black/40 border border-white/5 p-2 rounded relative group">
+                        <img src="${item.image_url}" class="h-20 w-full object-cover rounded mb-1">
+                        <button onclick="deleteItem('gallery', ${item.id}, loadGalleryList)" class="absolute top-1 right-1 text-red-500 opacity-0 group-hover:opacity-100"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                     </div>`;
             });
             lucide.createIcons();
         }
 
-        async function saveGallery(e) {
-            e.preventDefault();
-            const payload = { title: document.getElementById('gal-title').value, subtitle: document.getElementById('gal-sub').value, image_url: document.getElementById('gal-url').value, details: document.getElementById('gal-desc').value };
-            await fetch(`${API_BASE}/gallery`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            e.target.reset(); loadGallery();
-        }
-
-        // ================= MESSAGES =================
-        async function loadMessages() {
-            const res = await fetch(`${API_BASE}/messages`);
-            const data = await res.json();
-            const list = document.getElementById('messageList'); list.innerHTML = '';
-            if(data.length === 0) { list.innerHTML = '<p class="text-slate-500 text-xs mono">No incoming transmissions.</p>'; return; }
-            data.forEach(item => {
-                const date = new Date(item.created_at).toLocaleString();
-                list.innerHTML += `
-                    <div class="bg-black/20 border border-white/5 p-5 rounded-xl relative group">
-                        <button onclick="deleteData('messages', ${item.id}, loadMessages)" class="absolute top-4 right-4 p-2 bg-red-500/10 text-red-500 rounded opacity-0 group-hover:opacity-100 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-8 h-8 rounded-full bg-sky-500/20 flex items-center justify-center border border-sky-500/30"><i data-lucide="user" class="w-4 h-4 text-sky-500"></i></div>
-                            <div><p class="text-white font-bold text-sm leading-none">${item.identity_name}</p><p class="text-[10px] text-sky-500 font-mono mt-1">${item.contact_vector}</p></div>
-                        </div>
-                        <p class="text-slate-300 text-sm leading-relaxed bg-black/30 p-4 rounded-lg border border-white/5 font-mono text-xs">${item.data_payload}</p>
-                        <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-3 text-right">${date}</p>
-                    </div>`;
-            });
-            lucide.createIcons();
-        }
-
-        // ================= HELPER =================
-        async function deleteData(endpoint, id, callback) {
-            if(!confirm('Delete this record permanently?')) return;
-            await fetch(`${API_BASE}/${endpoint}/${id}`, { method: 'DELETE' });
+        async function deleteItem(table, id, callback) {
+            if(!confirm("Delete permanently?")) return;
+            await fetch(`${API_BASE}/${table}/${id}`, { method: 'DELETE' });
             callback();
         }
-
-        // Init
-        loadProfile();
     </script>
 </body>
 </html>
