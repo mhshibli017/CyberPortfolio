@@ -240,14 +240,20 @@
 
     <script>
         lucide.createIcons();
-        const API_BASE = '/api';
+        const API_BASE = '/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
-        // --- Tab Switching Logic ---
+        // Handle button UI states
+        function setBtnState(btn, state) {
+            if(state === 'loading') { btn.innerText = 'Saving...'; btn.classList.add('opacity-50'); }
+            if(state === 'success') { btn.innerText = 'Saved Successfully!'; btn.className = 'bg-emerald-600 text-white px-6 py-2 rounded text-sm font-bold transition'; }
+            if(state === 'error') { btn.innerText = 'Error! Check DB'; btn.className = 'bg-red-600 text-white px-6 py-2 rounded text-sm font-bold transition'; }
+            if(state === 'reset') { setTimeout(() => { btn.className = 'bg-sky-600 hover:bg-sky-500 text-white px-6 py-2 rounded text-sm font-bold transition'; btn.innerText = 'Save Data'; }, 3000); }
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             
-            // Update menu styling
             const buttons = document.querySelectorAll('#tab-menu button');
             buttons.forEach(btn => {
                 btn.classList.remove('text-sky-500', 'bg-sky-500/10');
@@ -257,7 +263,6 @@
             activeBtn.classList.remove('text-slate-400');
             activeBtn.classList.add('text-sky-500', 'bg-sky-500/10');
 
-            // Load data based on tab
             if(tabId === 'profile') loadProfile();
             if(tabId === 'education') loadEducation();
             if(tabId === 'arsenal') loadArsenal();
@@ -272,7 +277,7 @@
             try {
                 const res = await fetch(`${API_BASE}/profile`);
                 const data = await res.json();
-                if(data.full_name) {
+                if(data && data.full_name) {
                     document.getElementById('prof-name').value = data.full_name;
                     document.getElementById('prof-title').value = data.job_title;
                     document.getElementById('prof-bio').value = data.bio;
@@ -282,32 +287,37 @@
 
         async function saveProfile(e) {
             e.preventDefault();
-            const btn = e.target.querySelector('button'); btn.innerText = 'Saving...';
+            const btn = e.target.querySelector('button'); setBtnState(btn, 'loading');
             const payload = { full_name: document.getElementById('prof-name').value, job_title: document.getElementById('prof-title').value, bio: document.getElementById('prof-bio').value };
-            await fetch(`${API_BASE}/profile`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            btn.innerText = 'Saved!'; setTimeout(() => btn.innerText = 'Save Profile Data', 2000);
+            try {
+                const res = await fetch(`${API_BASE}/profile`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+                if(!res.ok) throw new Error(); setBtnState(btn, 'success');
+            } catch(err) { setBtnState(btn, 'error'); }
+            setBtnState(btn, 'reset');
         }
 
-        // ================= EDUCATION (UPDATED WITH THESIS/FOCUS) =================
+        // ================= EDUCATION =================
         let educationData = [];
         async function loadEducation() {
-            const res = await fetch(`${API_BASE}/education`);
-            educationData = await res.json();
-            const list = document.getElementById('eduList'); list.innerHTML = '';
-            educationData.forEach(item => {
-                list.innerHTML += `
-                    <div class="bg-black/20 border border-white/5 p-4 rounded-lg flex justify-between items-center">
-                        <div>
-                            <p class="text-white font-bold text-sm">${item.degree}</p>
-                            <p class="text-slate-400 text-xs">${item.institution} (${item.pass_year})</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="editEdu(${item.id})" class="p-2 bg-blue-500/10 text-blue-500 rounded hover:bg-blue-500/20"><i data-lucide="edit" class="w-4 h-4"></i></button>
-                            <button onclick="deleteData('education', ${item.id}, loadEducation)" class="p-2 bg-red-500/10 text-red-500 rounded hover:bg-red-500/20"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        </div>
-                    </div>`;
-            });
-            lucide.createIcons();
+            try {
+                const res = await fetch(`${API_BASE}/education`);
+                educationData = await res.json();
+                const list = document.getElementById('eduList'); list.innerHTML = '';
+                educationData.forEach(item => {
+                    list.innerHTML += `
+                        <div class="bg-black/20 border border-white/5 p-4 rounded-lg flex justify-between items-center">
+                            <div>
+                                <p class="text-white font-bold text-sm">${item.degree}</p>
+                                <p class="text-slate-400 text-xs">${item.institution} (${item.pass_year})</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editEdu(${item.id})" class="p-2 bg-blue-500/10 text-blue-500 rounded hover:bg-blue-500/20"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                                <button onclick="deleteData('education', ${item.id}, loadEducation)" class="p-2 bg-red-500/10 text-red-500 rounded hover:bg-red-500/20"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>`;
+                });
+                lucide.createIcons();
+            } catch(e) { console.error(e); }
         }
 
         function editEdu(id) {
@@ -330,6 +340,7 @@
 
         async function saveEducation(e) {
             e.preventDefault();
+            const btn = document.getElementById('edu-btn'); btn.innerText = 'Saving...';
             const id = document.getElementById('edu-id').value;
             const payload = { 
                 degree: document.getElementById('edu-degree').value, 
@@ -342,8 +353,11 @@
             const method = id ? 'PUT' : 'POST';
             const url = id ? `${API_BASE}/education/${id}` : `${API_BASE}/education`;
             
-            await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-            resetEduForm(); loadEducation();
+            try {
+                const res = await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+                if(!res.ok) throw new Error();
+                resetEduForm(); loadEducation();
+            } catch(err) { alert("Error saving data! Check if RLS is disabled in Supabase."); btn.innerText = 'Error'; }
         }
 
         // ================= ARSENAL =================
