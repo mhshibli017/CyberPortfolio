@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahmudul Hasan | Cybersecurity Researcher</title>
+    <title>Mahmudul Hasan | Cybersecurity</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -134,6 +134,24 @@
 
     <div id="boot-screen">
         <div class="boot-text-container" id="terminal-text"></div>
+        
+        <div id="hack-progress-container" class="w-full max-w-md px-6 hidden flex-col items-center mt-8">
+            <div class="w-full h-1.5 bg-black/50 rounded-full overflow-hidden border border-red-500/20 relative shadow-[0_0_15px_rgba(220,38,38,0.2)]">
+                <div id="hack-progress-bar" class="h-full bg-red-600 w-0 transition-all duration-[2000ms] ease-out shadow-[0_0_15px_#dc2626]"></div>
+            </div>
+            <div class="w-full flex justify-between text-[10px] mono text-red-500 mt-2 font-bold uppercase tracking-widest">
+                <span class="animate-pulse">Extracting Data...</span>
+                <span id="hack-progress-text">0%</span>
+            </div>
+        </div>
+
+        <div id="hacked-text" class="hidden mt-8 text-center text-4xl md:text-6xl font-black text-red-600 tracking-tighter uppercase drop-shadow-[0_0_20px_rgba(220,38,38,0.8)] animate-pulse px-4">
+            SYSTEM COMPROMISED
+        </div>
+
+        <div id="joke-text" class="hidden mt-4 text-sky-400 font-bold text-sm md:text-lg mono text-center drop-shadow-[0_0_10px_rgba(14,165,233,0.5)]">
+            ...Just kidding! 😉<br>Welcome to Mahmudul's Secure Node.
+        </div>
     </div>
 
     <div id="main-content">
@@ -284,6 +302,7 @@
                     <div class="absolute -bottom-32 -right-32 w-64 h-64 bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
                     <div class="flex flex-col lg:flex-row gap-8 lg:gap-12 relative z-10">
+                        
                         <div class="flex-1 flex flex-col justify-center">
                             <p id="edu-inst" class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mono mb-4">MAJOR_OPERATION.EDU</p>
                             <h3 id="edu-degree" class="text-3xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight">Loading...</h3>
@@ -302,6 +321,7 @@
                         </div>
 
                         <div id="edu-right-side" class="w-full lg:w-80 shrink-0 flex flex-col gap-4 md:gap-6 justify-center">
+                            
                             <div id="thesis-card" class="bg-black/20 border border-white/5 p-5 md:p-6 rounded-2xl hover:border-emerald-500/40 transition duration-300 group shadow-lg light-edu-inner hidden">
                                 <div class="flex items-center gap-3 mb-4">
                                     <div class="bg-emerald-500/20 p-2 rounded-full border border-emerald-500/20">
@@ -321,6 +341,7 @@
                                 </div>
                                 <h4 id="focus-desc" class="text-white font-bold mb-3 leading-tight group-hover:text-sky-400 transition"></h4>
                             </div>
+
                         </div>
                     </div>
                     
@@ -466,10 +487,10 @@
 
         <footer class="pb-12 pt-10 text-center relative z-50 transition-colors duration-500">
             <div class="flex justify-center gap-6 mb-12">
-                <a href="https://www.linkedin.com/in/mahmudul-hasan-0730a1211/" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-sky-500/20 hover:text-sky-500 hover:border-sky-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-                <a href="https://github.com/mhshibli" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-emerald-500/20 hover:text-emerald-500 hover:border-emerald-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
-                <a href="https://www.facebook.com/mahmudulhasan.shibli.5" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-blue-600/20 hover:text-blue-600 hover:border-blue-600/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-                <a href="https://www.instagram.com/shibli__mahmud/" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-pink-500/20 hover:text-pink-500 hover:border-pink-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-sky-500/20 hover:text-sky-500 hover:border-sky-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-emerald-500/20 hover:text-emerald-500 hover:border-emerald-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
+                <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-blue-600/20 hover:text-blue-600 hover:border-blue-600/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                <a href="#" target="_blank" class="flex items-center justify-center w-12 h-12 rounded-full bg-black/40 hover:bg-pink-500/20 hover:text-pink-500 hover:border-pink-500/50 transition text-slate-400 border border-white/10"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
             </div>
             
             <div class="flex flex-col items-center justify-center">
@@ -579,7 +600,7 @@
 
     </div> <script>
         lucide.createIcons();
-        const API_BASE = 'https://cyberportfolio-ax05.onrender.com/api'; 
+        const API_BASE = '/api'; // <-- Render লাইভ লিংক হলে এখানে লিংক বসান
 
         // ================= SCARY BOOT SEQUENCE LOGIC =================
         const bootLines = [
@@ -587,13 +608,8 @@
             "OVERRIDING SYSTEM DEFENSES... <span class='text-emerald-500'>[BYPASSED]</span>",
             "INJECTING MALICIOUS PAYLOAD: <span class='text-purple-500'>0x89F3A1</span>...",
             "<span class='text-red-500'>[!] DOWNLOADING SYSTEM REGISTRY AND SAVED CREDENTIALS...</span>",
-            "EXTRACTING BANKING TOKENS... <span class='text-emerald-500'>[100%]</span>",
-            "EXTRACTING BROWSER HISTORY... <span class='text-emerald-500'>[100%]</span>",
-            "ENCRYPTING LOCAL DRIVES (AES-256)... <span class='text-red-500'>[LOCKED]</span>",
-            "ACTIVATING WEBCAM AND MICROPHONE... <span class='text-emerald-500'>[LIVE]</span>",
-            "<span class='text-red-500 font-black text-xl'>[!] FULL SYSTEM COMPROMISED. YOUR SYSTEM IS NOW MINE.</span>",
-            "<br><span class='text-sky-500 font-bold text-lg'>....................</span>",
-            "<span class='text-sky-400'>WELCOME TO MAHMUDUL'S SECURE NODE.</span>"
+            "BYPASSING ENCRYPTION (AES-256)... <span class='text-emerald-500'>[OK]</span>",
+            "ESTABLISHING BACKDOOR CONNECTION... <span class='text-emerald-500'>[CONNECTED]</span>"
         ];
         
         const terminalText = document.getElementById('terminal-text');
@@ -608,24 +624,58 @@
                 lineIndex++;
                 
                 let delay = Math.random() * 150 + 50; 
-                if (lineIndex === 4 || lineIndex === 9) delay = 800; 
+                if (lineIndex === 4) delay = 800; 
                 
                 setTimeout(typeLine, delay);
             } else {
-                const cursor = document.createElement('span');
-                cursor.className = 'typing-cursor text-emerald-500';
-                cursor.innerText = '> ';
-                terminalText.appendChild(cursor);
+                // Show Progress Bar
+                const progContainer = document.getElementById('hack-progress-container');
+                const progBar = document.getElementById('hack-progress-bar');
+                const progText = document.getElementById('hack-progress-text');
+                
+                progContainer.classList.remove('hidden');
+                progContainer.classList.add('flex');
                 
                 setTimeout(() => {
-                    document.getElementById('boot-screen').style.opacity = '0';
-                    document.getElementById('boot-screen').style.transform = 'scale(1.1)';
-                    document.getElementById('main-content').style.opacity = '1';
-                    setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; }, 800);
-                }, 1500); 
+                    progBar.style.width = '100%';
+                    let count = 0;
+                    const counter = setInterval(() => {
+                        count += 2;
+                        if(count > 100) count = 100;
+                        progText.innerText = count + '%';
+                        if(count === 100) {
+                            clearInterval(counter);
+                            finishBoot();
+                        }
+                    }, 40); // 40 * 50 = 2000ms duration
+                }, 300);
             }
         }
         
+        function finishBoot() {
+            setTimeout(() => {
+                document.getElementById('hack-progress-container').classList.add('hidden');
+                document.getElementById('terminal-text').classList.add('hidden');
+                
+                const hackedText = document.getElementById('hacked-text');
+                const jokeText = document.getElementById('joke-text');
+                
+                hackedText.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    hackedText.classList.add('hidden');
+                    jokeText.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        document.getElementById('boot-screen').style.opacity = '0';
+                        document.getElementById('boot-screen').style.transform = 'scale(1.1)';
+                        document.getElementById('main-content').style.opacity = '1';
+                        setTimeout(() => { document.getElementById('boot-screen').style.display = 'none'; }, 800);
+                    }, 2000);
+                }, 2000);
+            }, 500);
+        }
+
         window.addEventListener('load', () => {
             setTimeout(typeLine, 500);
             fetchAllDynamicData(); 
