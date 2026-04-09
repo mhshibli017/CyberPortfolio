@@ -6,25 +6,22 @@ const { createClient } = require('@supabase/supabase-js');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // Serve static files from public folder
+app.use(express.static('public'));
 
-// Initialize Supabase
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // ================= PROFILE API =================
 app.get('/api/profile', async (req, res) => {
-    const { data, error } = await supabase.from('profile').select('*').single();
-    if (error && error.code !== 'PGRST116') return res.status(500).json({ error: error.message });
+    const { data, error } = await supabase.from('profile').select('*').maybeSingle();
+    if (error) return res.status(500).json({ error: error.message });
     res.json(data || {});
 });
 
 app.post('/api/profile', async (req, res) => {
     const { full_name, job_title, bio } = req.body;
-    
-    // Check if profile exists
-    const { data: existing } = await supabase.from('profile').select('id').single();
+    const { data: existing } = await supabase.from('profile').select('id').maybeSingle();
     
     let result;
     if (existing) {
@@ -41,7 +38,7 @@ app.post('/api/profile', async (req, res) => {
 app.get('/api/education', async (req, res) => {
     const { data, error } = await supabase.from('education').select('*').order('pass_year', { ascending: false });
     if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    res.json(data || []);
 });
 
 app.post('/api/education', async (req, res) => {
@@ -72,7 +69,7 @@ app.delete('/api/education/:id', async (req, res) => {
 app.get('/api/arsenal', async (req, res) => {
     const { data, error } = await supabase.from('arsenal').select('*');
     if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    res.json(data || []);
 });
 
 app.post('/api/arsenal', async (req, res) => {
@@ -92,7 +89,7 @@ app.delete('/api/arsenal/:id', async (req, res) => {
 app.get('/api/projects', async (req, res) => {
     const { data, error } = await supabase.from('projects').select('*');
     if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    res.json(data || []);
 });
 
 app.post('/api/projects', async (req, res) => {
@@ -112,7 +109,7 @@ app.delete('/api/projects/:id', async (req, res) => {
 app.get('/api/achievements', async (req, res) => {
     const { data, error } = await supabase.from('achievements').select('*').order('year', { ascending: false });
     if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    res.json(data || []);
 });
 
 app.post('/api/achievements', async (req, res) => {
@@ -132,7 +129,7 @@ app.delete('/api/achievements/:id', async (req, res) => {
 app.get('/api/gallery', async (req, res) => {
     const { data, error } = await supabase.from('gallery').select('*').order('created_at', { ascending: false });
     if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    res.json(data || []);
 });
 
 app.post('/api/gallery', async (req, res) => {
@@ -152,7 +149,7 @@ app.delete('/api/gallery/:id', async (req, res) => {
 app.get('/api/messages', async (req, res) => {
     const { data, error } = await supabase.from('messages').select('*').order('created_at', { ascending: false });
     if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
+    res.json(data || []);
 });
 
 app.post('/api/messages', async (req, res) => {
@@ -168,7 +165,7 @@ app.delete('/api/messages/:id', async (req, res) => {
     res.json({ message: 'Deleted successfully' });
 });
 
-// Render Port Setup (CRITICAL FOR DEPLOYMENT)
+// Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`System Online: Port ${PORT}`);
